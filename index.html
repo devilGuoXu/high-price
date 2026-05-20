@@ -2,744 +2,602 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>历史数据</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>数据透视 - 人员｜州｜计数</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-            background: #f5f6f8;
-            color: #2d3436;
-            min-height: 100vh;
-        }
-        .navbar {
-            background: rgba(255,255,255,0.95);
-            border-bottom: 1px solid rgba(0,0,0,0.04);
-            padding: 0 24px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 56px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        .back-btn {
-            text-decoration: none;
-            padding: 6px 14px;
-            background: #e2e8f0;
-            border-radius: 6px;
-            font-size: 13px;
-            color: #333;
-            transition: all .2s;
-            border: none;
-            cursor: pointer;
-            font-family: inherit;
-        }
-        .back-btn:hover {
-            background: #cbd5e1;
-        }
-        .nav-brand {
-            font-size: 16px;
-            font-weight: 600;
-            color: #2d3436;
-        }
-        .nav-update {
-            font-size: 12px;
-            color: #aaa;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 24px 20px;
-        }
-        .split-layout {
-            display: flex;
-            gap: 20px;
-            min-height: 500px;
-        }
-        .sidebar {
-            width: 280px;
-            min-width: 280px;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
-            overflow: hidden;
-            height: fit-content;
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-        .sidebar-title {
-            padding: 14px 18px;
-            font-weight: 600;
-            color: #2d3436;
-            border-bottom: 1px solid #f2f2f2;
-            font-size: 14px;
-            position: sticky;
-            top: 0;
-            background: #fff;
-        }
-        .sidebar-item {
-            padding: 12px 18px;
-            cursor: pointer;
-            font-size: 14px;
-            color: #666;
-            border-bottom: 1px solid #fafafa;
-            transition: all .15s;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .sidebar-item:hover {
-            background: #f8f9fb;
-            color: #2d3436;
-        }
-        .sidebar-item.active {
-            background: #f5f6f8;
-            color: #2d3436;
-            font-weight: 550;
-            border-left: 3px solid #2d3436;
-            padding-left: 15px;
-        }
-        .main-content {
-            flex: 1;
-            min-width: 0;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
-            padding: 24px;
-        }
-        .section-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 16px;
-            color: #2d3436;
-            word-break: break-word;
-        }
-        .section-title-price {
-            color: #2979ff;
-            margin-left: 16px;
-            font-weight: 700;
-            font-size: 16px;
-        }
-        .state-data-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .state-data-table th {
-            padding: 12px 10px;
-            font-size: 12px;
-            color: #999;
-            font-weight: 500;
-            border-bottom: 1px solid #eee;
-            text-align: left;
-        }
-        .state-data-table th:first-child {
-            text-align: center;
-            width: 45px;
-        }
-        .state-data-table th.num {
-            text-align: right;
-        }
-        .state-data-table td {
-            padding: 12px 10px;
-            font-size: 14px;
-            border-bottom: 1px solid #f5f5f5;
-        }
-        .state-data-table td:first-child {
-            text-align: center;
-        }
-        .state-data-table td:nth-child(2) {
-            text-align: left;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .state-data-table td.num {
-            text-align: right;
-            font-family: 'SF Mono', 'Consolas', monospace;
-            font-size: 14px;
-        }
-        .state-data-table th.ctr, .state-data-table td.ctr {
-            text-align: center;
-        }
-        .state-data-table tbody tr:nth-child(even) {
-            background: #fafbfc;
-        }
-        .state-data-table tbody tr:nth-child(odd) {
-            background: #fff;
-        }
-        .state-data-table tbody tr:hover {
-            background: #eef0f5;
-        }
-        .state-data-table tbody tr.row-high {
-            background: #ffebee !important;
-        }
-        .state-data-table tbody tr.row-mid {
-            background: #fff8e1 !important;
-        }
-        .state-data-table tbody tr.row-low {
-            background: #e8f5e9 !important;
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:#f5f6f8;color:#2d3436;min-height:100vh}
         
-        /* 人员表格样式（嵌入同一个页面）*/
-        .person-stats-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 28px;
-        }
-        .person-stats-table th {
-            padding: 12px 10px;
-            font-size: 12px;
-            color: #999;
-            font-weight: 500;
-            border-bottom: 1px solid #eee;
-            text-align: left;
-        }
-        .person-stats-table th.num {
-            text-align: right;
-        }
-        .person-stats-table td {
-            padding: 12px 10px;
-            font-size: 14px;
-            border-bottom: 1px solid #f5f5f5;
-        }
-        .person-stats-table td:first-child {
-            text-align: center;
-        }
-        .person-stats-table td:nth-child(2) {
-            text-align: left;
-            font-weight: 700;
-            white-space: nowrap;
-        }
-        .person-stats-table td.num {
-            text-align: right;
-            font-family: 'SF Mono', 'Consolas', monospace;
-            font-size: 14px;
-        }
-        .person-stats-table tbody tr:nth-child(even) {
-            background: #fafbfc;
-        }
-        .person-stats-table tbody tr:nth-child(odd) {
-            background: #fff;
-        }
-        .person-stats-table tbody tr:hover {
-            background: #eef0f5;
-        }
-        .badge {
-            padding: 3px 10px;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: 550;
-            white-space: nowrap;
-        }
-        .badge.high { background: #ffebee; color: #e53935; }
-        .badge.mid { background: #fff8e1; color: #fdd835; }
-        .badge.low { background: #e8f5e9; color: #43a047; }
+        .navbar{background:rgba(255,255,255,0.95);border-bottom:1px solid rgba(0,0,0,0.04);padding:0 24px;display:flex;align-items:center;height:56px;position:sticky;top:0;z-index:100}
+        .nav-brand{font-size:16px;font-weight:600;color:#2d3436;margin-right:40px}
+        .nav-tabs{display:flex;gap:28px;height:100%}
+        .nav-tab{cursor:pointer;font-size:14px;color:#999;border-bottom:2px solid transparent;display:flex;align-items:center;transition:all .2s;padding:0 6px}
+        .nav-tab:hover{color:#2d3436}
+        .nav-tab.active{color:#2d3436;border-bottom-color:#2d3436;font-weight:550}
+        .nav-update{margin-left:auto;font-size:12px;color:#ccc}
+        .back-btn{text-decoration:none;padding:6px 14px;background:#e2e8f0;border-radius:6px;font-size:13px;color:#333;transition:all .2s;border:none;cursor:pointer;font-family:inherit;margin-left:20px}
+        .back-btn:hover{background:#cbd5e1}
         
-        .stats-summary {
-            display: flex;
-            gap: 20px;
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 16px 20px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-        .stat-summary-item {
-            flex: 1;
-            text-align: center;
-        }
-        .stat-summary-label {
-            font-size: 12px;
-            color: #8890a4;
-            margin-bottom: 6px;
-        }
-        .stat-summary-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #2d3436;
-        }
-        .divider {
-            border-top: 1px solid #f0f0f0;
-            margin: 24px 0 8px;
-        }
-        .sub-section-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin: 20px 0 12px 0;
-            color: #2c3e66;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .detail-btn {
-            background: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            padding: 2px 8px;
-            font-size: 11px;
-            cursor: pointer;
-            margin-left: 8px;
-            white-space: nowrap;
-            display: inline-block;
-        }
-        .detail-btn:hover {
-            background: #45a049;
-        }
-        .no-data {
-            text-align: center;
-            color: #ccc;
-            padding: 80px 40px;
-            font-size: 15px;
-        }
-        .footer {
-            text-align: center;
-            color: #ddd;
-            font-size: 12px;
-            padding: 20px;
-        }
+        .page{display:none;padding:24px 20px}
+        .page.active{display:block}
+        .container{max-width:1400px;margin:0 auto}
         
-        /* 弹窗样式 */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background: #fff;
-            border-radius: 16px;
-            width: 90%;
-            max-width: 1000px;
-            max-height: 85%;
-            overflow: auto;
-            padding: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding-bottom: 15px;
-            border-bottom: 1px solid #eee;
-            margin-bottom: 20px;
-        }
-        .modal-header h3 {
-            font-size: 20px;
-            font-weight: 600;
-        }
-        .modal-close {
-            background: none;
-            border: none;
-            font-size: 28px;
-            cursor: pointer;
-            color: #999;
-            line-height: 1;
-        }
-        .person-detail-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        .person-detail-table th {
-            padding: 12px;
-            background: #f8f9fa;
-            font-weight: 600;
-            text-align: left;
-            border-bottom: 2px solid #eee;
-        }
-        .person-detail-table th.num {
-            text-align: right;
-        }
-        .person-detail-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        .person-detail-table td.num {
-            text-align: right;
-            font-family: 'SF Mono', 'Consolas', monospace;
-        }
-        @media (max-width: 768px) {
-            .split-layout { flex-direction: column; }
-            .sidebar { width: 100%; max-height: 200px; }
-            .state-data-table th, .state-data-table td { padding: 6px 8px; font-size: 12px; }
-            .person-stats-table th, .person-stats-table td { padding: 6px 8px; font-size: 12px; }
-            .nav-left { gap: 10px; }
-            .back-btn { padding: 4px 10px; font-size: 11px; }
-            .nav-brand { font-size: 13px; }
-            .stats-summary { gap: 8px; }
-            .stat-summary-value { font-size: 18px; }
+        /* 三栏布局通用 */
+        .split-layout{display:flex;gap:24px;align-items:flex-start}
+        .sidebar{width:260px;min-width:260px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);overflow:hidden;height:fit-content;max-height:70vh;overflow-y:auto}
+        .sidebar-title{padding:14px 18px;font-weight:600;color:#2d3436;border-bottom:1px solid #f2f2f2;font-size:14px;position:sticky;top:0;background:#fff}
+        .sidebar-item{padding:12px 18px;cursor:pointer;font-size:14px;color:#666;border-bottom:1px solid #fafafa;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .sidebar-item:hover{background:#f8f9fb;color:#2d3436}
+        .sidebar-item.active{background:#f5f6f8;color:#2d3436;font-weight:550;border-left:3px solid #4CAF50;padding-left:15px}
+        .sidebar-count{float:right;color:#999;font-size:12px}
+        
+        .person-panel{width:220px;min-width:220px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);overflow:hidden;height:fit-content;max-height:70vh;overflow-y:auto}
+        .person-title{padding:14px 18px;font-weight:600;color:#2d3436;border-bottom:1px solid #f2f2f2;font-size:14px;position:sticky;top:0;background:#fff}
+        .person-item{padding:12px 18px;cursor:pointer;font-size:14px;color:#666;border-bottom:1px solid #fafafa;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .person-item:hover{background:#f8f9fb;color:#2d3436}
+        .person-item.active{background:#e8f5e9;color:#2e7d32;font-weight:550;border-left:3px solid #2e7d32;padding-left:15px}
+        .person-count{float:right;color:#999;font-size:12px}
+        
+        .main-content{flex:1;min-width:0;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);padding:24px}
+        .section-title{font-size:18px;font-weight:600;margin-bottom:16px;color:#2d3436;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
+        .section-title span{color:#999;font-size:14px;font-weight:normal}
+        .filter-bar{display:flex;gap:12px;margin-bottom:20px;border-bottom:1px solid #f0f0f0;padding-bottom:12px}
+        .filter-btn{background:transparent;border:none;padding:6px 16px;cursor:pointer;font-size:13px;border-radius:20px;transition:all .2s;color:#666}
+        .filter-btn.active{background:#e8f0fe;color:#1a73e8;font-weight:500}
+        
+        /* 表格样式 */
+        .data-table{width:100%;border-collapse:collapse}
+        .data-table th{padding:12px 10px;font-size:12px;color:#999;font-weight:500;border-bottom:1px solid #eee;text-align:left}
+        .data-table th:first-child{text-align:left}
+        .data-table th.num{text-align:right}
+        .data-table td{padding:12px 10px;font-size:14px;border-bottom:1px solid #f5f5f5}
+        .data-table td:first-child{text-align:left;font-weight:600}
+        .data-table td.num{text-align:right;font-family:'SF Mono','Consolas',monospace}
+        .data-table tbody tr:hover{background:#f8f9fb;cursor:pointer}
+        .data-table tbody tr:nth-child(even){background:#fafbfc}
+        
+        .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:500}
+        .badge-high{background:#ffebee;color:#e53935}
+        .badge-mid{background:#fff8e1;color:#f1c40f}
+        .badge-low{background:#e8f5e9;color:#43a047}
+        
+        .price-high{color:#e53935 !important;font-weight:600}
+        .price-low{color:#43a047 !important;font-weight:600}
+        .price-equal{color:#f39c12 !important;font-weight:600}
+        
+        .no-data{text-align:center;color:#ccc;padding:60px 20px;font-size:14px}
+        .footer{text-align:center;color:#ddd;font-size:12px;padding:20px}
+        .refresh-tip{position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.6);color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;z-index:100;transition:opacity .3s}
+        
+        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center}
+        .modal-content{background:#fff;border-radius:16px;width:90%;max-width:800px;max-height:80%;overflow:auto;padding:20px}
+        .modal-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:1px solid #eee;margin-bottom:20px}
+        .modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:#999}
+        .detail-table{width:100%;border-collapse:collapse}
+        .detail-table th{padding:8px;background:#f8f9fa;text-align:left}
+        .detail-table th.num{text-align:right}
+        .detail-table td{padding:8px;border-bottom:1px solid #f0f0f0}
+        .detail-table td.num{text-align:right}
+        
+        @media(max-width:768px){
+            .page{padding:12px}
+            .split-layout{flex-direction:column}
+            .sidebar,.person-panel{width:100%;max-height:200px}
+            .navbar{padding:0 12px}
+            .nav-brand{font-size:13px;margin-right:12px}
+            .nav-tabs{gap:12px}
+            .back-btn{padding:4px 10px;font-size:11px;margin-left:8px}
         }
     </style>
 </head>
 <body>
     <nav class="navbar">
-        <div class="nav-left">
+        <div style="display:flex;align-items:center;">
+            <span class="nav-brand">📊 数据透视台</span>
+            <div class="nav-tabs">
+                <div class="nav-tab active" data-tab="pagePerson">👥 人员</div>
+                <div class="nav-tab" data-tab="pageState">🗺️ 州</div>
+                <div class="nav-tab" data-tab="pageCount">📈 计数</div>
+            </div>
             <button class="back-btn" onclick="location.href='https://devilguoxu.github.io/dashboard/'">← 返回主看板</button>
-            <span class="nav-brand">📊 历史数据 - 州排名 & 人员分析</span>
         </div>
         <span class="nav-update" id="updateTime">加载中...</span>
     </nav>
 
-    <div class="container">
-        <div class="split-layout">
-            <div class="sidebar" id="offerSidebar">
-                <div class="sidebar-title">Offer 列表</div>
-                <div id="offerList"></div>
-            </div>
-            <div class="main-content" id="stateContent">
-                <div class="no-data">← 请选择 Offer</div>
+    <!-- 人员页面 (人员维度的offer详情) -->
+    <div class="page active" id="pagePerson">
+        <div class="container">
+            <div class="split-layout">
+                <div class="sidebar"><div class="sidebar-title">Offer 列表</div><div id="personOfferList"></div></div>
+                <div class="person-panel"><div class="person-title">人员列表</div><div id="personListPanel"></div></div>
+                <div class="main-content"><div class="section-title">人员详情 <span id="personSelectedInfo"></span></div><div id="personDetailContent"><div class="no-data">← 选择 Offer 和人员</div></div></div>
             </div>
         </div>
     </div>
-    <div class="footer">数据自动刷新 · 集成人员转化与操作匹配</div>
+
+    <!-- 州页面 (州维度的offer详情) -->
+    <div class="page" id="pageState">
+        <div class="container">
+            <div class="split-layout">
+                <div class="sidebar"><div class="sidebar-title">Offer 列表</div><div id="stateOfferList"></div></div>
+                <div class="person-panel"><div class="person-title">州列表</div><div id="stateListPanel"></div></div>
+                <div class="main-content"><div class="section-title">州统计详情 <span id="stateSelectedInfo"></span></div><div id="stateDetailContent"><div class="no-data">← 选择 Offer 和州</div></div></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 计数页面 (计数统计-转化/操作/匹配率) -->
+    <div class="page" id="pageCount">
+        <div class="container">
+            <div class="split-layout">
+                <div class="sidebar"><div class="sidebar-title">Offer 列表</div><div id="countOfferList"></div></div>
+                <div class="main-content" style="flex:2;">
+                    <div class="section-title">📊 计数与匹配洞察 <span id="countSelectedInfo"></span></div>
+                    <div class="filter-bar" id="countFilterBar">
+                        <button class="filter-btn active" data-count-view="conversion">转化统计</button>
+                        <button class="filter-btn" data-count-view="operation">操作统计</button>
+                        <button class="filter-btn" data-count-view="match">匹配率分析</button>
+                    </div>
+                    <div id="countDetailContent"><div class="no-data">← 选择 Offer</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">点击行可查看明细记录 | 数据每30秒自动刷新</div>
+    <div class="refresh-tip" id="refreshTip"></div>
 
     <script>
-        // 全局数据
-        var _allData = [];
-        var _offerList = [];
-        var OFFER_AVG_PRICE = {};
-        var _currentOffer = null;
+        // ---------- 全局变量 ----------
+        var allData = [];
+        var personOpsMap = {};      // offer -> person -> ops (操作数)
+        var totalOpsGlobal = 0;
         
-        // 人员操作配置 (与总表保持一致，从注入或默认对象获取)
-        // 这里复用总表中定义的 PERSON_OPS (如果全局存在) 否则使用内置精简版，但加载时会从 data.json 获取更全数据
-        var GLOBAL_PERSON_OPS = {};
-        var TOTAL_OPS_GLOBAL = 0;
+        // 页面状态
+        var currentPersonOffer = null, currentPerson = null;
+        var currentStateOffer = null, currentState = null;
+        var currentCountOffer = null, currentCountView = 'conversion';
         
-        // 格式化货币
-        function formatMoney(val) {
-            if (isNaN(val)) val = 0;
-            return '$' + val.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+        // 缓存结构
+        // personCache[offer][person] = { states: { stateName: {count, totalPrice} }, totalCount, totalAmount, avgPrice, perStateList }
+        var personCache = {};
+        // stateCache[offer][state] = { persons: { personName: {count, totalPrice} }, totalCount, totalAmount, avgPrice }
+        var stateCache = {};
+        // countStats[offer] = { totalConversions, totalOps, matchedCount, matchRate, perPersonOps, perPersonConversions }
+        var countStats = {};
+        
+        // localStorage key
+        var STORAGE_PERSON_OFFER = 'person_state_person_offer';
+        var STORAGE_PERSON_NAME = 'person_state_person_name';
+        var STORAGE_STATE_OFFER = 'person_state_state_offer';
+        var STORAGE_STATE_NAME = 'person_state_state_name';
+        var STORAGE_COUNT_OFFER = 'person_state_count_offer';
+        
+        // 工具函数
+        function formatMoney(val) { return '$' + (val || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }); }
+        function formatNumber(num) { return (num || 0).toLocaleString(); }
+        
+        function showRefreshTip() {
+            var tip = document.getElementById('refreshTip');
+            tip.textContent = '🔄 数据已更新';
+            tip.style.opacity = '1';
+            setTimeout(function() { tip.style.opacity = '0'; }, 2000);
         }
         
-        // 弹出人员详细模态窗 (展示该人员在所有offer中的贡献)
-        function showPersonDetailModal(personName, offerContext) {
-            // 收集该人员在此 Offer 下数据与全局数据
-            var offerMap = {};
-            for (var i = 0; i < _allData.length; i++) {
-                var entry = _allData[i];
-                var p = entry['人员'] || '-';
-                if (p !== personName) continue;
-                var offer = entry['offer'] || '';
-                var price = parseFloat(String(entry['价格'] || '0').replace(/[$,]/g, '')) || 0;
+        // 构建所有缓存 (人员/州/计数)
+        function buildAllCaches() {
+            personCache = {};
+            stateCache = {};
+            countStats = {};
+            // 临时统计计数用
+            var offerConversionCount = {};   // offer -> 总转化条数(有效)
+            var offerPersonRecordCount = {}; // offer -> 有人员记录数
+            
+            for (var i = 0; i < allData.length; i++) {
+                var row = allData[i];
+                var offer = row['offer'] || '';
                 if (!offer) continue;
-                if (!offerMap[offer]) offerMap[offer] = { total: 0, count: 0 };
-                offerMap[offer].total += price;
-                offerMap[offer].count++;
-            }
-            
-            // 操作映射
-            var opsMap = {};
-            if (GLOBAL_PERSON_OPS) {
-                for (var offerName in GLOBAL_PERSON_OPS) {
-                    if (GLOBAL_PERSON_OPS[offerName] && GLOBAL_PERSON_OPS[offerName][personName]) {
-                        opsMap[offerName] = GLOBAL_PERSON_OPS[offerName][personName];
-                    }
-                }
-            }
-            
-            var rows = [];
-            var totalAmount = 0, totalCount = 0, totalOps = 0;
-            for (var offer in offerMap) {
-                var total = offerMap[offer].total;
-                var conversion = offerMap[offer].count;
-                var avgPrice = conversion > 0 ? total / conversion : 0;
-                var ops = opsMap[offer] || 0;
-                rows.push({ offer: offer, total: total, avg: avgPrice, conversion: conversion, ops: ops });
-                totalAmount += total;
-                totalCount += conversion;
-                totalOps += ops;
-            }
-            var totalAvg = totalCount > 0 ? totalAmount / totalCount : 0;
-            rows.sort(function(a, b) { return a.offer.localeCompare(b.offer); });
-            
-            var html = '<div class="modal-overlay" id="personModal" onclick="closePersonModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h3>📋 人员全览 - ' + personName + '</h3><button class="modal-close" onclick="closePersonModal()">&times;</button></div><table class="person-detail-table"><thead><tr><th>Offer</th><th class="num">金额</th><th class="num">均价</th><th class="num">转化</th><th class="num">操作</th></tr></thead><tbody>';
-            for (var i = 0; i < rows.length; i++) {
-                var x = rows[i];
-                html += '<tr><td style="text-align:left">' + x.offer + '</td><td class="num">' + formatMoney(x.total) + '</td><td class="num">' + formatMoney(x.avg) + '</td><td class="num">' + x.conversion + '</td><td class="num">' + x.ops + '</td></tr>';
-            }
-            html += '<tr style="border-top: 2px solid #ddd; background: #f8f9fa; font-weight: 700;"><td style="text-align:left">📊 合计</td><td class="num">' + formatMoney(totalAmount) + '</td><td class="num">' + formatMoney(totalAvg) + '</td><td class="num">' + totalCount + '</td><td class="num">' + totalOps + '</td></tr>';
-            if (rows.length === 0) html += '<tr><td colspan="5" style="text-align:center">暂无数据</td></tr>';
-            html += '</tbody></table></div></div>';
-            var existingModal = document.getElementById('personModal');
-            if (existingModal) existingModal.remove();
-            document.body.insertAdjacentHTML('beforeend', html);
-        }
-        
-        function closePersonModal(event) {
-            var modal = document.getElementById('personModal');
-            if (modal) modal.remove();
-        }
-        
-        // 渲染 Offer 列表
-        function renderOfferList() {
-            var container = document.getElementById('offerList');
-            if (!container) return;
-            container.innerHTML = '';
-            for (var i = 0; i < _offerList.length; i++) {
-                var o = _offerList[i];
-                var d = document.createElement('div');
-                d.className = 'sidebar-item';
-                if (_currentOffer === o) d.classList.add('active');
-                d.textContent = o;
-                d.onclick = (function(offer) {
-                    return function() { showFullDetail(offer, this); };
-                })(o);
-                container.appendChild(d);
-            }
-            if (_offerList.length > 0 && !_currentOffer) {
-                _currentOffer = _offerList[0];
-                var firstItem = container.firstChild;
-                if (firstItem) {
-                    firstItem.classList.add('active');
-                    showFullDetail(_offerList[0], firstItem);
-                }
-            }
-        }
-        
-        // 核心展示：州排名 + 人员分析 (完全集成)
-        function showFullDetail(offerName, element) {
-            _currentOffer = offerName;
-            var items = document.querySelectorAll('#offerList .sidebar-item');
-            for (var i = 0; i < items.length; i++) items[i].classList.remove('active');
-            if (element) element.classList.add('active');
-            
-            // ---- 准备数据 ----
-            var offerAvgGlobal = OFFER_AVG_PRICE[offerName] || 0;
-            // 州维度聚合
-            var stateMap = {};
-            // 人员维度聚合
-            var personMap = {};
-            
-            for (var i = 0; i < _allData.length; i++) {
-                var row = _allData[i];
-                if (row.offer !== offerName) continue;
-                var state = row['州'] || '-';
-                if (state !== '-') {
-                    var price = parseFloat(String(row['价格'] || '0').replace(/[$,]/g, '')) || 0;
-                    if (!stateMap[state]) stateMap[state] = { prices: [], count: 0 };
-                    stateMap[state].prices.push(price);
-                    stateMap[state].count++;
-                }
-                // 人员数据收集
                 var person = row['人员'] || '-';
-                if (person !== '-') {
-                    var pricePerson = parseFloat(String(row['价格'] || '0').replace(/[$,]/g, '')) || 0;
-                    if (!personMap[person]) personMap[person] = { prices: [], count: 0, totalPrice: 0 };
-                    personMap[person].prices.push(pricePerson);
-                    personMap[person].count++;
-                    personMap[person].totalPrice += pricePerson;
-                }
-            }
-            
-            // 获取此offer的操作数
-            var offerOps = 0;
-            if (GLOBAL_PERSON_OPS && GLOBAL_PERSON_OPS[offerName]) {
-                for (var p in GLOBAL_PERSON_OPS[offerName]) {
-                    if (GLOBAL_PERSON_OPS[offerName].hasOwnProperty(p)) {
-                        offerOps += GLOBAL_PERSON_OPS[offerName][p];
+                var state = row['州'] || '-';
+                var price = parseFloat(String(row['价格'] || '0').replace(/[$,]/g, '')) || 0;
+                var time = row['时间'] || '';
+                
+                // 跳过无效人员或州 (但计数页需要所有转化，此处统计时不过滤-)
+                var isValidPerson = (person !== '-' && person !== '');
+                var isValidState = (state !== '-' && state !== '');
+                
+                // --- 人员缓存 (只需要有效人员) ---
+                if (isValidPerson && isValidState) {
+                    if (!personCache[offer]) personCache[offer] = {};
+                    if (!personCache[offer][person]) {
+                        personCache[offer][person] = { states: {}, totalCount: 0, totalAmount: 0 };
                     }
+                    var pData = personCache[offer][person];
+                    if (!pData.states[state]) pData.states[state] = { count: 0, totalPrice: 0 };
+                    pData.states[state].count++;
+                    pData.states[state].totalPrice += price;
+                    pData.totalCount++;
+                    pData.totalAmount += price;
                 }
-            }
-            
-            // 全局转化总数
-            var totalConversions = 0;
-            for (var s in stateMap) totalConversions += stateMap[s].count;
-            
-            // 匹配数：有人员记录的数据条数
-            var matchedCount = 0;
-            for (var i = 0; i < _allData.length; i++) {
-                if (_allData[i].offer === offerName && (_allData[i]['人员'] || '-') !== '-') matchedCount++;
-            }
-            var matchRate = offerOps > 0 ? ((matchedCount / offerOps) * 100).toFixed(1) + '%' : '0%';
-            
-            // 构建 HTML 结构
-            var html = '';
-            html += '<div class="section-title">' + offerName + '<span class="section-title-price">均价 ' + formatMoney(offerAvgGlobal) + '</span></div>';
-            
-            // 汇总卡片
-            html += '<div class="stats-summary">';
-            html += '<div class="stat-summary-item"><div class="stat-summary-label">转化总数</div><div class="stat-summary-value">' + totalConversions + '</div></div>';
-            html += '<div class="stat-summary-item"><div class="stat-summary-label">总操作数</div><div class="stat-summary-value">' + offerOps.toLocaleString() + '</div></div>';
-            html += '<div class="stat-summary-item"><div class="stat-summary-label">匹配记录</div><div class="stat-summary-value">' + matchedCount + '</div></div>';
-            html += '<div class="stat-summary-item"><div class="stat-summary-label">匹配率</div><div class="stat-summary-value" style="color:#43a047;">' + matchRate + '</div></div>';
-            html += '</div>';
-            
-            // ---------- 州排名表格 ----------
-            if (Object.keys(stateMap).length === 0) {
-                html += '<div class="no-data" style="margin-bottom:20px;">暂无州数据</div>';
-            } else {
-                var allPrices = [];
-                for (var s in stateMap) {
-                    for (var j = 0; j < stateMap[s].prices.length; j++) allPrices.push(stateMap[s].prices[j]);
-                }
-                var globalAvg = 0;
-                for (var j = 0; j < allPrices.length; j++) globalAvg += allPrices[j];
-                globalAvg = globalAvg / allPrices.length;
-                var highThreshold = globalAvg * 1.1;
-                var lowThreshold = globalAvg * 0.9;
                 
-                var stateRows = [];
-                for (var s in stateMap) {
-                    var ss = stateMap[s];
-                    var total = 0;
-                    for (var j = 0; j < ss.prices.length; j++) total += ss.prices[j];
-                    var avg = total / ss.prices.length;
-                    var rowClass = 'row-' + (avg > highThreshold ? 'high' : (avg < lowThreshold ? 'low' : 'mid'));
-                    var rating = avg > highThreshold ? '<span class="badge high">高</span>' : (avg < lowThreshold ? '<span class="badge low">低</span>' : '<span class="badge mid">中</span>');
-                    var maxV = Math.max.apply(null, ss.prices);
-                    var minV = Math.min.apply(null, ss.prices);
-                    stateRows.push({
-                        state: s,
-                        avg: avg,
-                        count: ss.count,
-                        max: maxV,
-                        min: minV,
-                        rating: rating,
-                        rowClass: rowClass
-                    });
+                // --- 州缓存 (只需要有效州) ---
+                if (isValidState && isValidPerson) {
+                    if (!stateCache[offer]) stateCache[offer] = {};
+                    if (!stateCache[offer][state]) {
+                        stateCache[offer][state] = { persons: {}, totalCount: 0, totalAmount: 0 };
+                    }
+                    var sData = stateCache[offer][state];
+                    if (!sData.persons[person]) sData.persons[person] = { count: 0, totalPrice: 0 };
+                    sData.persons[person].count++;
+                    sData.persons[person].totalPrice += price;
+                    sData.totalCount++;
+                    sData.totalAmount += price;
                 }
-                stateRows.sort(function(a, b) { return b.avg - a.avg; });
                 
-                html += '<div class="sub-section-title">📍 按州排名 <span style="font-size:12px; font-weight:normal;">(基于价格高低评级)</span></div>';
-                html += '<table class="state-data-table"><thead><tr><th>#</th><th>州</th><th class="num">均价</th><th class="num">转化数</th><th class="num">最高价</th><th class="num">最低价</th><th class="ctr">评级</th></tr></thead><tbody>';
-                for (var i = 0; i < stateRows.length; i++) {
-                    var x = stateRows[i];
-                    html += '<tr class="' + x.rowClass + '">';
-                    html += '<td style="text-align:center">' + (i+1) + '</td>';
-                    html += '<td style="text-align:left;font-weight:700">' + x.state + '</td>';
-                    html += '<td class="num">' + formatMoney(x.avg) + '</td>';
-                    html += '<td class="num">' + x.count + '</td>';
-                    html += '<td class="num">' + formatMoney(x.max) + '</td>';
-                    html += '<td class="num">' + formatMoney(x.min) + '</td>';
-                    html += '<td class="ctr">' + x.rating + '</td>';
-                    html += '</tr>';
+                // --- 计数统计 (所有的转化，无论人员/州是否缺失，计数转化总数)
+                if (!offerConversionCount[offer]) offerConversionCount[offer] = 0;
+                offerConversionCount[offer]++;
+                if (isValidPerson) {
+                    if (!offerPersonRecordCount[offer]) offerPersonRecordCount[offer] = 0;
+                    offerPersonRecordCount[offer]++;
                 }
-                html += '</tbody></table>';
             }
             
-            // ---------- 人员排名表格 (集成) ----------
-            if (Object.keys(personMap).length === 0) {
-                html += '<div class="no-data" style="margin-top:28px;">暂无人员数据</div>';
-            } else {
-                // 构建人员详细统计：均价、总额、转化数、操作数、转化率
-                var personRows = [];
-                for (var person in personMap) {
-                    var data = personMap[person];
-                    var totalPrice = data.totalPrice;
-                    var conv = data.count;
-                    var avgPrice = totalPrice / conv;
-                    var maxPrice = Math.max.apply(null, data.prices);
-                    var minPrice = Math.min.apply(null, data.prices);
-                    // 获取该人员在此offer下的操作数
-                    var ops = (GLOBAL_PERSON_OPS[offerName] && GLOBAL_PERSON_OPS[offerName][person]) ? GLOBAL_PERSON_OPS[offerName][person] : 0;
-                    var rate = ops > 0 ? ((conv / ops) * 100).toFixed(1) + '%' : (conv > 0 ? '∞' : '0%');
-                    personRows.push({
-                        name: person,
-                        total: totalPrice,
-                        avg: avgPrice,
-                        max: maxPrice,
-                        min: minPrice,
-                        conv: conv,
-                        ops: ops,
-                        rate: rate
-                    });
+            // 获取操作数配置 (优先从 data.json 的 person_offer_ops，否则使用空对象)
+            // 操作映射在加载数据时已注入 personOpsMap
+            for (var offer in offerConversionCount) {
+                var totalConv = offerConversionCount[offer] || 0;
+                var matched = offerPersonRecordCount[offer] || 0;
+                var opsTotal = 0;
+                if (personOpsMap[offer]) {
+                    for (var p in personOpsMap[offer]) { opsTotal += personOpsMap[offer][p]; }
                 }
-                // 按金额降序
-                personRows.sort(function(a, b) { return b.total - a.total; });
-                
-                html += '<div class="divider"></div>';
-                html += '<div class="sub-section-title">👥 人员表现 (金额排序) <span style="font-size:12px;">点击详情查看全Offer贡献</span></div>';
-                html += '<table class="person-stats-table"><thead><tr><th>#</th><th>人员</th><th class="num">总金额</th><th class="num">均价</th><th class="num">转化数</th><th class="num">最高价</th><th class="num">最低价</th><th class="num">操作数</th><th class="num">转化率</th></tr></thead><tbody>';
-                for (var i = 0; i < personRows.length; i++) {
-                    var x = personRows[i];
-                    var safeName = x.name.replace(/'/g, "\\'");
-                    // 价格与offer均价比较样式
-                    var avgClass = '';
-                    if (x.avg > offerAvgGlobal) avgClass = 'price-high';
-                    else if (x.avg < offerAvgGlobal) avgClass = 'price-low';
-                    else avgClass = '';
-                    html += '<tr>';
-                    html += '<td style="text-align:center">' + (i+1) + '</td>';
-                    html += '<td style="text-align:left;font-weight:700;white-space:nowrap">' + x.name + '<button class="detail-btn" onclick="showPersonDetailModal(\'' + safeName + '\', \'' + offerName.replace(/'/g, "\\'") + '\')">详情</button></td>';
-                    html += '<td class="num">' + formatMoney(x.total) + '</td>';
-                    html += '<td class="num ' + avgClass + '">' + formatMoney(x.avg) + '</td>';
-                    html += '<td class="num">' + x.conv + '</td>';
-                    html += '<td class="num">' + formatMoney(x.max) + '</td>';
-                    html += '<td class="num">' + formatMoney(x.min) + '</td>';
-                    html += '<td class="num">' + x.ops + '</td>';
-                    html += '<td class="num">' + x.rate + '</td>';
-                    html += '</tr>';
-                }
-                html += '</tbody></table>';
+                var matchRate = opsTotal > 0 ? ((matched / opsTotal) * 100).toFixed(1) : (matched > 0 ? '∞' : '0%');
+                countStats[offer] = {
+                    totalConversions: totalConv,
+                    totalOps: opsTotal,
+                    matchedCount: matched,
+                    matchRate: matchRate,
+                    perPersonOps: personOpsMap[offer] || {},
+                    perPersonConv: (function(){
+                        var convMap = {};
+                        for (var i = 0; i < allData.length; i++) {
+                            var r = allData[i];
+                            if (r.offer === offer && r['人员'] && r['人员'] !== '-') {
+                                var pname = r['人员'];
+                                convMap[pname] = (convMap[pname] || 0) + 1;
+                            }
+                        }
+                        return convMap;
+                    })()
+                };
             }
-            
-            document.getElementById('stateContent').innerHTML = html;
         }
         
-        // 加载数据（完全兼容总表 data.json 同时解析人员操作映射）
+        // ---------- 人员页面渲染 ----------
+        function renderPersonOfferList(restoreOffer, restorePerson) {
+            var offers = Object.keys(personCache).sort();
+            var container = document.getElementById('personOfferList');
+            if (!container) return;
+            var html = '';
+            for (var i = 0; i < offers.length; i++) {
+                var o = offers[i];
+                var personCnt = Object.keys(personCache[o] || {}).length;
+                var active = (restoreOffer === o) ? 'active' : '';
+                html += `<div class="sidebar-item ${active}" data-offer="${escapeHtml(o)}" onclick="selectPersonOffer('${escapeHtml(o)}', this)"><span>${escapeHtml(o)}</span><span class="sidebar-count">${personCnt}</span></div>`;
+            }
+            container.innerHTML = html || '<div class="no-data">暂无Offer</div>';
+            
+            var targetOffer = restoreOffer && personCache[restoreOffer] ? restoreOffer : (offers.length ? offers[0] : null);
+            if (targetOffer) {
+                currentPersonOffer = targetOffer;
+                renderPersonList(targetOffer, restorePerson);
+            } else {
+                currentPersonOffer = null;
+                document.getElementById('personListPanel').innerHTML = '';
+                document.getElementById('personDetailContent').innerHTML = '<div class="no-data">无数据</div>';
+            }
+        }
+        
+        function renderPersonList(offerName, restorePerson) {
+            var persons = personCache[offerName] ? Object.keys(personCache[offerName]).sort() : [];
+            var container = document.getElementById('personListPanel');
+            var html = '';
+            for (var i = 0; i < persons.length; i++) {
+                var p = persons[i];
+                var active = (restorePerson === p) ? 'active' : '';
+                html += `<div class="person-item ${active}" data-person="${escapeHtml(p)}" onclick="selectPerson('${escapeHtml(p)}', this)"><span>${escapeHtml(p)}</span><span class="person-count">${Object.keys(personCache[offerName][p].states).length}</span></div>`;
+            }
+            container.innerHTML = html || '<div class="no-data">暂无人员</div>';
+            var targetPerson = restorePerson && personCache[offerName][restorePerson] ? restorePerson : (persons.length ? persons[0] : null);
+            if (targetPerson) {
+                currentPerson = targetPerson;
+                document.getElementById('personSelectedInfo').innerHTML = `<span style="color:#999;">${offerName} / ${currentPerson}</span>`;
+                renderPersonDetail(offerName, currentPerson);
+                localStorage.setItem(STORAGE_PERSON_OFFER, offerName);
+                localStorage.setItem(STORAGE_PERSON_NAME, currentPerson);
+            } else {
+                currentPerson = null;
+                document.getElementById('personDetailContent').innerHTML = '<div class="no-data">该Offer下无人员</div>';
+            }
+        }
+        
+        function renderPersonDetail(offerName, personName) {
+            var data = personCache[offerName]?.[personName];
+            if (!data) { document.getElementById('personDetailContent').innerHTML = '<div class="no-data">无数据</div>'; return; }
+            var states = data.states;
+            var rows = [];
+            for (var s in states) {
+                var st = states[s];
+                rows.push({ state: s, avg: st.totalPrice / st.count, count: st.count, total: st.totalPrice });
+            }
+            rows.sort((a,b) => b.avg - a.avg);
+            var totalAvg = data.totalCount ? data.totalAmount / data.totalCount : 0;
+            var html = '<table class="data-table"><thead><tr><th>州</th><th class="num">均价</th><th class="num">转化数</th></tr></thead><tbody>';
+            for (var i = 0; i < rows.length; i++) {
+                var r = rows[i];
+                var avgClass = r.avg > totalAvg ? 'price-high' : (r.avg < totalAvg ? 'price-low' : 'price-equal');
+                html += `<tr onclick="showDetailModal('${escapeHtml(offerName)}', '${escapeHtml(personName)}', '${escapeHtml(r.state)}', 'person')">
+                            <td>${escapeHtml(r.state)}</td>
+                            <td class="num ${avgClass}">${formatMoney(r.avg)}</td>
+                            <td class="num">${formatNumber(r.count)}</td>
+                         </tr>`;
+            }
+            html += `<tr style="background:#f8f9fa;font-weight:600;"><td>📊 合计</td><td class="num">${formatMoney(totalAvg)}</td><td class="num">${formatNumber(data.totalCount)}</td></tr>`;
+            html += '</tbody></table>';
+            document.getElementById('personDetailContent').innerHTML = html;
+        }
+        
+        // ---------- 州页面 ----------
+        function renderStateOfferList(restoreOffer, restoreState) {
+            var offers = Object.keys(stateCache).sort();
+            var container = document.getElementById('stateOfferList');
+            var html = '';
+            for (var i = 0; i < offers.length; i++) {
+                var o = offers[i];
+                var stateCnt = Object.keys(stateCache[o] || {}).length;
+                var active = (restoreOffer === o) ? 'active' : '';
+                html += `<div class="sidebar-item ${active}" data-offer="${escapeHtml(o)}" onclick="selectStateOffer('${escapeHtml(o)}', this)"><span>${escapeHtml(o)}</span><span class="sidebar-count">${stateCnt}</span></div>`;
+            }
+            container.innerHTML = html || '<div class="no-data">暂无Offer</div>';
+            var targetOffer = restoreOffer && stateCache[restoreOffer] ? restoreOffer : (offers.length ? offers[0] : null);
+            if (targetOffer) {
+                currentStateOffer = targetOffer;
+                renderStateList(targetOffer, restoreState);
+            }
+        }
+        
+        function renderStateList(offerName, restoreState) {
+            var states = stateCache[offerName] ? Object.keys(stateCache[offerName]).sort() : [];
+            var container = document.getElementById('stateListPanel');
+            var html = '';
+            for (var i = 0; i < states.length; i++) {
+                var st = states[i];
+                var active = (restoreState === st) ? 'active' : '';
+                html += `<div class="person-item ${active}" data-state="${escapeHtml(st)}" onclick="selectState('${escapeHtml(st)}', this)"><span>${escapeHtml(st)}</span><span class="person-count">${Object.keys(stateCache[offerName][st].persons).length}</span></div>`;
+            }
+            container.innerHTML = html || '<div class="no-data">暂无州</div>';
+            var targetState = restoreState && stateCache[offerName][restoreState] ? restoreState : (states.length ? states[0] : null);
+            if (targetState) {
+                currentState = targetState;
+                document.getElementById('stateSelectedInfo').innerHTML = `<span style="color:#999;">${offerName} / ${currentState}</span>`;
+                renderStateDetail(offerName, currentState);
+                localStorage.setItem(STORAGE_STATE_OFFER, offerName);
+                localStorage.setItem(STORAGE_STATE_NAME, currentState);
+            }
+        }
+        
+        function renderStateDetail(offerName, stateName) {
+            var data = stateCache[offerName]?.[stateName];
+            if (!data) { document.getElementById('stateDetailContent').innerHTML = '<div class="no-data">无数据</div>'; return; }
+            var persons = data.persons;
+            var rows = [];
+            for (var p in persons) {
+                var pd = persons[p];
+                rows.push({ person: p, avg: pd.totalPrice / pd.count, count: pd.count, total: pd.totalPrice });
+            }
+            rows.sort((a,b) => b.avg - a.avg);
+            var totalAvg = data.totalCount ? data.totalAmount / data.totalCount : 0;
+            var html = '<table class="data-table"><thead><tr><th>人员</th><th class="num">均价</th><th class="num">转化数</th></tr></thead><tbody>';
+            for (var i = 0; i < rows.length; i++) {
+                var r = rows[i];
+                var avgClass = r.avg > totalAvg ? 'price-high' : (r.avg < totalAvg ? 'price-low' : 'price-equal');
+                html += `<tr onclick="showDetailModal('${escapeHtml(offerName)}', '${escapeHtml(r.person)}', '${escapeHtml(stateName)}', 'state')">
+                            <td>${escapeHtml(r.person)}</td>
+                            <td class="num ${avgClass}">${formatMoney(r.avg)}</td>
+                            <td class="num">${formatNumber(r.count)}</td>
+                         </tr>`;
+            }
+            html += `<tr style="background:#f8f9fa;font-weight:600;"><td>📊 合计</td><td class="num">${formatMoney(totalAvg)}</td><td class="num">${formatNumber(data.totalCount)}</td></tr>`;
+            html += '</tbody></table>';
+            document.getElementById('stateDetailContent').innerHTML = html;
+        }
+        
+        // ---------- 计数页面 ----------
+        function renderCountOfferList(restoreOffer) {
+            var offers = Object.keys(countStats).sort();
+            var container = document.getElementById('countOfferList');
+            var html = '';
+            for (var i = 0; i < offers.length; i++) {
+                var o = offers[i];
+                var active = (restoreOffer === o) ? 'active' : '';
+                html += `<div class="sidebar-item ${active}" onclick="selectCountOffer('${escapeHtml(o)}', this)"><span>${escapeHtml(o)}</span></div>`;
+            }
+            container.innerHTML = html || '<div class="no-data">暂无Offer</div>';
+            var target = restoreOffer && countStats[restoreOffer] ? restoreOffer : (offers.length ? offers[0] : null);
+            if (target) {
+                currentCountOffer = target;
+                document.getElementById('countSelectedInfo').innerHTML = `<span style="color:#999;">${target}</span>`;
+                renderCountView(target, currentCountView);
+                localStorage.setItem(STORAGE_COUNT_OFFER, target);
+            }
+        }
+        
+        function renderCountView(offer, viewType) {
+            var stats = countStats[offer];
+            if (!stats) { document.getElementById('countDetailContent').innerHTML = '<div class="no-data">无统计</div>'; return; }
+            if (viewType === 'conversion') {
+                var convRows = [];
+                for (var p in stats.perPersonConv) convRows.push({ name: p, count: stats.perPersonConv[p] });
+                convRows.sort((a,b) => b.count - a.count);
+                var html = '<table class="data-table"><thead><tr><th>人员</th><th class="num">转化数</th></tr></thead><tbody>';
+                for (var i=0;i<convRows.length;i++) {
+                    html += `<tr><td>${escapeHtml(convRows[i].name)}</td><td class="num">${formatNumber(convRows[i].count)}</td></tr>`;
+                }
+                html += `<tr style="background:#f8f9fa;"><td><strong>总计转化</strong></td><td class="num"><strong>${formatNumber(stats.totalConversions)}</strong></td></tr>`;
+                html += '</tbody></table>';
+                document.getElementById('countDetailContent').innerHTML = html;
+            } else if (viewType === 'operation') {
+                var opsRows = [];
+                for (var p in stats.perPersonOps) opsRows.push({ name: p, ops: stats.perPersonOps[p] });
+                opsRows.sort((a,b) => b.ops - a.ops);
+                var html2 = '<table class="data-table"><thead><tr><th>人员</th><th class="num">操作数</th></tr></thead><tbody>';
+                for (var i=0;i<opsRows.length;i++) {
+                    html2 += `<tr><td>${escapeHtml(opsRows[i].name)}</td><td class="num">${formatNumber(opsRows[i].ops)}</td></tr>`;
+                }
+                html2 += `<tr style="background:#f8f9fa;"><td><strong>总操作数</strong></td><td class="num"><strong>${formatNumber(stats.totalOps)}</strong></td></tr>`;
+                document.getElementById('countDetailContent').innerHTML = html2;
+            } else if (viewType === 'match') {
+                var matchRows = [];
+                var allPersons = new Set();
+                for (var p in stats.perPersonConv) allPersons.add(p);
+                for (var p in stats.perPersonOps) allPersons.add(p);
+                allPersons.forEach(function(p){
+                    var conv = stats.perPersonConv[p] || 0;
+                    var ops = stats.perPersonOps[p] || 0;
+                    var rate = ops > 0 ? ((conv / ops) * 100).toFixed(1) + '%' : (conv > 0 ? '∞' : '0%');
+                    matchRows.push({ name: p, conv: conv, ops: ops, rate: rate });
+                });
+                matchRows.sort((a,b) => b.conv - a.conv);
+                var html3 = '<table class="data-table"><thead><tr><th>人员</th><th class="num">转化数</th><th class="num">操作数</th><th class="num">匹配率</th></tr></thead><tbody>';
+                for (var i=0;i<matchRows.length;i++) {
+                    var m = matchRows[i];
+                    html3 += `<tr><td>${escapeHtml(m.name)}</td><td class="num">${formatNumber(m.conv)}</td><td class="num">${formatNumber(m.ops)}</td><td class="num">${m.rate}</td></tr>`;
+                }
+                html3 += `<tr style="background:#f8f9fa;"><td><strong>全局汇总</strong></td><td class="num"><strong>${formatNumber(stats.totalConversions)}</strong></td><td class="num"><strong>${formatNumber(stats.totalOps)}</strong></td><td class="num"><strong>${stats.matchRate}</strong></td></tr>`;
+                document.getElementById('countDetailContent').innerHTML = html3;
+            }
+        }
+        
+        // 明细弹窗通用
+        function showDetailModal(offerName, personName, stateName, from) {
+            var records = [];
+            for (var i = 0; i < allData.length; i++) {
+                var r = allData[i];
+                if (r.offer === offerName && r['人员'] === personName && r['州'] === stateName) {
+                    var price = parseFloat(String(r['价格'] || '0').replace(/[$,]/g, '')) || 0;
+                    records.push({ time: r['时间'] || '', price: price, ip: r['ip'] || '' });
+                }
+            }
+            records.sort((a,b) => (b.time || '').localeCompare(a.time || ''));
+            var totalPrice = records.reduce((s,it)=> s+it.price,0);
+            var modalHtml = `<div class="modal-overlay" onclick="closeModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h3>📋 ${personName} @ ${offerName} - ${stateName}</h3><button class="modal-close" onclick="closeModal()">&times;</button></div>`;
+            modalHtml += `<div style="margin-bottom:16px;padding:12px;background:#f5f5f5;border-radius:8px;display:flex;gap:30px;"><div><strong>总金额</strong><br><span style="font-size:20px;color:#2979ff;">${formatMoney(totalPrice)}</span></div><div><strong>转化数</strong><br><span style="font-size:20px;color:#2e7d32;">${records.length}</span></div></div>`;
+            modalHtml += `<table class="detail-table"><thead><tr><th>时间</th><th class="num">金额</th><th>IP</th></tr></thead><tbody>`;
+            for (var i=0;i<Math.min(records.length,100);i++) {
+                var d = records[i];
+                modalHtml += `<tr><td>${d.time||'-'}</td><td class="num">${formatMoney(d.price)}</td><td>${d.ip||'-'}</td></tr>`;
+            }
+            modalHtml += `</tbody></table></div></div>`;
+            var oldModal = document.getElementById('detailModal');
+            if(oldModal) oldModal.remove();
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+        }
+        
+        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+        window.closeModal = function() { var m=document.getElementById('detailModal'); if(m) m.remove(); };
+        
+        // 事件绑定全局
+        window.selectPersonOffer = function(offer, el) {
+            document.querySelectorAll('#personOfferList .sidebar-item').forEach(c=>c.classList.remove('active'));
+            el.classList.add('active');
+            currentPersonOffer = offer;
+            currentPerson = null;
+            renderPersonList(offer, null);
+        };
+        window.selectPerson = function(person, el) {
+            document.querySelectorAll('#personListPanel .person-item').forEach(c=>c.classList.remove('active'));
+            el.classList.add('active');
+            currentPerson = person;
+            document.getElementById('personSelectedInfo').innerHTML = `<span style="color:#999;">${currentPersonOffer} / ${currentPerson}</span>`;
+            renderPersonDetail(currentPersonOffer, currentPerson);
+            localStorage.setItem(STORAGE_PERSON_OFFER, currentPersonOffer);
+            localStorage.setItem(STORAGE_PERSON_NAME, currentPerson);
+        };
+        window.selectStateOffer = function(offer, el) {
+            document.querySelectorAll('#stateOfferList .sidebar-item').forEach(c=>c.classList.remove('active'));
+            el.classList.add('active');
+            currentStateOffer = offer;
+            currentState = null;
+            renderStateList(offer, null);
+        };
+        window.selectState = function(state, el) {
+            document.querySelectorAll('#stateListPanel .person-item').forEach(c=>c.classList.remove('active'));
+            el.classList.add('active');
+            currentState = state;
+            renderStateDetail(currentStateOffer, currentState);
+            localStorage.setItem(STORAGE_STATE_OFFER, currentStateOffer);
+            localStorage.setItem(STORAGE_STATE_NAME, currentState);
+        };
+        window.selectCountOffer = function(offer, el) {
+            document.querySelectorAll('#countOfferList .sidebar-item').forEach(c=>c.classList.remove('active'));
+            el.classList.add('active');
+            currentCountOffer = offer;
+            document.getElementById('countSelectedInfo').innerHTML = `<span style="color:#999;">${offer}</span>`;
+            renderCountView(offer, currentCountView);
+            localStorage.setItem(STORAGE_COUNT_OFFER, offer);
+        };
+        
+        function initCountFilter() {
+            var btns = document.querySelectorAll('#countFilterBar .filter-btn');
+            btns.forEach(btn=>{
+                btn.addEventListener('click', function(){
+                    btns.forEach(b=>b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCountView = this.getAttribute('data-count-view');
+                    if(currentCountOffer) renderCountView(currentCountOffer, currentCountView);
+                });
+            });
+        }
+        
+        // 数据加载主入口
         function loadData() {
             fetch('data.json?t=' + Date.now())
-                .then(function(r) { return r.json(); })
-                .then(function(d) {
-                    console.log('历史页面 data.json 加载成功', d);
-                    var rawData = d.data || [];
-                    // 获取操作映射 (优先 data.json 中的 person_offer_ops)
-                    if (d.person_offer_ops && Object.keys(d.person_offer_ops).length > 0) {
-                        GLOBAL_PERSON_OPS = d.person_offer_ops;
-                        console.log('已加载人员操作映射，offer数量:', Object.keys(GLOBAL_PERSON_OPS).length);
-                    } else if (typeof window.PERSON_OPS !== 'undefined' && window.PERSON_OPS) {
-                        GLOBAL_PERSON_OPS = window.PERSON_OPS;
-                    } else {
-                        GLOBAL_PERSON_OPS = {};
-                    }
-                    TOTAL_OPS_GLOBAL = d.total_ops || 0;
-                    
-                    _allData = [];
-                    // 数据清洗
-                    for (var i = 0; i < rawData.length; i++) {
-                        var item = rawData[i];
-                        if (item.offer && item['价格']) {
-                            _allData.push(item);
-                        }
-                    }
-                    
-                    // 统计 Offer 列表及均价
-                    var offerStats = {};
-                    for (var i = 0; i < _allData.length; i++) {
-                        var r = _allData[i];
-                        var o = String(r.offer || '未知').trim();
-                        var p = parseFloat(String(r['价格'] || '0').replace(/[$,]/g, '')) || 0;
-                        if (!offerStats[o]) offerStats[o] = { total: 0, count: 0 };
-                        offerStats[o].total += p;
-                        offerStats[o].count += 1;
-                    }
-                    _offerList = Object.keys(offerStats).sort();
-                    for (var i = 0; i < _offerList.length; i++) {
-                        var o = _offerList[i];
-                        OFFER_AVG_PRICE[o] = offerStats[o].total / offerStats[o].count;
-                    }
-                    
-                    document.getElementById('updateTime').innerHTML = '更新: ' + new Date().toLocaleTimeString('zh-CN') + ' | 操作总计: ' + TOTAL_OPS_GLOBAL.toLocaleString();
-                    renderOfferList();
+                .then(r => r.json())
+                .then(d => {
+                    var newData = d.data || [];
+                    allData = newData;
+                    personOpsMap = (d.person_offer_ops && Object.keys(d.person_offer_ops).length) ? d.person_offer_ops : (window.PERSON_OPS || {});
+                    totalOpsGlobal = d.total_ops || 0;
+                    buildAllCaches();
+                    var savedPerson = localStorage.getItem(STORAGE_PERSON_OFFER);
+                    var savedPersonName = localStorage.getItem(STORAGE_PERSON_NAME);
+                    renderPersonOfferList(savedPerson, savedPersonName);
+                    var savedStateOffer = localStorage.getItem(STORAGE_STATE_OFFER);
+                    var savedStateName = localStorage.getItem(STORAGE_STATE_NAME);
+                    renderStateOfferList(savedStateOffer, savedStateName);
+                    var savedCount = localStorage.getItem(STORAGE_COUNT_OFFER);
+                    renderCountOfferList(savedCount);
+                    document.getElementById('updateTime').innerHTML = '更新: ' + new Date().toLocaleTimeString('zh-CN');
+                    showRefreshTip();
                 })
-                .catch(function(err) { 
-                    console.error('加载 data.json 失败:', err);
-                    document.getElementById('stateContent').innerHTML = '<div class="no-data">⚠️ 数据加载失败，请确认 data.json 存在且格式正确</div>';
-                });
+                .catch(err => { console.error(err); document.getElementById('personOfferList').innerHTML = '<div class="no-data">加载失败</div>'; });
         }
         
+        // tab切换
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            if(el) el.classList.add('active');
+        }
+        document.querySelectorAll('.nav-tab').forEach(tab=>{
+            tab.addEventListener('click', function(){
+                var id = this.getAttribute('data-tab');
+                switchTab(id, this);
+            });
+        });
+        initCountFilter();
         loadData();
         setInterval(loadData, 30000);
     </script>
