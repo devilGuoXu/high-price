@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <title>数据透视 - 人员｜州｜计数</title>
+    <title>数据透视台 - 人员｜州｜计数</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:#f5f6f8;color:#2d3436;min-height:100vh}
-        
         .navbar{background:rgba(255,255,255,0.95);border-bottom:1px solid rgba(0,0,0,0.04);padding:0 24px;display:flex;align-items:center;height:56px;position:sticky;top:0;z-index:100}
         .nav-brand{font-size:16px;font-weight:600;color:#2d3436;margin-right:40px}
         .nav-tabs{display:flex;gap:28px;height:100%}
@@ -22,71 +21,90 @@
         .page.active{display:block}
         .container{max-width:1400px;margin:0 auto}
         
-        /* 三栏布局通用 */
-        .split-layout{display:flex;gap:24px;align-items:flex-start}
-        .sidebar{width:260px;min-width:260px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);overflow:hidden;height:fit-content;max-height:70vh;overflow-y:auto}
+        /* 人员 & 州 共用三栏样式（与大屏一致）*/
+        .split-layout{display:flex;gap:20px;min-height:500px}
+        .sidebar{width:280px;min-width:280px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);overflow:hidden;height:fit-content;max-height:70vh;overflow-y:auto}
         .sidebar-title{padding:14px 18px;font-weight:600;color:#2d3436;border-bottom:1px solid #f2f2f2;font-size:14px;position:sticky;top:0;background:#fff}
         .sidebar-item{padding:12px 18px;cursor:pointer;font-size:14px;color:#666;border-bottom:1px solid #fafafa;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
         .sidebar-item:hover{background:#f8f9fb;color:#2d3436}
-        .sidebar-item.active{background:#f5f6f8;color:#2d3436;font-weight:550;border-left:3px solid #4CAF50;padding-left:15px}
+        .sidebar-item.active{background:#f5f6f8;color:#2d3436;font-weight:550;border-left:3px solid #2d3436;padding-left:15px}
         .sidebar-count{float:right;color:#999;font-size:12px}
-        
-        .person-panel{width:220px;min-width:220px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);overflow:hidden;height:fit-content;max-height:70vh;overflow-y:auto}
-        .person-title{padding:14px 18px;font-weight:600;color:#2d3436;border-bottom:1px solid #f2f2f2;font-size:14px;position:sticky;top:0;background:#fff}
-        .person-item{padding:12px 18px;cursor:pointer;font-size:14px;color:#666;border-bottom:1px solid #fafafa;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-        .person-item:hover{background:#f8f9fb;color:#2d3436}
-        .person-item.active{background:#e8f5e9;color:#2e7d32;font-weight:550;border-left:3px solid #2e7d32;padding-left:15px}
-        .person-count{float:right;color:#999;font-size:12px}
-        
         .main-content{flex:1;min-width:0;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);padding:24px}
-        .section-title{font-size:18px;font-weight:600;margin-bottom:16px;color:#2d3436;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap}
-        .section-title span{color:#999;font-size:14px;font-weight:normal}
-        .filter-bar{display:flex;gap:12px;margin-bottom:20px;border-bottom:1px solid #f0f0f0;padding-bottom:12px}
-        .filter-btn{background:transparent;border:none;padding:6px 16px;cursor:pointer;font-size:13px;border-radius:20px;transition:all .2s;color:#666}
-        .filter-btn.active{background:#e8f0fe;color:#1a73e8;font-weight:500}
+        .section-title{font-size:18px;font-weight:600;margin-bottom:16px;color:#2d3436;display:flex;justify-content:space-between;align-items:center}
+        .section-title-price{color:#2979ff;margin-left:16px;font-weight:700;font-size:16px}
         
-        /* 表格样式 */
-        .data-table{width:100%;border-collapse:collapse}
-        .data-table th{padding:12px 10px;font-size:12px;color:#999;font-weight:500;border-bottom:1px solid #eee;text-align:left}
-        .data-table th:first-child{text-align:left}
-        .data-table th.num{text-align:right}
-        .data-table td{padding:12px 10px;font-size:14px;border-bottom:1px solid #f5f5f5}
-        .data-table td:first-child{text-align:left;font-weight:600}
-        .data-table td.num{text-align:right;font-family:'SF Mono','Consolas',monospace}
-        .data-table tbody tr:hover{background:#f8f9fb;cursor:pointer}
-        .data-table tbody tr:nth-child(even){background:#fafbfc}
+        /* 表格样式完全复用大屏 */
+        .person-data-table{width:100%;border-collapse:collapse}
+        .person-data-table th{padding:12px 10px;font-size:12px;color:#999;font-weight:500;border-bottom:1px solid #eee;text-align:left}
+        .person-data-table th:first-child{text-align:center;width:45px}
+        .person-data-table th.num{text-align:right}
+        .person-data-table td{padding:12px 10px;font-size:14px;border-bottom:1px solid #f5f5f5}
+        .person-data-table td:first-child{text-align:center}
+        .person-data-table td:nth-child(2){text-align:left;font-weight:700;white-space:nowrap}
+        .person-data-table td.num{text-align:right;font-family:'SF Mono','Consolas',monospace;font-size:14px}
+        .person-data-table tbody tr:nth-child(even){background:#fafbfc}
+        .person-data-table tbody tr:nth-child(odd){background:#fff}
+        .person-data-table tbody tr:hover{background:#eef0f5}
         
-        .badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:500}
-        .badge-high{background:#ffebee;color:#e53935}
-        .badge-mid{background:#fff8e1;color:#f1c40f}
-        .badge-low{background:#e8f5e9;color:#43a047}
+        .state-data-table{width:100%;border-collapse:collapse}
+        .state-data-table th{padding:12px 10px;font-size:12px;color:#999;font-weight:500;border-bottom:1px solid #eee;text-align:left}
+        .state-data-table th:first-child{text-align:center;width:45px}
+        .state-data-table th.num{text-align:right}
+        .state-data-table td{padding:12px 10px;font-size:14px;border-bottom:1px solid #f5f5f5}
+        .state-data-table td:first-child{text-align:center}
+        .state-data-table td:nth-child(2){text-align:left;font-weight:700;white-space:nowrap}
+        .state-data-table td.num{text-align:right;font-family:'SF Mono','Consolas',monospace;font-size:14px}
+        .state-data-table th.ctr,.state-data-table td.ctr{text-align:center}
+        .state-data-table tbody tr:nth-child(even){background:#fafbfc}
+        .state-data-table tbody tr:nth-child(odd){background:#fff}
+        .state-data-table tbody tr:hover{background:#eef0f5}
+        .state-data-table tbody tr.row-high{background:#ffebee !important}
+        .state-data-table tbody tr.row-mid{background:#fff8e1 !important}
+        .state-data-table tbody tr.row-low{background:#e8f5e9 !important}
         
+        .badge{padding:3px 10px;border-radius:10px;font-size:12px;font-weight:550;white-space:nowrap}
+        .badge.high{background:#ffebee;color:#e53935}
+        .badge.mid{background:#fff8e1;color:#fdd835}
+        .badge.low{background:#e8f5e9;color:#43a047}
+        .detail-btn{background:#4CAF50;color:#fff;border:none;border-radius:4px;padding:2px 8px;font-size:11px;cursor:pointer;margin-left:8px;white-space:nowrap;display:inline-block}
+        .detail-btn:hover{background:#45a049}
         .price-high{color:#e53935 !important;font-weight:600}
         .price-low{color:#43a047 !important;font-weight:600}
-        .price-equal{color:#f39c12 !important;font-weight:600}
-        
-        .no-data{text-align:center;color:#ccc;padding:60px 20px;font-size:14px}
+        .price-equal{color:#fdd835 !important;font-weight:600}
+        .no-data{text-align:center;color:#ccc;padding:80px 40px;font-size:15px}
         .footer{text-align:center;color:#ddd;font-size:12px;padding:20px}
-        .refresh-tip{position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.6);color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;z-index:100;transition:opacity .3s}
         
+        /* 弹窗（人员详情） */
         .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center}
-        .modal-content{background:#fff;border-radius:16px;width:90%;max-width:800px;max-height:80%;overflow:auto;padding:20px}
+        .modal-content{background:#fff;border-radius:16px;width:90%;max-width:1000px;max-height:85%;overflow:auto;padding:20px;box-shadow:0 20px 40px rgba(0,0,0,0.2)}
         .modal-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:1px solid #eee;margin-bottom:20px}
-        .modal-close{background:none;border:none;font-size:24px;cursor:pointer;color:#999}
-        .detail-table{width:100%;border-collapse:collapse}
-        .detail-table th{padding:8px;background:#f8f9fa;text-align:left}
-        .detail-table th.num{text-align:right}
-        .detail-table td{padding:8px;border-bottom:1px solid #f0f0f0}
-        .detail-table td.num{text-align:right}
+        .modal-header h3{font-size:20px;font-weight:600}
+        .modal-close{background:none;border:none;font-size:28px;cursor:pointer;color:#999;line-height:1}
+        .person-detail-table{width:100%;border-collapse:collapse}
+        .person-detail-table th{padding:12px;background:#f8f9fa;font-weight:600;text-align:left;border-bottom:2px solid #eee}
+        .person-detail-table th.num{text-align:right}
+        .person-detail-table td{padding:10px 12px;border-bottom:1px solid #f0f0f0}
+        .person-detail-table td.num{text-align:right;font-family:'SF Mono','Consolas',monospace}
+        
+        /* 时间筛选 */
+        .filter-bar{display:flex;justify-content:flex-end;margin-bottom:16px;gap:10px}
+        .time-filter-btn{background:#f0f0f0;border:none;border-radius:6px;padding:6px 16px;cursor:pointer;font-size:12px;transition:all .2s}
+        .time-filter-btn.active{background:#4CAF50;color:#fff}
+        .stats-cards{display:flex;gap:16px;margin-bottom:20px;padding:12px 16px;background:#f8f9fa;border-radius:10px;flex-wrap:wrap}
+        .stat-card{flex:1;text-align:center}
+        .stat-card-label{font-size:12px;color:#999}
+        .stat-card-value{font-size:22px;font-weight:700}
         
         @media(max-width:768px){
             .page{padding:12px}
             .split-layout{flex-direction:column}
-            .sidebar,.person-panel{width:100%;max-height:200px}
+            .sidebar{width:100%;max-height:200px}
             .navbar{padding:0 12px}
             .nav-brand{font-size:13px;margin-right:12px}
             .nav-tabs{gap:12px}
             .back-btn{padding:4px 10px;font-size:11px;margin-left:8px}
+            .person-data-table th,.person-data-table td{padding:6px 8px;font-size:12px}
+            .state-data-table th,.state-data-table td{padding:6px 8px;font-size:12px}
         }
     </style>
 </head>
@@ -104,500 +122,379 @@
         <span class="nav-update" id="updateTime">加载中...</span>
     </nav>
 
-    <!-- 人员页面 (人员维度的offer详情) -->
+    <!-- 人员页面（完全复刻大屏人员逻辑） -->
     <div class="page active" id="pagePerson">
         <div class="container">
             <div class="split-layout">
-                <div class="sidebar"><div class="sidebar-title">Offer 列表</div><div id="personOfferList"></div></div>
-                <div class="person-panel"><div class="person-title">人员列表</div><div id="personListPanel"></div></div>
-                <div class="main-content"><div class="section-title">人员详情 <span id="personSelectedInfo"></span></div><div id="personDetailContent"><div class="no-data">← 选择 Offer 和人员</div></div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 州页面 (州维度的offer详情) -->
-    <div class="page" id="pageState">
-        <div class="container">
-            <div class="split-layout">
-                <div class="sidebar"><div class="sidebar-title">Offer 列表</div><div id="stateOfferList"></div></div>
-                <div class="person-panel"><div class="person-title">州列表</div><div id="stateListPanel"></div></div>
-                <div class="main-content"><div class="section-title">州统计详情 <span id="stateSelectedInfo"></span></div><div id="stateDetailContent"><div class="no-data">← 选择 Offer 和州</div></div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 计数页面 (计数统计-转化/操作/匹配率) -->
-    <div class="page" id="pageCount">
-        <div class="container">
-            <div class="split-layout">
-                <div class="sidebar"><div class="sidebar-title">Offer 列表</div><div id="countOfferList"></div></div>
-                <div class="main-content" style="flex:2;">
-                    <div class="section-title">📊 计数与匹配洞察 <span id="countSelectedInfo"></span></div>
-                    <div class="filter-bar" id="countFilterBar">
-                        <button class="filter-btn active" data-count-view="conversion">转化统计</button>
-                        <button class="filter-btn" data-count-view="operation">操作统计</button>
-                        <button class="filter-btn" data-count-view="match">匹配率分析</button>
-                    </div>
-                    <div id="countDetailContent"><div class="no-data">← 选择 Offer</div></div>
+                <div class="sidebar" id="ps">
+                    <div class="sidebar-title">Offer 列表</div>
+                    <div id="pl"></div>
+                </div>
+                <div class="main-content" id="pc">
+                    <div class="no-data">← 选择 Offer</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="footer">点击行可查看明细记录 | 数据每30秒自动刷新</div>
-    <div class="refresh-tip" id="refreshTip"></div>
+    <!-- 州页面（完全复刻大屏州逻辑，包含时间筛选） -->
+    <div class="page" id="pageState">
+        <div class="container">
+            <div class="split-layout">
+                <div class="sidebar" id="ss">
+                    <div class="sidebar-title">Offer 列表</div>
+                    <div id="sl"></div>
+                </div>
+                <div class="main-content">
+                    <div class="filter-bar">
+                        <button class="time-filter-btn active" data-time="all">全部时间</button>
+                        <button class="time-filter-btn" data-time="1h">近1小时</button>
+                    </div>
+                    <div id="scContent" style="min-height:400px;">
+                        <div class="no-data">← 选择 Offer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 计数页面：直接嵌入独立HTML (person_state.html) -->
+    <div class="page" id="pageCount" style="padding:0; height:calc(100vh - 90px);">
+        <iframe src="person_state.html" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+
+    <div class="footer">人员/州页面自动刷新 · 计数页面独立加载</div>
 
     <script>
-        // ---------- 全局变量 ----------
-        var allData = [];
-        var personOpsMap = {};      // offer -> person -> ops (操作数)
-        var totalOpsGlobal = 0;
+        // ************ 以下完全复用大屏中 人员/州 的核心逻辑 ************
+        // 全局数据及配置 (从大屏精简但保持功能一致)
+        var MAPPED_OFFERS = typeof window.MAPPED_OFFERS !== 'undefined' ? window.MAPPED_OFFERS : [];
+        var OFFER_TARGETS = typeof window.OFFER_TARGETS !== 'undefined' ? window.OFFER_TARGETS : {};
+        var PERSON_OPS = typeof window.PERSON_OPS !== 'undefined' ? window.PERSON_OPS : {};
+        var TOTAL_OPS = typeof window.TOTAL_OPS !== 'undefined' ? window.TOTAL_OPS : 0;
         
-        // 页面状态
-        var currentPersonOffer = null, currentPerson = null;
-        var currentStateOffer = null, currentState = null;
-        var currentCountOffer = null, currentCountView = 'conversion';
+        var _allData = [];
+        var _offerList = [];
+        var OFFER_AVG_PRICE = {};
+        var DEFAULT_TARGET = OFFER_TARGETS.default || 1000;
         
-        // 缓存结构
-        // personCache[offer][person] = { states: { stateName: {count, totalPrice} }, totalCount, totalAmount, avgPrice, perStateList }
-        var personCache = {};
-        // stateCache[offer][state] = { persons: { personName: {count, totalPrice} }, totalCount, totalAmount, avgPrice }
-        var stateCache = {};
-        // countStats[offer] = { totalConversions, totalOps, matchedCount, matchRate, perPersonOps, perPersonConversions }
-        var countStats = {};
+        // 排除金额统计的 Offer（与大屏一致）
+        var EXCLUDED_FROM_PERSON_STATS = [
+            "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+            "Adscent-52 (253016)239-QuoteWizard Home Insurance",
+            "CRM-6 (1920) Quote Wizard -Home Insurance",
+            "B452-4 2145 C - QW home",
+            "B452-4 2118 RP - Quote Wizard Home"
+        ];
         
-        // localStorage key
-        var STORAGE_PERSON_OFFER = 'person_state_person_offer';
-        var STORAGE_PERSON_NAME = 'person_state_person_name';
-        var STORAGE_STATE_OFFER = 'person_state_state_offer';
-        var STORAGE_STATE_NAME = 'person_state_state_name';
-        var STORAGE_COUNT_OFFER = 'person_state_count_offer';
+        var _currentPersonOffer = null;
+        var _currentStateOffer = null;
+        var currentStateTimeFilter = 'all';
         
-        // 工具函数
-        function formatMoney(val) { return '$' + (val || 0).toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 }); }
-        function formatNumber(num) { return (num || 0).toLocaleString(); }
-        
-        function showRefreshTip() {
-            var tip = document.getElementById('refreshTip');
-            tip.textContent = '🔄 数据已更新';
-            tip.style.opacity = '1';
-            setTimeout(function() { tip.style.opacity = '0'; }, 2000);
+        function formatMoney(val) {
+            if (isNaN(val)) val = 0;
+            return '$' + val.toLocaleString('en-US', { minimumFractionDigits: 0, maximumFractionDigits: 2 });
         }
         
-        // 构建所有缓存 (人员/州/计数)
-        function buildAllCaches() {
-            personCache = {};
-            stateCache = {};
-            countStats = {};
-            // 临时统计计数用
-            var offerConversionCount = {};   // offer -> 总转化条数(有效)
-            var offerPersonRecordCount = {}; // offer -> 有人员记录数
-            
-            for (var i = 0; i < allData.length; i++) {
-                var row = allData[i];
-                var offer = row['offer'] || '';
+        function isWithinLastHour(timeStr) {
+            if (!timeStr) return false;
+            var parsed = new Date(timeStr);
+            if (isNaN(parsed.getTime())) {
+                var parts = timeStr.match(/(\d{4})\/(\d{1,2})\/(\d{1,2})\s+(\d{1,2}):(\d{1,2}):(\d{1,2})/);
+                if (parts) parsed = new Date(parts[1], parts[2]-1, parts[3], parts[4], parts[5], parts[6]);
+            }
+            if (isNaN(parsed.getTime())) return false;
+            var oneHourAgo = new Date(Date.now() - 60*60*1000);
+            return parsed >= oneHourAgo;
+        }
+        
+        function getPriceCompareClass(price, avgPrice) {
+            if (avgPrice === 0) return '';
+            if (price > avgPrice) return 'price-high';
+            if (price < avgPrice) return 'price-low';
+            return 'price-equal';
+        }
+        
+        // 人员详情弹窗 (全局)
+        function showPersonDetailModal(personName) {
+            var offerMap = {};
+            for (var i = 0; i < _allData.length; i++) {
+                var entry = _allData[i];
+                if ((entry['人员'] || '-') !== personName) continue;
+                var offer = entry['offer'] || '';
+                var price = parseFloat(String(entry['价格'] || '0').replace(/[$,]/g, '')) || 0;
                 if (!offer) continue;
-                var person = row['人员'] || '-';
+                if (!offerMap[offer]) offerMap[offer] = { total: 0, count: 0 };
+                offerMap[offer].total += price;
+                offerMap[offer].count++;
+            }
+            var opsMap = {};
+            if (PERSON_OPS) {
+                for (var offerName in PERSON_OPS) {
+                    if (PERSON_OPS[offerName] && PERSON_OPS[offerName][personName]) {
+                        opsMap[offerName] = PERSON_OPS[offerName][personName];
+                    }
+                }
+            }
+            var rows = [], totalAmount = 0, totalCount = 0, totalOps = 0;
+            for (var offer in offerMap) {
+                var total = offerMap[offer].total;
+                var conversion = offerMap[offer].count;
+                var avgPrice = conversion > 0 ? total / conversion : 0;
+                var ops = opsMap[offer] || 0;
+                rows.push({ offer: offer, total: total, avg: avgPrice, conversion: conversion, ops: ops });
+                totalAmount += total;
+                totalCount += conversion;
+                totalOps += ops;
+            }
+            var totalAvg = totalCount > 0 ? totalAmount / totalCount : 0;
+            rows.sort(function(a,b) { return a.offer.localeCompare(b.offer); });
+            var html = '<div class="modal-overlay" id="personModal" onclick="closePersonModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h3>📋 人员详情 - ' + personName + '</h3><button class="modal-close" onclick="closePersonModal()">&times;</button></div><table class="person-detail-table"><thead><tr><th>Offer</th><th class="num">金额</th><th class="num">均价</th><th class="num">转化</th><th class="num">操作</th></tr></thead><tbody>';
+            for (var i=0;i<rows.length;i++) {
+                var x = rows[i];
+                html += '<tr><td style="text-align:left">' + x.offer + '</td><td class="num">' + formatMoney(x.total) + '</td><td class="num">' + formatMoney(x.avg) + '</td><td class="num">' + x.conversion + '</td><td class="num">' + x.ops + '</td></tr>';
+            }
+            html += '<tr style="border-top:2px solid #ddd;background:#f8f9fa;font-weight:700"><td style="text-align:left">📊 合计</td><td class="num">' + formatMoney(totalAmount) + '</td><td class="num">' + formatMoney(totalAvg) + '</td><td class="num">' + totalCount + '</td><td class="num">' + totalOps + '</td></tr>';
+            if(rows.length===0) html += '<tr><td colspan="5" style="text-align:center">暂无数据</td></tr>';
+            html += '</tbody></table></div></div>';
+            var existing = document.getElementById('personModal');
+            if(existing) existing.remove();
+            document.body.insertAdjacentHTML('beforeend', html);
+        }
+        window.showPersonDetailModal = showPersonDetailModal;
+        window.closePersonModal = function(e) { var m=document.getElementById('personModal'); if(m) m.remove(); };
+        
+        // 人员页面核心渲染 (完全复刻大屏人员逻辑)
+        function showPersonDetail(offerName, element) {
+            _currentPersonOffer = offerName;
+            var items = document.querySelectorAll('#pl .sidebar-item');
+            for(var i=0;i<items.length;i++) items[i].classList.remove('active');
+            if(element) element.classList.add('active');
+            var offerAvg = OFFER_AVG_PRICE[offerName] || 0;
+            var h = '<div class="section-title">' + offerName + '<span class="section-title-price">均价 ' + formatMoney(offerAvg) + '</span></div>';
+            var personMap = {};
+            for(var i=0;i<_allData.length;i++) {
+                var row = _allData[i];
+                if(row.offer === offerName) {
+                    var person = row['人员'] || '-';
+                    if(person === '-') continue;
+                    var price = parseFloat(String(row['价格']||'0').replace(/[$,]/g,'')) || 0;
+                    if(!personMap[person]) personMap[person] = { prices: [], count:0 };
+                    personMap[person].prices.push(price);
+                    personMap[person].count++;
+                }
+            }
+            var rows = [];
+            for(var person in personMap) {
+                var data = personMap[person];
+                var total = 0;
+                for(var j=0;j<data.prices.length;j++) total += data.prices[j];
+                var avg = total / data.prices.length;
+                var maxV = Math.max.apply(null, data.prices);
+                var minV = Math.min.apply(null, data.prices);
+                var ops = (PERSON_OPS[offerName] && PERSON_OPS[offerName][person]) ? PERSON_OPS[offerName][person] : 0;
+                var rate = ops > 0 ? ((data.count / ops) * 100).toFixed(0) + '%' : '-';
+                rows.push({ person: person, total: total, avg: avg, max: maxV, min: minV, conv: data.count, ops: ops, rate: rate });
+            }
+            if(rows.length === 0) {
+                h += '<div class="no-data">暂无数据</div>';
+            } else {
+                rows.sort((a,b)=>b.avg - a.avg);
+                h += '<table class="person-data-table"><thead><tr><th>#</th><th>人员</th><th class="num">金额</th><th class="num">均价</th><th class="num">最高</th><th class="num">最低</th><th class="num">转化</th><th class="num">操作</th><th class="num">转化率</th></tr></thead><tbody>';
+                for(var i=0;i<rows.length;i++) {
+                    var x = rows[i];
+                    var avgClass = getPriceCompareClass(x.avg, offerAvg);
+                    var safePerson = x.person.replace(/'/g, "\\'");
+                    h += `<tr><td style="text-align:center">${i+1}</td><td style="text-align:left;font-weight:700;white-space:nowrap">${x.person}<button class="detail-btn" onclick="showPersonDetailModal('${safePerson}')">详情</button></td><td class="num">${formatMoney(x.total)}</td><td class="num ${avgClass}">${formatMoney(x.avg)}</td><td class="num">${formatMoney(x.max)}</td><td class="num">${formatMoney(x.min)}</td><td class="num">${x.conv}</td><td class="num">${x.ops}</td><td class="num">${x.rate}</td></tr>`;
+                }
+                h += '</tbody></table>';
+            }
+            document.getElementById('pc').innerHTML = h;
+        }
+        
+        function renderPersonOfferList() {
+            var list = document.getElementById('pl');
+            if(!list) return;
+            list.innerHTML = '';
+            for(var i=0;i<_offerList.length;i++) {
+                var o = _offerList[i];
+                var d = document.createElement('div');
+                d.className = 'sidebar-item';
+                if(_currentPersonOffer === o) d.classList.add('active');
+                d.textContent = o;
+                d.onclick = (function(offer){ return function(){ showPersonDetail(offer, this); }; })(o);
+                list.appendChild(d);
+            }
+            if(_currentPersonOffer && _offerList.indexOf(_currentPersonOffer)>=0) {
+                var items = list.children;
+                var idx = _offerList.indexOf(_currentPersonOffer);
+                if(items[idx]) showPersonDetail(_currentPersonOffer, items[idx]);
+            } else if(_offerList.length>0) {
+                _currentPersonOffer = _offerList[0];
+                var first = list.firstChild;
+                if(first) { first.classList.add('active'); showPersonDetail(_offerList[0], first); }
+            }
+        }
+        
+        // 州页面核心逻辑（带时间筛选）
+        function showStateDetail(offerName, element) {
+            _currentStateOffer = offerName;
+            var items = document.querySelectorAll('#sl .sidebar-item');
+            for(var i=0;i<items.length;i++) items[i].classList.remove('active');
+            if(element) element.classList.add('active');
+            var h = '<div class="section-title">' + offerName + '<span class="section-title-price">均价 ' + formatMoney(OFFER_AVG_PRICE[offerName] || 0) + '</span></div>';
+            var filterText = currentStateTimeFilter === '1h' ? ' (近1小时)' : ' (全部时间)';
+            h += '<div style="font-size:12px; color:#999; margin-bottom:10px;">数据范围' + filterText + '</div>';
+            var stateMap = {}, totalConversions=0;
+            for(var i=0;i<_allData.length;i++) {
+                var row = _allData[i];
+                if(row.offer !== offerName) continue;
+                var timeStr = row['时间'] || '';
+                if(currentStateTimeFilter === '1h' && !isWithinLastHour(timeStr)) continue;
                 var state = row['州'] || '-';
-                var price = parseFloat(String(row['价格'] || '0').replace(/[$,]/g, '')) || 0;
-                var time = row['时间'] || '';
-                
-                // 跳过无效人员或州 (但计数页需要所有转化，此处统计时不过滤-)
-                var isValidPerson = (person !== '-' && person !== '');
-                var isValidState = (state !== '-' && state !== '');
-                
-                // --- 人员缓存 (只需要有效人员) ---
-                if (isValidPerson && isValidState) {
-                    if (!personCache[offer]) personCache[offer] = {};
-                    if (!personCache[offer][person]) {
-                        personCache[offer][person] = { states: {}, totalCount: 0, totalAmount: 0 };
-                    }
-                    var pData = personCache[offer][person];
-                    if (!pData.states[state]) pData.states[state] = { count: 0, totalPrice: 0 };
-                    pData.states[state].count++;
-                    pData.states[state].totalPrice += price;
-                    pData.totalCount++;
-                    pData.totalAmount += price;
-                }
-                
-                // --- 州缓存 (只需要有效州) ---
-                if (isValidState && isValidPerson) {
-                    if (!stateCache[offer]) stateCache[offer] = {};
-                    if (!stateCache[offer][state]) {
-                        stateCache[offer][state] = { persons: {}, totalCount: 0, totalAmount: 0 };
-                    }
-                    var sData = stateCache[offer][state];
-                    if (!sData.persons[person]) sData.persons[person] = { count: 0, totalPrice: 0 };
-                    sData.persons[person].count++;
-                    sData.persons[person].totalPrice += price;
-                    sData.totalCount++;
-                    sData.totalAmount += price;
-                }
-                
-                // --- 计数统计 (所有的转化，无论人员/州是否缺失，计数转化总数)
-                if (!offerConversionCount[offer]) offerConversionCount[offer] = 0;
-                offerConversionCount[offer]++;
-                if (isValidPerson) {
-                    if (!offerPersonRecordCount[offer]) offerPersonRecordCount[offer] = 0;
-                    offerPersonRecordCount[offer]++;
-                }
+                if(state === '-') continue;
+                var price = parseFloat(String(row['价格']||'0').replace(/[$,]/g,'')) || 0;
+                if(!stateMap[state]) stateMap[state] = { prices: [], count:0 };
+                stateMap[state].prices.push(price);
+                stateMap[state].count++;
+                totalConversions++;
             }
-            
-            // 获取操作数配置 (优先从 data.json 的 person_offer_ops，否则使用空对象)
-            // 操作映射在加载数据时已注入 personOpsMap
-            for (var offer in offerConversionCount) {
-                var totalConv = offerConversionCount[offer] || 0;
-                var matched = offerPersonRecordCount[offer] || 0;
-                var opsTotal = 0;
-                if (personOpsMap[offer]) {
-                    for (var p in personOpsMap[offer]) { opsTotal += personOpsMap[offer][p]; }
-                }
-                var matchRate = opsTotal > 0 ? ((matched / opsTotal) * 100).toFixed(1) : (matched > 0 ? '∞' : '0%');
-                countStats[offer] = {
-                    totalConversions: totalConv,
-                    totalOps: opsTotal,
-                    matchedCount: matched,
-                    matchRate: matchRate,
-                    perPersonOps: personOpsMap[offer] || {},
-                    perPersonConv: (function(){
-                        var convMap = {};
-                        for (var i = 0; i < allData.length; i++) {
-                            var r = allData[i];
-                            if (r.offer === offer && r['人员'] && r['人员'] !== '-') {
-                                var pname = r['人员'];
-                                convMap[pname] = (convMap[pname] || 0) + 1;
-                            }
-                        }
-                        return convMap;
-                    })()
-                };
+            var totalOps = 0;
+            if(PERSON_OPS && PERSON_OPS[offerName]) {
+                for(var p in PERSON_OPS[offerName]) totalOps += PERSON_OPS[offerName][p];
             }
-        }
-        
-        // ---------- 人员页面渲染 ----------
-        function renderPersonOfferList(restoreOffer, restorePerson) {
-            var offers = Object.keys(personCache).sort();
-            var container = document.getElementById('personOfferList');
-            if (!container) return;
-            var html = '';
-            for (var i = 0; i < offers.length; i++) {
-                var o = offers[i];
-                var personCnt = Object.keys(personCache[o] || {}).length;
-                var active = (restoreOffer === o) ? 'active' : '';
-                html += `<div class="sidebar-item ${active}" data-offer="${escapeHtml(o)}" onclick="selectPersonOffer('${escapeHtml(o)}', this)"><span>${escapeHtml(o)}</span><span class="sidebar-count">${personCnt}</span></div>`;
+            var matchedCount=0;
+            for(var i=0;i<_allData.length;i++) {
+                var row = _allData[i];
+                if(row.offer !== offerName) continue;
+                var timeStr = row['时间'] || '';
+                if(currentStateTimeFilter === '1h' && !isWithinLastHour(timeStr)) continue;
+                var person = row['人员'] || '-';
+                if(person !== '-' && person !== '') matchedCount++;
             }
-            container.innerHTML = html || '<div class="no-data">暂无Offer</div>';
-            
-            var targetOffer = restoreOffer && personCache[restoreOffer] ? restoreOffer : (offers.length ? offers[0] : null);
-            if (targetOffer) {
-                currentPersonOffer = targetOffer;
-                renderPersonList(targetOffer, restorePerson);
-            } else {
-                currentPersonOffer = null;
-                document.getElementById('personListPanel').innerHTML = '';
-                document.getElementById('personDetailContent').innerHTML = '<div class="no-data">无数据</div>';
+            var matchRate = totalOps>0 ? ((matchedCount/totalOps)*100).toFixed(1)+'%' : '0%';
+            h += '<div class="stats-cards"><div class="stat-card"><div class="stat-card-label">转化</div><div class="stat-card-value" style="color:#2c3e66;">'+totalConversions+'</div></div><div class="stat-card"><div class="stat-card-label">操作</div><div class="stat-card-value" style="color:#2c3e66;">'+totalOps+'</div></div><div class="stat-card"><div class="stat-card-label">匹配</div><div class="stat-card-value" style="color:#2979ff;">'+matchedCount+'</div></div><div class="stat-card"><div class="stat-card-label">匹配率</div><div class="stat-card-value" style="color:#43a047;">'+matchRate+'</div></div></div>';
+            if(Object.keys(stateMap).length===0) {
+                h += '<div class="no-data">暂无州数据</div>';
+                document.getElementById('scContent').innerHTML = h; return;
             }
-        }
-        
-        function renderPersonList(offerName, restorePerson) {
-            var persons = personCache[offerName] ? Object.keys(personCache[offerName]).sort() : [];
-            var container = document.getElementById('personListPanel');
-            var html = '';
-            for (var i = 0; i < persons.length; i++) {
-                var p = persons[i];
-                var active = (restorePerson === p) ? 'active' : '';
-                html += `<div class="person-item ${active}" data-person="${escapeHtml(p)}" onclick="selectPerson('${escapeHtml(p)}', this)"><span>${escapeHtml(p)}</span><span class="person-count">${Object.keys(personCache[offerName][p].states).length}</span></div>`;
-            }
-            container.innerHTML = html || '<div class="no-data">暂无人员</div>';
-            var targetPerson = restorePerson && personCache[offerName][restorePerson] ? restorePerson : (persons.length ? persons[0] : null);
-            if (targetPerson) {
-                currentPerson = targetPerson;
-                document.getElementById('personSelectedInfo').innerHTML = `<span style="color:#999;">${offerName} / ${currentPerson}</span>`;
-                renderPersonDetail(offerName, currentPerson);
-                localStorage.setItem(STORAGE_PERSON_OFFER, offerName);
-                localStorage.setItem(STORAGE_PERSON_NAME, currentPerson);
-            } else {
-                currentPerson = null;
-                document.getElementById('personDetailContent').innerHTML = '<div class="no-data">该Offer下无人员</div>';
-            }
-        }
-        
-        function renderPersonDetail(offerName, personName) {
-            var data = personCache[offerName]?.[personName];
-            if (!data) { document.getElementById('personDetailContent').innerHTML = '<div class="no-data">无数据</div>'; return; }
-            var states = data.states;
+            var allPrices = [];
+            for(var s in stateMap) for(var j=0;j<stateMap[s].prices.length;j++) allPrices.push(stateMap[s].prices[j]);
+            var globalAvg = 0;
+            for(var j=0;j<allPrices.length;j++) globalAvg += allPrices[j];
+            globalAvg = globalAvg / allPrices.length;
+            var highThreshold = globalAvg * 1.1, lowThreshold = globalAvg * 0.9;
             var rows = [];
-            for (var s in states) {
-                var st = states[s];
-                rows.push({ state: s, avg: st.totalPrice / st.count, count: st.count, total: st.totalPrice });
+            for(var s in stateMap) {
+                var ss = stateMap[s];
+                var total=0; for(var j=0;j<ss.prices.length;j++) total+=ss.prices[j];
+                var avg = total/ss.prices.length;
+                var rowClass = avg>highThreshold?'row-high':(avg<lowThreshold?'row-low':'row-mid');
+                var rating = avg>highThreshold?'<span class="badge high">高</span>':(avg<lowThreshold?'<span class="badge low">低</span>':'<span class="badge mid">中</span>');
+                rows.push({ state:s, avg:avg, count:ss.count, max:Math.max.apply(null,ss.prices), min:Math.min.apply(null,ss.prices), rating:rating, rowClass:rowClass });
             }
-            rows.sort((a,b) => b.avg - a.avg);
-            var totalAvg = data.totalCount ? data.totalAmount / data.totalCount : 0;
-            var html = '<table class="data-table"><thead><tr><th>州</th><th class="num">均价</th><th class="num">转化数</th></tr></thead><tbody>';
-            for (var i = 0; i < rows.length; i++) {
-                var r = rows[i];
-                var avgClass = r.avg > totalAvg ? 'price-high' : (r.avg < totalAvg ? 'price-low' : 'price-equal');
-                html += `<tr onclick="showDetailModal('${escapeHtml(offerName)}', '${escapeHtml(personName)}', '${escapeHtml(r.state)}', 'person')">
-                            <td>${escapeHtml(r.state)}</td>
-                            <td class="num ${avgClass}">${formatMoney(r.avg)}</td>
-                            <td class="num">${formatNumber(r.count)}</td>
-                         </tr>`;
+            rows.sort((a,b)=>b.avg - a.avg);
+            h += '<table class="state-data-table"><thead><tr><th>#</th><th>州</th><th class="num">均价</th><th class="num">条数</th><th class="num">最高</th><th class="num">最低</th><th class="ctr">评级</th></tr></thead><tbody>';
+            for(var i=0;i<rows.length;i++) {
+                var x = rows[i];
+                h += `<tr class="${x.rowClass}"><td style="text-align:center">${i+1}</td><td style="text-align:left;font-weight:700">${x.state}</td><td class="num">${formatMoney(x.avg)}</td><td class="num">${x.count}</td><td class="num">${formatMoney(x.max)}</td><td class="num">${formatMoney(x.min)}</td><td class="ctr">${x.rating}</td></tr>`;
             }
-            html += `<tr style="background:#f8f9fa;font-weight:600;"><td>📊 合计</td><td class="num">${formatMoney(totalAvg)}</td><td class="num">${formatNumber(data.totalCount)}</td></tr>`;
-            html += '</tbody></table>';
-            document.getElementById('personDetailContent').innerHTML = html;
+            h += '</tbody></table>';
+            document.getElementById('scContent').innerHTML = h;
         }
         
-        // ---------- 州页面 ----------
-        function renderStateOfferList(restoreOffer, restoreState) {
-            var offers = Object.keys(stateCache).sort();
-            var container = document.getElementById('stateOfferList');
-            var html = '';
-            for (var i = 0; i < offers.length; i++) {
-                var o = offers[i];
-                var stateCnt = Object.keys(stateCache[o] || {}).length;
-                var active = (restoreOffer === o) ? 'active' : '';
-                html += `<div class="sidebar-item ${active}" data-offer="${escapeHtml(o)}" onclick="selectStateOffer('${escapeHtml(o)}', this)"><span>${escapeHtml(o)}</span><span class="sidebar-count">${stateCnt}</span></div>`;
+        function renderStateOfferList() {
+            var list = document.getElementById('sl');
+            if(!list) return;
+            list.innerHTML = '';
+            for(var i=0;i<_offerList.length;i++) {
+                var o = _offerList[i];
+                var d = document.createElement('div');
+                d.className = 'sidebar-item';
+                if(_currentStateOffer === o) d.classList.add('active');
+                d.textContent = o;
+                d.onclick = (function(offer){ return function(){ showStateDetail(offer, this); }; })(o);
+                list.appendChild(d);
             }
-            container.innerHTML = html || '<div class="no-data">暂无Offer</div>';
-            var targetOffer = restoreOffer && stateCache[restoreOffer] ? restoreOffer : (offers.length ? offers[0] : null);
-            if (targetOffer) {
-                currentStateOffer = targetOffer;
-                renderStateList(targetOffer, restoreState);
-            }
-        }
-        
-        function renderStateList(offerName, restoreState) {
-            var states = stateCache[offerName] ? Object.keys(stateCache[offerName]).sort() : [];
-            var container = document.getElementById('stateListPanel');
-            var html = '';
-            for (var i = 0; i < states.length; i++) {
-                var st = states[i];
-                var active = (restoreState === st) ? 'active' : '';
-                html += `<div class="person-item ${active}" data-state="${escapeHtml(st)}" onclick="selectState('${escapeHtml(st)}', this)"><span>${escapeHtml(st)}</span><span class="person-count">${Object.keys(stateCache[offerName][st].persons).length}</span></div>`;
-            }
-            container.innerHTML = html || '<div class="no-data">暂无州</div>';
-            var targetState = restoreState && stateCache[offerName][restoreState] ? restoreState : (states.length ? states[0] : null);
-            if (targetState) {
-                currentState = targetState;
-                document.getElementById('stateSelectedInfo').innerHTML = `<span style="color:#999;">${offerName} / ${currentState}</span>`;
-                renderStateDetail(offerName, currentState);
-                localStorage.setItem(STORAGE_STATE_OFFER, offerName);
-                localStorage.setItem(STORAGE_STATE_NAME, currentState);
+            if(_currentStateOffer && _offerList.indexOf(_currentStateOffer)>=0) {
+                var items = list.children;
+                var idx = _offerList.indexOf(_currentStateOffer);
+                if(items[idx]) showStateDetail(_currentStateOffer, items[idx]);
+            } else if(_offerList.length>0) {
+                _currentStateOffer = _offerList[0];
+                var first = list.firstChild;
+                if(first) { first.classList.add('active'); showStateDetail(_offerList[0], first); }
             }
         }
         
-        function renderStateDetail(offerName, stateName) {
-            var data = stateCache[offerName]?.[stateName];
-            if (!data) { document.getElementById('stateDetailContent').innerHTML = '<div class="no-data">无数据</div>'; return; }
-            var persons = data.persons;
-            var rows = [];
-            for (var p in persons) {
-                var pd = persons[p];
-                rows.push({ person: p, avg: pd.totalPrice / pd.count, count: pd.count, total: pd.totalPrice });
+        function setStateTimeFilter(filter) {
+            currentStateTimeFilter = filter;
+            var btns = document.querySelectorAll('#pageState .time-filter-btn');
+            for(var i=0;i<btns.length;i++) {
+                if(btns[i].getAttribute('data-time')===filter) btns[i].classList.add('active');
+                else btns[i].classList.remove('active');
             }
-            rows.sort((a,b) => b.avg - a.avg);
-            var totalAvg = data.totalCount ? data.totalAmount / data.totalCount : 0;
-            var html = '<table class="data-table"><thead><tr><th>人员</th><th class="num">均价</th><th class="num">转化数</th></tr></thead><tbody>';
-            for (var i = 0; i < rows.length; i++) {
-                var r = rows[i];
-                var avgClass = r.avg > totalAvg ? 'price-high' : (r.avg < totalAvg ? 'price-low' : 'price-equal');
-                html += `<tr onclick="showDetailModal('${escapeHtml(offerName)}', '${escapeHtml(r.person)}', '${escapeHtml(stateName)}', 'state')">
-                            <td>${escapeHtml(r.person)}</td>
-                            <td class="num ${avgClass}">${formatMoney(r.avg)}</td>
-                            <td class="num">${formatNumber(r.count)}</td>
-                         </tr>`;
-            }
-            html += `<tr style="background:#f8f9fa;font-weight:600;"><td>📊 合计</td><td class="num">${formatMoney(totalAvg)}</td><td class="num">${formatNumber(data.totalCount)}</td></tr>`;
-            html += '</tbody></table>';
-            document.getElementById('stateDetailContent').innerHTML = html;
+            if(_currentStateOffer) showStateDetail(_currentStateOffer, null);
         }
         
-        // ---------- 计数页面 ----------
-        function renderCountOfferList(restoreOffer) {
-            var offers = Object.keys(countStats).sort();
-            var container = document.getElementById('countOfferList');
-            var html = '';
-            for (var i = 0; i < offers.length; i++) {
-                var o = offers[i];
-                var active = (restoreOffer === o) ? 'active' : '';
-                html += `<div class="sidebar-item ${active}" onclick="selectCountOffer('${escapeHtml(o)}', this)"><span>${escapeHtml(o)}</span></div>`;
-            }
-            container.innerHTML = html || '<div class="no-data">暂无Offer</div>';
-            var target = restoreOffer && countStats[restoreOffer] ? restoreOffer : (offers.length ? offers[0] : null);
-            if (target) {
-                currentCountOffer = target;
-                document.getElementById('countSelectedInfo').innerHTML = `<span style="color:#999;">${target}</span>`;
-                renderCountView(target, currentCountView);
-                localStorage.setItem(STORAGE_COUNT_OFFER, target);
-            }
-        }
-        
-        function renderCountView(offer, viewType) {
-            var stats = countStats[offer];
-            if (!stats) { document.getElementById('countDetailContent').innerHTML = '<div class="no-data">无统计</div>'; return; }
-            if (viewType === 'conversion') {
-                var convRows = [];
-                for (var p in stats.perPersonConv) convRows.push({ name: p, count: stats.perPersonConv[p] });
-                convRows.sort((a,b) => b.count - a.count);
-                var html = '<table class="data-table"><thead><tr><th>人员</th><th class="num">转化数</th></tr></thead><tbody>';
-                for (var i=0;i<convRows.length;i++) {
-                    html += `<tr><td>${escapeHtml(convRows[i].name)}</td><td class="num">${formatNumber(convRows[i].count)}</td></tr>`;
-                }
-                html += `<tr style="background:#f8f9fa;"><td><strong>总计转化</strong></td><td class="num"><strong>${formatNumber(stats.totalConversions)}</strong></td></tr>`;
-                html += '</tbody></table>';
-                document.getElementById('countDetailContent').innerHTML = html;
-            } else if (viewType === 'operation') {
-                var opsRows = [];
-                for (var p in stats.perPersonOps) opsRows.push({ name: p, ops: stats.perPersonOps[p] });
-                opsRows.sort((a,b) => b.ops - a.ops);
-                var html2 = '<table class="data-table"><thead><tr><th>人员</th><th class="num">操作数</th></tr></thead><tbody>';
-                for (var i=0;i<opsRows.length;i++) {
-                    html2 += `<tr><td>${escapeHtml(opsRows[i].name)}</td><td class="num">${formatNumber(opsRows[i].ops)}</td></tr>`;
-                }
-                html2 += `<tr style="background:#f8f9fa;"><td><strong>总操作数</strong></td><td class="num"><strong>${formatNumber(stats.totalOps)}</strong></td></tr>`;
-                document.getElementById('countDetailContent').innerHTML = html2;
-            } else if (viewType === 'match') {
-                var matchRows = [];
-                var allPersons = new Set();
-                for (var p in stats.perPersonConv) allPersons.add(p);
-                for (var p in stats.perPersonOps) allPersons.add(p);
-                allPersons.forEach(function(p){
-                    var conv = stats.perPersonConv[p] || 0;
-                    var ops = stats.perPersonOps[p] || 0;
-                    var rate = ops > 0 ? ((conv / ops) * 100).toFixed(1) + '%' : (conv > 0 ? '∞' : '0%');
-                    matchRows.push({ name: p, conv: conv, ops: ops, rate: rate });
-                });
-                matchRows.sort((a,b) => b.conv - a.conv);
-                var html3 = '<table class="data-table"><thead><tr><th>人员</th><th class="num">转化数</th><th class="num">操作数</th><th class="num">匹配率</th></tr></thead><tbody>';
-                for (var i=0;i<matchRows.length;i++) {
-                    var m = matchRows[i];
-                    html3 += `<tr><td>${escapeHtml(m.name)}</td><td class="num">${formatNumber(m.conv)}</td><td class="num">${formatNumber(m.ops)}</td><td class="num">${m.rate}</td></tr>`;
-                }
-                html3 += `<tr style="background:#f8f9fa;"><td><strong>全局汇总</strong></td><td class="num"><strong>${formatNumber(stats.totalConversions)}</strong></td><td class="num"><strong>${formatNumber(stats.totalOps)}</strong></td><td class="num"><strong>${stats.matchRate}</strong></td></tr>`;
-                document.getElementById('countDetailContent').innerHTML = html3;
-            }
-        }
-        
-        // 明细弹窗通用
-        function showDetailModal(offerName, personName, stateName, from) {
-            var records = [];
-            for (var i = 0; i < allData.length; i++) {
-                var r = allData[i];
-                if (r.offer === offerName && r['人员'] === personName && r['州'] === stateName) {
-                    var price = parseFloat(String(r['价格'] || '0').replace(/[$,]/g, '')) || 0;
-                    records.push({ time: r['时间'] || '', price: price, ip: r['ip'] || '' });
-                }
-            }
-            records.sort((a,b) => (b.time || '').localeCompare(a.time || ''));
-            var totalPrice = records.reduce((s,it)=> s+it.price,0);
-            var modalHtml = `<div class="modal-overlay" onclick="closeModal(event)"><div class="modal-content" onclick="event.stopPropagation()"><div class="modal-header"><h3>📋 ${personName} @ ${offerName} - ${stateName}</h3><button class="modal-close" onclick="closeModal()">&times;</button></div>`;
-            modalHtml += `<div style="margin-bottom:16px;padding:12px;background:#f5f5f5;border-radius:8px;display:flex;gap:30px;"><div><strong>总金额</strong><br><span style="font-size:20px;color:#2979ff;">${formatMoney(totalPrice)}</span></div><div><strong>转化数</strong><br><span style="font-size:20px;color:#2e7d32;">${records.length}</span></div></div>`;
-            modalHtml += `<table class="detail-table"><thead><tr><th>时间</th><th class="num">金额</th><th>IP</th></tr></thead><tbody>`;
-            for (var i=0;i<Math.min(records.length,100);i++) {
-                var d = records[i];
-                modalHtml += `<tr><td>${d.time||'-'}</td><td class="num">${formatMoney(d.price)}</td><td>${d.ip||'-'}</td></tr>`;
-            }
-            modalHtml += `</tbody></table></div></div>`;
-            var oldModal = document.getElementById('detailModal');
-            if(oldModal) oldModal.remove();
-            document.body.insertAdjacentHTML('beforeend', modalHtml);
-        }
-        
-        function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m){if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
-        window.closeModal = function() { var m=document.getElementById('detailModal'); if(m) m.remove(); };
-        
-        // 事件绑定全局
-        window.selectPersonOffer = function(offer, el) {
-            document.querySelectorAll('#personOfferList .sidebar-item').forEach(c=>c.classList.remove('active'));
-            el.classList.add('active');
-            currentPersonOffer = offer;
-            currentPerson = null;
-            renderPersonList(offer, null);
-        };
-        window.selectPerson = function(person, el) {
-            document.querySelectorAll('#personListPanel .person-item').forEach(c=>c.classList.remove('active'));
-            el.classList.add('active');
-            currentPerson = person;
-            document.getElementById('personSelectedInfo').innerHTML = `<span style="color:#999;">${currentPersonOffer} / ${currentPerson}</span>`;
-            renderPersonDetail(currentPersonOffer, currentPerson);
-            localStorage.setItem(STORAGE_PERSON_OFFER, currentPersonOffer);
-            localStorage.setItem(STORAGE_PERSON_NAME, currentPerson);
-        };
-        window.selectStateOffer = function(offer, el) {
-            document.querySelectorAll('#stateOfferList .sidebar-item').forEach(c=>c.classList.remove('active'));
-            el.classList.add('active');
-            currentStateOffer = offer;
-            currentState = null;
-            renderStateList(offer, null);
-        };
-        window.selectState = function(state, el) {
-            document.querySelectorAll('#stateListPanel .person-item').forEach(c=>c.classList.remove('active'));
-            el.classList.add('active');
-            currentState = state;
-            renderStateDetail(currentStateOffer, currentState);
-            localStorage.setItem(STORAGE_STATE_OFFER, currentStateOffer);
-            localStorage.setItem(STORAGE_STATE_NAME, currentState);
-        };
-        window.selectCountOffer = function(offer, el) {
-            document.querySelectorAll('#countOfferList .sidebar-item').forEach(c=>c.classList.remove('active'));
-            el.classList.add('active');
-            currentCountOffer = offer;
-            document.getElementById('countSelectedInfo').innerHTML = `<span style="color:#999;">${offer}</span>`;
-            renderCountView(offer, currentCountView);
-            localStorage.setItem(STORAGE_COUNT_OFFER, offer);
-        };
-        
-        function initCountFilter() {
-            var btns = document.querySelectorAll('#countFilterBar .filter-btn');
-            btns.forEach(btn=>{
-                btn.addEventListener('click', function(){
-                    btns.forEach(b=>b.classList.remove('active'));
-                    this.classList.add('active');
-                    currentCountView = this.getAttribute('data-count-view');
-                    if(currentCountOffer) renderCountView(currentCountOffer, currentCountView);
-                });
-            });
-        }
-        
-        // 数据加载主入口
+        // 数据加载 (兼容大屏配置，优先获取person_offer_ops)
         function loadData() {
             fetch('data.json?t=' + Date.now())
-                .then(r => r.json())
-                .then(d => {
-                    var newData = d.data || [];
-                    allData = newData;
-                    personOpsMap = (d.person_offer_ops && Object.keys(d.person_offer_ops).length) ? d.person_offer_ops : (window.PERSON_OPS || {});
-                    totalOpsGlobal = d.total_ops || 0;
-                    buildAllCaches();
-                    var savedPerson = localStorage.getItem(STORAGE_PERSON_OFFER);
-                    var savedPersonName = localStorage.getItem(STORAGE_PERSON_NAME);
-                    renderPersonOfferList(savedPerson, savedPersonName);
-                    var savedStateOffer = localStorage.getItem(STORAGE_STATE_OFFER);
-                    var savedStateName = localStorage.getItem(STORAGE_STATE_NAME);
-                    renderStateOfferList(savedStateOffer, savedStateName);
-                    var savedCount = localStorage.getItem(STORAGE_COUNT_OFFER);
-                    renderCountOfferList(savedCount);
+                .then(r=>r.json())
+                .then(d=>{
+                    console.log('透视台数据加载', d);
+                    var rawData = d.data || [];
+                    var personOpsData = (d.person_offer_ops && Object.keys(d.person_offer_ops).length) ? d.person_offer_ops : PERSON_OPS;
+                    if(personOpsData && Object.keys(personOpsData).length) window.PERSON_OPS = personOpsData;
+                    _allData = [];
+                    for(var i=0;i<rawData.length;i++) {
+                        var offer = String(rawData[i].offer || '').trim();
+                        if(MAPPED_OFFERS.length===0 || MAPPED_OFFERS.indexOf(offer)>=0) _allData.push(rawData[i]);
+                    }
+                    if(_allData.length===0) return;
+                    var offerStats = {};
+                    for(var i=0;i<_allData.length;i++) {
+                        var r = _allData[i];
+                        var o = String(r.offer||'未知').trim();
+                        var p = parseFloat(String(r['价格']||'0').replace(/[$,]/g,'')) || 0;
+                        if(!offerStats[o]) offerStats[o]={total:0,count:0};
+                        offerStats[o].total += p;
+                        offerStats[o].count += 1;
+                    }
+                    _offerList = Object.keys(offerStats).sort();
+                    for(var i=0;i<_offerList.length;i++) OFFER_AVG_PRICE[_offerList[i]] = offerStats[_offerList[i]].total / offerStats[_offerList[i]].count;
                     document.getElementById('updateTime').innerHTML = '更新: ' + new Date().toLocaleTimeString('zh-CN');
-                    showRefreshTip();
+                    renderPersonOfferList();
+                    renderStateOfferList();
                 })
-                .catch(err => { console.error(err); document.getElementById('personOfferList').innerHTML = '<div class="no-data">加载失败</div>'; });
+                .catch(err=>{ console.error('加载失败',err); document.getElementById('pl').innerHTML='<div class="no-data">数据加载失败</div>'; });
         }
         
-        // tab切换
-        function switchTab(tabId, el) {
+        // Tab切换及事件绑定
+        function switchTab(pageId, el) {
             document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById(pageId).classList.add('active');
             if(el) el.classList.add('active');
+            if(pageId === 'pagePerson') renderPersonOfferList();
+            if(pageId === 'pageState') renderStateOfferList();
+            // 计数页面是iframe，无需操作
         }
+        
         document.querySelectorAll('.nav-tab').forEach(tab=>{
             tab.addEventListener('click', function(){
                 var id = this.getAttribute('data-tab');
                 switchTab(id, this);
             });
         });
-        initCountFilter();
+        var timeBtns = document.querySelectorAll('#pageState .time-filter-btn');
+        for(var i=0;i<timeBtns.length;i++) {
+            timeBtns[i].addEventListener('click', function(){
+                var filter = this.getAttribute('data-time');
+                setStateTimeFilter(filter);
+            });
+        }
+        
         loadData();
         setInterval(loadData, 30000);
     </script>
