@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <title>数据透视台 - 人员｜州｜计数</title>
+    <title>数据透视台 - 人员｜州｜计数｜数据建议</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:#f5f6f8;color:#2d3436;min-height:100vh}
         .navbar{background:rgba(255,255,255,0.95);border-bottom:1px solid rgba(0,0,0,0.04);padding:0 24px;display:flex;align-items:center;height:56px;position:sticky;top:0;z-index:100}
-        .nav-brand{font-size:16px;font-weight:600;color:#2d3436;margin-right:40px}
-        .nav-tabs{display:flex;gap:28px;height:100%}
+        .nav-left{display:flex;align-items:center;gap:24px}
+        .nav-tabs{display:flex;gap:28px;height:100%;margin-left:20px;padding-left:20px;border-left:2px solid #e2e8f0}
         .nav-tab{cursor:pointer;font-size:14px;color:#999;border-bottom:2px solid transparent;display:flex;align-items:center;transition:all .2s;padding:0 6px}
         .nav-tab:hover{color:#2d3436}
         .nav-tab.active{color:#2d3436;border-bottom-color:#2d3436;font-weight:550}
         .nav-update{margin-left:auto;font-size:12px;color:#ccc}
-        .back-btn{text-decoration:none;padding:6px 14px;background:#e2e8f0;border-radius:6px;font-size:13px;color:#333;transition:all .2s;border:none;cursor:pointer;font-family:inherit;margin-left:20px}
+        .back-btn{text-decoration:none;padding:6px 14px;background:#e2e8f0;border-radius:6px;font-size:13px;color:#333;transition:all .2s;border:none;cursor:pointer;font-family:inherit}
         .back-btn:hover{background:#cbd5e1}
         
         .page{display:none;padding:24px 20px}
@@ -100,9 +100,9 @@
             .split-layout{flex-direction:column}
             .sidebar{width:100%;max-height:200px}
             .navbar{padding:0 12px}
-            .nav-brand{font-size:13px;margin-right:12px}
-            .nav-tabs{gap:12px}
-            .back-btn{padding:4px 10px;font-size:11px;margin-left:8px}
+            .nav-left{gap:12px}
+            .nav-tabs{gap:12px;margin-left:8px;padding-left:8px}
+            .back-btn{padding:4px 10px;font-size:11px}
             .person-data-table th,.person-data-table td{padding:6px 8px;font-size:12px}
             .state-data-table th,.state-data-table td{padding:6px 8px;font-size:12px}
         }
@@ -110,19 +110,19 @@
 </head>
 <body>
     <nav class="navbar">
-        <div style="display:flex;align-items:center;">
-            <span class="nav-brand">📊 数据透视台</span>
+        <div class="nav-left">
+            <button class="back-btn" onclick="location.href='https://devilguoxu.github.io/dashboard/'">← 返回主看板</button>
             <div class="nav-tabs">
                 <div class="nav-tab active" data-tab="pagePerson">👥 人员</div>
                 <div class="nav-tab" data-tab="pageState">🗺️ 州</div>
                 <div class="nav-tab" data-tab="pageCount">📈 计数</div>
+                <div class="nav-tab" data-tab="pageAdvice">💡 数据建议</div>
             </div>
-            <button class="back-btn" onclick="location.href='https://devilguoxu.github.io/dashboard/'">← 返回主看板</button>
         </div>
         <span class="nav-update" id="updateTime">加载中...</span>
     </nav>
 
-    <!-- 人员页面（完全复刻大屏人员逻辑） -->
+    <!-- 人员页面 -->
     <div class="page active" id="pagePerson">
         <div class="container">
             <div class="split-layout">
@@ -137,7 +137,7 @@
         </div>
     </div>
 
-    <!-- 州页面（完全复刻大屏州逻辑，包含时间筛选） -->
+    <!-- 州页面 -->
     <div class="page" id="pageState">
         <div class="container">
             <div class="split-layout">
@@ -163,11 +163,15 @@
         <iframe src="person_state.html" style="width:100%; height:100%; border:none;"></iframe>
     </div>
 
-    <div class="footer">人员/州页面自动刷新 · 计数页面独立加载</div>
+    <!-- 数据建议页面 -->
+    <div class="page" id="pageAdvice" style="padding:0; height:calc(100vh - 90px);">
+        <iframe src="data-suggestion.html" style="width:100%; height:100%; border:none;"></iframe>
+    </div>
+
+    <div class="footer">人员/州页面自动刷新 · 计数/数据建议页面独立加载</div>
 
     <script>
         // ************ 以下完全复用大屏中 人员/州 的核心逻辑 ************
-        // 全局数据及配置 (从大屏精简但保持功能一致)
         var MAPPED_OFFERS = typeof window.MAPPED_OFFERS !== 'undefined' ? window.MAPPED_OFFERS : [];
         var OFFER_TARGETS = typeof window.OFFER_TARGETS !== 'undefined' ? window.OFFER_TARGETS : {};
         var PERSON_OPS = typeof window.PERSON_OPS !== 'undefined' ? window.PERSON_OPS : {};
@@ -178,7 +182,6 @@
         var OFFER_AVG_PRICE = {};
         var DEFAULT_TARGET = OFFER_TARGETS.default || 1000;
         
-        // 排除金额统计的 Offer（与大屏一致）
         var EXCLUDED_FROM_PERSON_STATS = [
             "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
             "Adscent-52 (253016)239-QuoteWizard Home Insurance",
@@ -215,7 +218,6 @@
             return 'price-equal';
         }
         
-        // 人员详情弹窗 (全局)
         function showPersonDetailModal(personName) {
             var offerMap = {};
             for (var i = 0; i < _allData.length; i++) {
@@ -264,7 +266,6 @@
         window.showPersonDetailModal = showPersonDetailModal;
         window.closePersonModal = function(e) { var m=document.getElementById('personModal'); if(m) m.remove(); };
         
-        // 人员页面核心渲染 (完全复刻大屏人员逻辑)
         function showPersonDetail(offerName, element) {
             _currentPersonOffer = offerName;
             var items = document.querySelectorAll('#pl .sidebar-item');
@@ -336,7 +337,6 @@
             }
         }
         
-        // 州页面核心逻辑（带时间筛选）
         function showStateDetail(offerName, element) {
             _currentStateOffer = offerName;
             var items = document.querySelectorAll('#sl .sidebar-item');
@@ -437,7 +437,6 @@
             if(_currentStateOffer) showStateDetail(_currentStateOffer, null);
         }
         
-        // 数据加载 (兼容大屏配置，优先获取person_offer_ops)
         function loadData() {
             fetch('data.json?t=' + Date.now())
                 .then(r=>r.json())
@@ -445,7 +444,10 @@
                     console.log('透视台数据加载', d);
                     var rawData = d.data || [];
                     var personOpsData = (d.person_offer_ops && Object.keys(d.person_offer_ops).length) ? d.person_offer_ops : PERSON_OPS;
-                    if(personOpsData && Object.keys(personOpsData).length) window.PERSON_OPS = personOpsData;
+                    if(personOpsData && Object.keys(personOpsData).length) {
+                        window.PERSON_OPS = personOpsData;
+                        PERSON_OPS = personOpsData;
+                    }
                     _allData = [];
                     for(var i=0;i<rawData.length;i++) {
                         var offer = String(rawData[i].offer || '').trim();
@@ -470,7 +472,6 @@
                 .catch(err=>{ console.error('加载失败',err); document.getElementById('pl').innerHTML='<div class="no-data">数据加载失败</div>'; });
         }
         
-        // Tab切换及事件绑定
         function switchTab(pageId, el) {
             document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
             document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
@@ -478,7 +479,6 @@
             if(el) el.classList.add('active');
             if(pageId === 'pagePerson') renderPersonOfferList();
             if(pageId === 'pageState') renderStateOfferList();
-            // 计数页面是iframe，无需操作
         }
         
         document.querySelectorAll('.nav-tab').forEach(tab=>{
