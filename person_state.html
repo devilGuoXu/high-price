@@ -12,7 +12,6 @@
         
         .split-layout{display:flex;gap:24px;align-items:flex-start}
         
-        /* 左侧 Offer 列表 */
         .sidebar{width:260px;min-width:260px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);overflow:hidden;height:fit-content;max-height:560px;overflow-y:auto}
         .sidebar-title{padding:14px 18px;font-weight:600;color:#2d3436;border-bottom:1px solid #f2f2f2;font-size:14px;position:sticky;top:0;background:#fff}
         .sidebar-item{padding:12px 18px;cursor:pointer;font-size:14px;color:#666;border-bottom:1px solid #fafafa;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -20,7 +19,6 @@
         .sidebar-item.active{background:#f5f6f8;color:#2d3436;font-weight:550;border-left:3px solid #4CAF50;padding-left:15px}
         .sidebar-count{float:right;color:#999;font-size:12px}
         
-        /* 中间人员列表 */
         .person-panel{width:220px;min-width:220px;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);overflow:hidden;height:fit-content;max-height:560px;overflow-y:auto}
         .person-title{padding:14px 18px;font-weight:600;color:#2d3436;border-bottom:1px solid #f2f2f2;font-size:14px;position:sticky;top:0;background:#fff}
         .person-item{padding:12px 18px;cursor:pointer;font-size:14px;color:#666;border-bottom:1px solid #fafafa;transition:all .15s;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -28,12 +26,10 @@
         .person-item.active{background:#e8f5e9;color:#2e7d32;font-weight:550;border-left:3px solid #2e7d32;padding-left:15px}
         .person-count{float:right;color:#999;font-size:12px}
         
-        /* 右侧内容区 */
         .main-content{flex:1;min-width:0;background:#fff;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.05);padding:24px}
         .section-title{font-size:18px;font-weight:600;margin-bottom:16px;color:#2d3436}
         .section-title span{color:#999;font-size:14px;font-weight:normal;margin-left:12px}
         
-        /* 三列表格 - 紧凑不换行 */
         .state-table{width:100%;border-collapse:collapse}
         .state-table th{padding:10px 12px;background:#f8f9fa;font-weight:600;font-size:13px;color:#666;border-bottom:1px solid #eee}
         .state-table th:first-child{text-align:left}
@@ -47,7 +43,6 @@
         
         .no-data{text-align:center;color:#ccc;padding:60px 20px;font-size:14px}
         
-        /* 弹窗样式 */
         .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:1000;display:flex;align-items:center;justify-content:center}
         .modal-content{background:#fff;border-radius:16px;width:90%;max-width:700px;max-height:80%;overflow:auto;padding:20px}
         .modal-header{display:flex;justify-content:space-between;align-items:center;padding-bottom:15px;border-bottom:1px solid #eee;margin-bottom:20px}
@@ -60,13 +55,12 @@
         .detail-table td.num{text-align:right}
         
         .footer{text-align:center;color:#ddd;font-size:12px;padding:20px}
-        
-        /* 刷新提示 */
         .refresh-tip{position:fixed;bottom:20px;right:20px;background:rgba(0,0,0,0.6);color:#fff;padding:6px 12px;border-radius:20px;font-size:11px;z-index:100}
+        .date-badge{background:#667eea;color:white;padding:4px 12px;border-radius:20px;font-size:12px;margin-left:12px}
         
-		.price-high{color:#e53935 !important;font-weight:600}
-		.price-low{color:#43a047 !important;font-weight:600}
-		.price-equal{color:#fdd835 !important;font-weight:600}
+        .price-high{color:#e53935 !important;font-weight:600}
+        .price-low{color:#43a047 !important;font-weight:600}
+        .price-equal{color:#fdd835 !important;font-weight:600}
 
         @media(max-width:768px){
             .container{padding:12px}
@@ -78,19 +72,16 @@
 <body>
     <div class="container">
         <div class="split-layout">
-            <!-- 左侧 Offer 列表 -->
             <div class="sidebar">
-                <div class="sidebar-title">Offer 列表</div>
+                <div class="sidebar-title">Offer 列表 <span id="dateBadge" class="date-badge"></span></div>
                 <div id="offerList"></div>
             </div>
             
-            <!-- 中间人员列表 -->
             <div class="person-panel">
                 <div class="person-title">人员列表</div>
                 <div id="personList"></div>
             </div>
             
-            <!-- 右侧州统计 -->
             <div class="main-content">
                 <div class="section-title">
                     州统计 <span id="selectedInfo"></span>
@@ -109,13 +100,22 @@
         var currentOffer = null;
         var currentPerson = null;
         var isFirstLoad = true;
+        var currentDataDate = null;
         
-        // 缓存: offer -> person -> state -> {count, totalPrice}
         var stateCache = {};
-        
-        // localStorage 的 key
         var STORAGE_OFFER_KEY = 'person_state_selected_offer';
         var STORAGE_PERSON_KEY = 'person_state_selected_person';
+        
+        function getTodayDate() {
+            var d = new Date();
+            return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+        }
+        
+        function getDateFromURL() {
+            var urlParams = new URLSearchParams(window.location.search);
+            var date = urlParams.get('date');
+            return date || getTodayDate();
+        }
         
         function formatNumber(num) {
             return num.toLocaleString();
@@ -149,36 +149,6 @@
             setTimeout(function() {
                 tip.style.opacity = '0';
             }, 2000);
-        }
-        
-        function loadData() {
-            fetch('data.json?t=' + Date.now())
-                .then(function(r) { return r.json(); })
-                .then(function(d) {
-                    var newData = d.data || [];
-                    var dataChanged = JSON.stringify(allData) !== JSON.stringify(newData);
-                    allData = newData;
-                    buildCache();
-                    
-                    if (isFirstLoad) {
-                        // 首次加载：尝试恢复上次选中的状态
-                        var saved = loadSelectedState();
-                        buildOfferList(saved.offer, saved.person);
-                        isFirstLoad = false;
-                    } else {
-                        // 后续刷新：保留当前选中的状态
-                        var savedOffer = currentOffer;
-                        var savedPerson = currentPerson;
-                        buildOfferList(savedOffer, savedPerson);
-                        if (dataChanged) showRefreshTip();
-                    }
-                })
-                .catch(function(err) {
-                    console.error('加载失败:', err);
-                    if (isFirstLoad) {
-                        document.getElementById('offerList').innerHTML = '<div class="no-data" style="padding:20px;">加载失败</div>';
-                    }
-                });
         }
         
         function buildCache() {
@@ -219,7 +189,6 @@
             }
             document.getElementById('offerList').innerHTML = html || '<div class="no-data" style="padding:20px;">暂无数据</div>';
             
-            // 确定要选中的 Offer
             var targetOffer = savedOffer;
             if (!targetOffer || !stateCache[targetOffer]) {
                 targetOffer = offers.length > 0 ? offers[0] : null;
@@ -253,7 +222,6 @@
             }
             document.getElementById('personList').innerHTML = html || '<div class="no-data" style="padding:20px;">暂无人员</div>';
             
-            // 确定要选中的人员
             var targetPerson = savedPerson;
             if (!targetPerson || !persons[targetPerson]) {
                 targetPerson = personNames.length > 0 ? personNames[0] : null;
@@ -261,7 +229,7 @@
             
             if (targetPerson) {
                 currentPerson = targetPerson;
-                document.getElementById('selectedInfo').innerHTML = '<span style="color:#999;">' + offerName + ' / ' + currentPerson + '</span>';
+                document.getElementById('selectedInfo').innerHTML = '<span style="color:#999;">' + offerName + ' / ' + currentPerson + ' <span style="color:#667eea;">📅 ' + currentDataDate + '</span></span>';
                 renderStateTable(offerName, currentPerson);
                 saveSelectedState();
             } else {
@@ -288,71 +256,69 @@
             element.classList.add('active');
             
             currentPerson = personName;
-            document.getElementById('selectedInfo').innerHTML = '<span style="color:#999;">' + currentOffer + ' / ' + currentPerson + '</span>';
+            document.getElementById('selectedInfo').innerHTML = '<span style="color:#999;">' + currentOffer + ' / ' + currentPerson + ' <span style="color:#667eea;">📅 ' + currentDataDate + '</span></span>';
             renderStateTable(currentOffer, currentPerson);
             saveSelectedState();
         }
         
-		function renderStateTable(offerName, personName) {
-			var states = stateCache[offerName]?.[personName] || {};
-			
-			var rows = [];
-			for (var state in states) {
-				var data = states[state];
-				rows.push({
-					state: state,
-					avg: data.totalPrice / data.count,
-					count: data.count
-				});
-			}
-			// 按均价从高到低降序排列
-			rows.sort(function(a, b) { return b.avg - a.avg; });
-			
-			if (rows.length === 0) {
-				document.getElementById('content').innerHTML = '<div class="no-data">该人员暂无州数据</div>';
-				return;
-			}
-			
-			var totalCount = rows.reduce(function(s, r) { return s + r.count; }, 0);
-			var totalPrice = 0;
-			for (var state in states) {
-				totalPrice += states[state].totalPrice;
-			}
-			var totalAvg = totalCount > 0 ? totalPrice / totalCount : 0;
-			
-			var html = '<table class="state-table">';
-			html += '<thead>';
-			html += '<tr><th>州</th><th>均价</th><th>操作</th></tr>';
-			html += '</thead>';
-			html += '<tbody>';
-			
-			for (var i = 0; i < rows.length; i++) {
-				var r = rows[i];
-				var safeState = r.state.replace(/'/g, "\\'");
-				// 添加价格高亮样式
-				var avgClass = '';
-				if (r.avg > totalAvg) avgClass = 'price-high';
-				else if (r.avg < totalAvg) avgClass = 'price-low';
-				else avgClass = 'price-equal';
-				
-				html += '<tr onclick="showDetail(\'' + personName.replace(/'/g, "\\'") + '\', \'' + offerName.replace(/'/g, "\\'") + '\', \'' + safeState + '\')">';
-				html += '<td>' + r.state + '</td>';
-				html += '<td style="text-align:right;font-family:\'SF Mono\',\'Consolas\',monospace;" class="' + avgClass + '">' + formatMoney(r.avg) + '</td>';
-				html += '<td style="text-align:right;font-family:\'SF Mono\',\'Consolas\',monospace;font-weight:600;">' + formatNumber(r.count) + '</td>';
-				html += '</tr>';
-			}
-			
-			html += '<tr style="background:#f8f9fa;border-top:2px solid #eee;">';
-			html += '<td style="font-weight:600;">📊 合计</td>';
-			html += '<td style="text-align:right;font-weight:600;">' + formatMoney(totalAvg) + '</td>';
-			html += '<td style="text-align:right;font-weight:700;color:#1b5e20;">' + formatNumber(totalCount) + '</td>';
-			html += '</tr>';
-			
-			html += '</tbody>';
-			html += '</table>';
-			
-			document.getElementById('content').innerHTML = html;
-		}
+        function renderStateTable(offerName, personName) {
+            var states = stateCache[offerName]?.[personName] || {};
+            
+            var rows = [];
+            for (var state in states) {
+                var data = states[state];
+                rows.push({
+                    state: state,
+                    avg: data.totalPrice / data.count,
+                    count: data.count
+                });
+            }
+            rows.sort(function(a, b) { return b.avg - a.avg; });
+            
+            if (rows.length === 0) {
+                document.getElementById('content').innerHTML = '<div class="no-data">该人员暂无州数据</div>';
+                return;
+            }
+            
+            var totalCount = rows.reduce(function(s, r) { return s + r.count; }, 0);
+            var totalPrice = 0;
+            for (var state in states) {
+                totalPrice += states[state].totalPrice;
+            }
+            var totalAvg = totalCount > 0 ? totalPrice / totalCount : 0;
+            
+            var html = '<table class="state-table">';
+            html += '<thead>';
+            html += '<tr><th>州</th><th>均价</th><th>操作</th></tr>';
+            html += '</thead>';
+            html += '<tbody>';
+            
+            for (var i = 0; i < rows.length; i++) {
+                var r = rows[i];
+                var safeState = r.state.replace(/'/g, "\\'");
+                var avgClass = '';
+                if (r.avg > totalAvg) avgClass = 'price-high';
+                else if (r.avg < totalAvg) avgClass = 'price-low';
+                else avgClass = 'price-equal';
+                
+                html += '<tr onclick="showDetail(\'' + personName.replace(/'/g, "\\'") + '\', \'' + offerName.replace(/'/g, "\\'") + '\', \'' + safeState + '\')">';
+                html += '<td>' + r.state + '</td>';
+                html += '<td style="text-align:right;font-family:\'SF Mono\',\'Consolas\',monospace;" class="' + avgClass + '">' + formatMoney(r.avg) + '</td>';
+                html += '<td style="text-align:right;font-family:\'SF Mono\',\'Consolas\',monospace;font-weight:600;">' + formatNumber(r.count) + '</td>';
+                html += '</tr>';
+            }
+            
+            html += '<tr style="background:#f8f9fa;border-top:2px solid #eee;">';
+            html += '<td style="font-weight:600;">📊 合计</td>';
+            html += '<td style="text-align:right;font-weight:600;">' + formatMoney(totalAvg) + '</td>';
+            html += '<td style="text-align:right;font-weight:700;color:#1b5e20;">' + formatNumber(totalCount) + '</td>';
+            html += '</tr>';
+            
+            html += '</tbody>';
+            html += '</table>';
+            
+            document.getElementById('content').innerHTML = html;
+        }
 
         function showDetail(personName, offerName, stateName) {
             var details = [];
@@ -402,7 +368,41 @@
             if (modal) modal.remove();
         }
         
-        // 启动
+        function loadData() {
+            currentDataDate = getDateFromURL();
+            var dataUrl = 'history/' + currentDataDate + '/data.json?t=' + Date.now();
+            document.getElementById('dateBadge').innerHTML = '📅 ' + currentDataDate;
+            
+            fetch(dataUrl)
+                .then(function(r) { 
+                    if (!r.ok) throw new Error('数据不存在');
+                    return r.json(); 
+                })
+                .then(function(d) {
+                    var newData = d.data || [];
+                    var dataChanged = JSON.stringify(allData) !== JSON.stringify(newData);
+                    allData = newData;
+                    buildCache();
+                    
+                    if (isFirstLoad) {
+                        var saved = loadSelectedState();
+                        buildOfferList(saved.offer, saved.person);
+                        isFirstLoad = false;
+                    } else {
+                        var savedOffer = currentOffer;
+                        var savedPerson = currentPerson;
+                        buildOfferList(savedOffer, savedPerson);
+                        if (dataChanged) showRefreshTip();
+                    }
+                })
+                .catch(function(err) {
+                    console.error('加载失败:', err);
+                    if (isFirstLoad) {
+                        document.getElementById('offerList').innerHTML = '<div class="no-data" style="padding:20px;">加载失败: ' + currentDataDate + '</div>';
+                    }
+                });
+        }
+        
         loadData();
         setInterval(loadData, 30000);
     </script>
