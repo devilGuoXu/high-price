@@ -30,6 +30,35 @@
             padding-left: 16px;
             color: #0f172a;
         }
+        .header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        .refresh-info {
+            font-size: 12px;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        .refresh-tip {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
         .loading {
             text-align: center;
             padding: 60px;
@@ -127,19 +156,93 @@
                 padding: 6px 8px;
                 font-size: 12px;
             }
+            .header-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📊 Offer 智能排班报告（全时段分析）</h1>
+    <div class="header-bar">
+        <h1>📊 Offer 智能排班报告（全时段分析）</h1>
+        <div class="refresh-info" id="refreshInfo">加载中...</div>
+    </div>
     <div id="content">
         <div class="loading">正在加载数据...</div>
     </div>
     <footer>基于所有时段价格分析 | 推荐时段为价格最高的前3个时段（合并连续） | 核心时段为价格最高的前2个时段</footer>
 </div>
+<div class="refresh-tip" id="refreshTip">🔄 数据已更新</div>
 
 <script>
+    // 存储当前展开的详情项ID
+    var openDetails = {};
+    // 存储上一次的数据哈希，用于判断是否真的有变化
+    var lastDataHash = '';
+    
+    function showRefreshTip() {
+        var tip = document.getElementById('refreshTip');
+        tip.style.opacity = '1';
+        setTimeout(function() {
+            tip.style.opacity = '0';
+        }, 1500);
+    }
+    
+    // 简单哈希函数，用于比较数据是否变化
+    function simpleHash(str) {
+        var hash = 0;
+        for (var i = 0; i < str.length; i++) {
+            var char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+        return hash.toString();
+    }
+    
+    // 保存当前展开状态
+    function saveOpenStates() {
+        var detailItems = document.querySelectorAll('.detail-item');
+        openDetails = {};
+        for (var i = 0; i < detailItems.length; i++) {
+            var item = detailItems[i];
+            if (item.classList.contains('open')) {
+                var id = item.getAttribute('data-offer-id');
+                if (id) openDetails[id] = true;
+            }
+        }
+    }
+    
+    // 恢复展开状态
+    function restoreOpenStates() {
+        for (var id in openDetails) {
+            if (openDetails[id]) {
+                var item = document.querySelector('.detail-item[data-offer-id="' + id + '"]');
+                if (item && !item.classList.contains('open')) {
+                    item.classList.add('open');
+                }
+            }
+        }
+    }
+    
+    // 重新绑定点击事件
+    function bindClickEvents() {
+        var detailItems = document.querySelectorAll('.detail-item');
+        for (var i = 0; i < detailItems.length; i++) {
+            var item = detailItems[i];
+            var header = item.querySelector('h3');
+            // 移除旧事件避免重复绑定
+            var newHeader = header.cloneNode(true);
+            header.parentNode.replaceChild(newHeader, header);
+            newHeader.addEventListener('click', (function(elem) {
+                return function() {
+                    elem.classList.toggle('open');
+                };
+            })(item));
+        }
+    }
+    
     // 解析多种时间格式
     function parseDate(str) {
         if (!str) return null;
@@ -377,12 +480,18 @@
         });
     }
 
-    function renderReport(data) {
+    function renderReport(data, isRefresh) {
         var contentDiv = document.getElementById('content');
         if (!data.length) {
             contentDiv.innerHTML = '<div class="error">没有生成任何分析结果，请检查数据内容</div>';
             return;
         }
+        
+        // 如果是刷新，先保存当前展开状态
+        if (isRefresh) {
+            saveOpenStates();
+        }
+        
         var html = '<h2>📋 各 Offer 精准排班表</h2>';
         html += '<div style="overflow-x:auto;"><table><thead><tr>';
         html += '<th>Offer</th><th>核心高价时段</th><th>推荐时段（按价格从高到低）</th>';
@@ -408,7 +517,8 @@
         html += '<h2>💡 各 Offer 详细操作建议（点击展开）</h2>';
         for (var i = 0; i < data.length; i++) {
             var item = data[i];
-            html += '<div class="detail-item" id="detail-' + i + '">';
+            var offerId = 'offer_' + i + '_' + escapeHtml(item.offer).replace(/[^a-zA-Z0-9]/g, '_');
+            html += '<div class="detail-item" data-offer-id="' + offerId + '" id="detail-' + i + '">';
             html += '<h3>📌 ' + escapeHtml(item.offer) + '</h3>';
             html += '<div class="detail-content">';
             html += '<p><strong>总订单量：</strong>' + item.totalOrders + ' 单</p>';
@@ -426,22 +536,27 @@
         }
         contentDiv.innerHTML = html;
         
-        for (var i = 0; i < data.length; i++) {
-            var el = document.getElementById('detail-' + i);
-            if (el) {
-                var header = el.querySelector('h3');
-                header.addEventListener('click', (function(elem) {
-                    return function() { elem.classList.toggle('open'); };
-                })(el));
-            }
+        // 绑定点击事件
+        bindClickEvents();
+        
+        // 如果是刷新，恢复之前的展开状态
+        if (isRefresh) {
+            restoreOpenStates();
         }
     }
 
-    // 直接加载 data.json，无需用户上传
-    function loadDataFromJson() {
-        var contentDiv = document.getElementById('content');
-        contentDiv.innerHTML = '<div class="loading">正在加载 data.json 数据...</div>';
-        
+    // 更新刷新时间显示
+    function updateRefreshTime() {
+        var now = new Date();
+        var timeStr = now.toLocaleTimeString('zh-CN');
+        var infoDiv = document.getElementById('refreshInfo');
+        if (infoDiv) {
+            infoDiv.innerHTML = '📅 最后更新: ' + timeStr + ' | 自动刷新中';
+        }
+    }
+
+    // 加载数据（核心函数，支持静默刷新）
+    function loadDataFromJson(isSilentRefresh) {
         fetch('data.json?t=' + Date.now())
             .then(function(response) {
                 if (!response.ok) throw new Error('无法加载 data.json，HTTP ' + response.status);
@@ -451,19 +566,34 @@
                 if (!json.data || !Array.isArray(json.data)) {
                     throw new Error("JSON 格式不正确，需要包含 data 数组");
                 }
+                // 计算数据哈希，判断是否有变化
+                var dataStr = JSON.stringify(json.data);
+                var newHash = simpleHash(dataStr);
+                var hasChanged = (lastDataHash !== '' && lastDataHash !== newHash);
+                lastDataHash = newHash;
+                
                 var analysis = analyzeData(json.data);
-                renderReport(analysis);
+                renderReport(analysis, true); // 传入 true 表示需要保留状态
+                updateRefreshTime();
+                
+                // 只有在数据真正变化时才显示提示
+                if (hasChanged) {
+                    showRefreshTip();
+                }
             })
             .catch(function(err) {
                 console.error(err);
-                contentDiv.innerHTML = '<div class="error">加载失败: ' + err.message + '<br><br>请确保 data.json 文件存在于同一目录下。</div>';
+                var contentDiv = document.getElementById('content');
+                if (contentDiv && !isSilentRefresh) {
+                    contentDiv.innerHTML = '<div class="error">加载失败: ' + err.message + '<br><br>请确保 data.json 文件存在于同一目录下。</div>';
+                }
             });
     }
 
     // 页面加载时自动读取 data.json
-    loadDataFromJson();
-    // 每30秒自动刷新
-    setInterval(loadDataFromJson, 30000);
+    loadDataFromJson(false);
+    // 每30秒自动刷新（静默刷新，保留展开状态）
+    setInterval(function() { loadDataFromJson(true); }, 30000);
 </script>
 </body>
 </html>
