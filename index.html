@@ -267,9 +267,9 @@
                 var x = rows[i];
                 html += '<tr><td style="text-align:left">' + x.offer + '</td><td class="num">' + formatMoney(x.total) + '</td><td class="num">' + formatMoney(x.avg) + '</td><td class="num">' + x.conversion + '</td><td class="num">' + x.ops + '</td></tr>';
             }
-            html += '<tr style="border-top:2px solid #ddd;background:#f8f9fa;font-weight:700"><td style="text-align:left">📊 合计</td><td class="num">' + formatMoney(totalAmount) + '</td><td class="num">' + formatMoney(totalAvg) + '</td><td class="num">' + totalCount + '</td><td class="num">' + totalOps + '<tr></tr>';
+            html += '<tr style="border-top:2px solid #ddd;background:#f8f9fa;font-weight:700"><td style="text-align:left">📊 合计</td><td class="num">' + formatMoney(totalAmount) + '</td><td class="num">' + formatMoney(totalAvg) + '</td><td class="num">' + totalCount + '</td><td class="num">' + totalOps + '</td></tr>';
             if(rows.length===0) html += '<tr><td colspan="5" style="text-align:center">暂无数据</td></tr>';
-            html += '</tbody><table></div></div>';
+            html += '</tbody></table></div></div>';
             var existing = document.getElementById('personModal');
             if(existing) existing.remove();
             document.body.insertAdjacentHTML('beforeend', html);
@@ -465,7 +465,7 @@
             }
         }
         
-        // 从 GitHub API 获取可用的日期列表（扫描 history 目录下的文件夹）
+        // 从 GitHub API 获取可用的日期列表
         async function fetchAvailableDates() {
             var repo = 'devilGuoXu/high-price';
             var url = `https://api.github.com/repos/${repo}/contents/history`;
@@ -474,12 +474,11 @@
                 var response = await fetch(url);
                 if (response.ok) {
                     var data = await response.json();
-                    // 只保留目录（type === 'dir'），并按日期排序
                     var dates = data
                         .filter(function(item) { return item.type === 'dir'; })
                         .map(function(item) { return item.name; })
                         .sort()
-                        .reverse();  // 最新的在前面
+                        .reverse();
                     return dates;
                 } else {
                     throw new Error('GitHub API 返回 ' + response.status);
@@ -491,49 +490,74 @@
         }
         
         // 加载指定日期的数据
-        function loadDataByDate(date) {
+        async function loadDataByDate(date, preserveState) {
+            // preserveState: 是否保留当前选中的 Offer（用于自动刷新时）
             var dataPath = 'history/' + date + '/data.json?t=' + Date.now();
             
-            fetch(dataPath)
-                .then(function(r) {
-                    if (!r.ok) throw new Error('数据不存在: ' + date);
-                    return r.json();
-                })
-                .then(function(d) {
-                    console.log('加载数据:', date, d);
-                    var rawData = d.data || [];
-                    var personOpsData = (d.person_offer_ops && Object.keys(d.person_offer_ops).length) ? d.person_offer_ops : PERSON_OPS;
-                    if(personOpsData && Object.keys(personOpsData).length) {
-                        window.PERSON_OPS = personOpsData;
-                        PERSON_OPS = personOpsData;
-                    }
-                    _allData = [];
-                    for(var i=0;i<rawData.length;i++) {
-                        var offer = String(rawData[i].offer || '').trim();
-                        if(MAPPED_OFFERS.length===0 || MAPPED_OFFERS.indexOf(offer)>=0) _allData.push(rawData[i]);
-                    }
-                    if(_allData.length===0) return;
-                    var offerStats = {};
-                    for(var i=0;i<_allData.length;i++) {
-                        var r = _allData[i];
-                        var o = String(r.offer||'未知').trim();
-                        var p = parseFloat(String(r['价格']||'0').replace(/[$,]/g,'')) || 0;
-                        if(!offerStats[o]) offerStats[o]={total:0,count:0};
-                        offerStats[o].total += p;
-                        offerStats[o].count += 1;
-                    }
-                    _offerList = Object.keys(offerStats).sort();
-                    for(var i=0;i<_offerList.length;i++) OFFER_AVG_PRICE[_offerList[i]] = offerStats[_offerList[i]].total / offerStats[_offerList[i]].count;
-                    
-                    document.getElementById('updateTime').innerHTML = `📅 ${date} | 更新: ${new Date().toLocaleTimeString('zh-CN')}`;
-                    renderPersonOfferList();
-                    renderStateOfferList();
-                    syncIframeDate(date);
-                })
-                .catch(function(err) { 
-                    console.error('加载失败', err); 
-                    document.getElementById('pl').innerHTML='<div class="no-data">数据加载失败，日期: ' + date + '</div>';
-                });
+            try {
+                var response = await fetch(dataPath);
+                if (!response.ok) throw new Error('数据不存在: ' + date);
+                var d = await response.json();
+                
+                console.log('加载数据:', date, d);
+                var rawData = d.data || [];
+                var personOpsData = (d.person_offer_ops && Object.keys(d.person_offer_ops).length) ? d.person_offer_ops : PERSON_OPS;
+                if(personOpsData && Object.keys(personOpsData).length) {
+                    window.PERSON_OPS = personOpsData;
+                    PERSON_OPS = personOpsData;
+                }
+                
+                // 保存当前选中的 Offer（用于刷新后恢复）
+                var savedPersonOffer = preserveState ? _currentPersonOffer : null;
+                var savedStateOffer = preserveState ? _currentStateOffer : null;
+                
+                _allData = [];
+                for(var i=0;i<rawData.length;i++) {
+                    var offer = String(rawData[i].offer || '').trim();
+                    if(MAPPED_OFFERS.length===0 || MAPPED_OFFERS.indexOf(offer)>=0) _allData.push(rawData[i]);
+                }
+                if(_allData.length===0) return;
+                
+                var offerStats = {};
+                for(var i=0;i<_allData.length;i++) {
+                    var r = _allData[i];
+                    var o = String(r.offer||'未知').trim();
+                    var p = parseFloat(String(r['价格']||'0').replace(/[$,]/g,'')) || 0;
+                    if(!offerStats[o]) offerStats[o]={total:0,count:0};
+                    offerStats[o].total += p;
+                    offerStats[o].count += 1;
+                }
+                _offerList = Object.keys(offerStats).sort();
+                for(var i=0;i<_offerList.length;i++) OFFER_AVG_PRICE[_offerList[i]] = offerStats[_offerList[i]].total / offerStats[_offerList[i]].count;
+                
+                document.getElementById('updateTime').innerHTML = `📅 ${date} | 更新: ${new Date().toLocaleTimeString('zh-CN')}`;
+                
+                // 恢复选中的 Offer（如果存在）
+                if (preserveState && savedPersonOffer && _offerList.includes(savedPersonOffer)) {
+                    _currentPersonOffer = savedPersonOffer;
+                } else {
+                    _currentPersonOffer = null;
+                }
+                if (preserveState && savedStateOffer && _offerList.includes(savedStateOffer)) {
+                    _currentStateOffer = savedStateOffer;
+                } else {
+                    _currentStateOffer = null;
+                }
+                
+                renderPersonOfferList();
+                renderStateOfferList();
+                
+            } catch (err) { 
+                console.error('加载失败', err); 
+                document.getElementById('pl').innerHTML='<div class="no-data">数据加载失败，日期: ' + date + '</div>';
+            }
+        }
+        
+        // 刷新当前选中的日期（保留用户选择的 Offer）
+        async function refreshCurrentDate() {
+            if (currentSelectedDate) {
+                await loadDataByDate(currentSelectedDate, true);
+            }
         }
         
         // 初始化日期选择器
@@ -556,7 +580,6 @@
                 var date = availableDates[i];
                 var option = document.createElement('option');
                 option.value = date;
-                // 判断是否最新（第一个）
                 if (i === 0) {
                     option.textContent = '🔥 ' + date + ' (最新)';
                 } else {
@@ -565,19 +588,31 @@
                 selector.appendChild(option);
             }
             
-            // 默认选择最新日期（第一个）
-            var latestDate = availableDates[0];
-            currentSelectedDate = latestDate;
-            selector.value = latestDate;
+            // 如果还没有选中日期，默认选择最新日期
+            if (!currentSelectedDate) {
+                currentSelectedDate = availableDates[0];
+                selector.value = currentSelectedDate;
+                await loadDataByDate(currentSelectedDate, false);
+                syncIframeDate(currentSelectedDate);
+            } else {
+                // 如果已有选中的日期，保持选中状态
+                if (availableDates.includes(currentSelectedDate)) {
+                    selector.value = currentSelectedDate;
+                } else {
+                    // 如果当前选中的日期不存在了（比如被删除），回退到最新
+                    currentSelectedDate = availableDates[0];
+                    selector.value = currentSelectedDate;
+                    await loadDataByDate(currentSelectedDate, false);
+                    syncIframeDate(currentSelectedDate);
+                }
+            }
             
-            // 加载最新数据
-            loadDataByDate(latestDate);
-            
-            // 监听日期切换
-            selector.addEventListener('change', function(e) {
+            // 监听日期切换（用户手动切换）
+            selector.addEventListener('change', async function(e) {
                 var selectedDate = e.target.value;
                 currentSelectedDate = selectedDate;
-                loadDataByDate(selectedDate);
+                await loadDataByDate(selectedDate, false);  // 切换日期时不保留 Offer 状态
+                syncIframeDate(selectedDate);
             });
         }
         
@@ -608,10 +643,8 @@
         
         // 启动
         initDateSelector();
-        // 每30秒重新获取日期列表和刷新最新数据
-        setInterval(function() {
-            initDateSelector();
-        }, 30000);
+        // 每30秒刷新当前日期的数据（保持用户选中的日期和 Offer）
+        setInterval(refreshCurrentDate, 30000);
     </script>
 </body>
 </html>
