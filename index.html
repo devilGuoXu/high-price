@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-    <title>数据透视台 - 人员｜州｜计数｜数据建议</title>
+    <title>数据透视台 - 人员｜州｜计数｜时间趋势</title>
     <style>
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;background:#f5f6f8;color:#2d3436;min-height:100vh}
@@ -95,6 +95,11 @@
         .stat-card-label{font-size:12px;color:#999}
         .stat-card-value{font-size:22px;font-weight:700}
         
+        /* 时间趋势按钮样式 */
+        .trend-time-btn{background:#f0f0f0;border:none;border-radius:6px;padding:6px 16px;cursor:pointer;font-size:12px;transition:all .2s}
+        .trend-time-btn.active{background:#4CAF50;color:#fff}
+        .trend-time-btn:hover{background:#ddd}
+        
         @media(max-width:768px){
             .page{padding:12px}
             .split-layout{flex-direction:column}
@@ -109,6 +114,7 @@
             .date-selector{font-size:10px;padding:3px 6px}
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -119,7 +125,7 @@
                 <div class="nav-tab active" data-tab="pagePerson">👥 人员</div>
                 <div class="nav-tab" data-tab="pageState">🗺️ 州</div>
                 <div class="nav-tab" data-tab="pageCount">📈 计数</div>
-                <div class="nav-tab" data-tab="pageAdvice">💡 数据建议</div>
+                <div class="nav-tab" data-tab="pageTrend">📈 时间趋势</div>
             </div>
         </div>
         <div class="nav-right">
@@ -171,12 +177,27 @@
         <iframe id="iframeCount" src="person_state.html" style="width:100%; height:100%; border:none;"></iframe>
     </div>
 
-    <!-- 数据建议页面 -->
-    <div class="page" id="pageAdvice" style="padding:0; height:calc(100vh - 90px);">
-        <iframe id="iframeAdvice" src="data-suggestion.html" style="width:100%; height:100%; border:none;"></iframe>
+    <!-- 时间趋势页面 -->
+    <div class="page" id="pageTrend">
+        <div class="container">
+            <div class="split-layout">
+                <div class="sidebar" id="trendSidebar">
+                    <div class="sidebar-title">Offer 列表</div>
+                    <div id="trendOfferList"></div>
+                </div>
+                <div class="main-content">
+                    <div class="filter-bar">
+                        <span style="font-size:12px; color:#999;">按半小时统计</span>
+                    </div>
+                    <div id="trendContent">
+                        <div class="no-data">← 选择 Offer</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="footer">人员/州页面自动刷新 · 计数/数据建议页面独立加载</div>
+    <div class="footer">人员/州页面自动刷新 · 计数页面独立加载</div>
 
     <script>
         var MAPPED_OFFERS = typeof window.MAPPED_OFFERS !== 'undefined' ? window.MAPPED_OFFERS : [];
@@ -189,7 +210,6 @@
         var OFFER_AVG_PRICE = {};
         var DEFAULT_TARGET = OFFER_TARGETS.default || 1000;
         
-        // 可用日期列表
         var availableDates = [];
         var currentSelectedDate = null;
         
@@ -204,6 +224,11 @@
         var _currentPersonOffer = null;
         var _currentStateOffer = null;
         var currentStateTimeFilter = 'all';
+        
+        // 时间趋势状态
+        var _currentTrendOffer = null;
+        var trendChart = null;
+        var currentTrendFilter = 'working';
         
         function formatMoney(val) {
             if (isNaN(val)) val = 0;
@@ -448,37 +473,249 @@
             if(_currentStateOffer) showStateDetail(_currentStateOffer, null);
         }
         
-        // 同步 iframe 日期
+        // ===================== 时间趋势页面 =====================
+        function renderTrendOfferList() {
+            var container = document.getElementById('trendOfferList');
+            if (!container) return;
+            container.innerHTML = '';
+            for (var i = 0; i < _offerList.length; i++) {
+                var o = _offerList[i];
+                var d = document.createElement('div');
+                d.className = 'sidebar-item';
+                if (_currentTrendOffer === o) d.classList.add('active');
+                d.textContent = o;
+                d.onclick = (function(offer) {
+                    return function() { showTrendDetail(offer, this); };
+                })(o);
+                container.appendChild(d);
+            }
+            if (_offerList.length > 0 && !_currentTrendOffer) {
+                _currentTrendOffer = _offerList[0];
+                var firstItem = container.firstChild;
+                if (firstItem) {
+                    firstItem.classList.add('active');
+                    showTrendDetail(_offerList[0], firstItem);
+                }
+            }
+        }
+        
+        function filterTimeData(hourLabels, prices, counts, filterMode) {
+            if (filterMode === 'full') {
+                return { labels: hourLabels, prices: prices, counts: counts };
+            }
+            var filteredLabels = [], filteredPrices = [], filteredCounts = [];
+            for (var i = 0; i < hourLabels.length; i++) {
+                var label = hourLabels[i];
+                var parts = label.split(':');
+                var hour = parseInt(parts[0]);
+                if (hour >= 9 && hour <= 21) {
+                    filteredLabels.push(label);
+                    filteredPrices.push(prices[i]);
+                    filteredCounts.push(counts[i]);
+                }
+            }
+            return { labels: filteredLabels, prices: filteredPrices, counts: filteredCounts };
+        }
+        
+        function showTrendDetail(offerName, element) {
+            _currentTrendOffer = offerName;
+            var items = document.querySelectorAll('#trendOfferList .sidebar-item');
+            for (var i = 0; i < items.length; i++) items[i].classList.remove('active');
+            if (element) element.classList.add('active');
+            
+            var priceData = [];
+            for (var i = 0; i < _allData.length; i++) {
+                var row = _allData[i];
+                if (row.offer !== offerName) continue;
+                var timeStr = row['时间'];
+                var price = parseFloat(String(row['价格'] || '0').replace(/[$,]/g, '')) || 0;
+                if (timeStr && price > 0) {
+                    priceData.push({ time: new Date(timeStr), price: price });
+                }
+            }
+            priceData.sort(function(a, b) { return a.time - b.time; });
+            
+            if (priceData.length === 0) {
+                document.getElementById('trendContent').innerHTML = '<div class="no-data">暂无数据</div>';
+                return;
+            }
+            
+            var halfHourStats = {};
+            for (var i = 0; i < priceData.length; i++) {
+                var date = priceData[i].time;
+                var hour = date.getHours();
+                var minute = date.getMinutes();
+                var minuteKey = minute < 30 ? '00' : '30';
+                var key = hour + ':' + minuteKey;
+                if (!halfHourStats[key]) halfHourStats[key] = { total: 0, count: 0 };
+                halfHourStats[key].total += priceData[i].price;
+                halfHourStats[key].count++;
+            }
+            
+            var allKeys = [];
+            for (var h = 0; h < 24; h++) {
+                allKeys.push(h + ':00');
+                allKeys.push(h + ':30');
+            }
+            var allPrices = allKeys.map(function(key) {
+                if (halfHourStats[key]) return halfHourStats[key].total / halfHourStats[key].count;
+                return null;
+            });
+            var allCounts = allKeys.map(function(key) {
+                return halfHourStats[key] ? halfHourStats[key].count : 0;
+            });
+            
+            var filtered = filterTimeData(allKeys, allPrices, allCounts, currentTrendFilter);
+            var hourLabels = filtered.labels;
+            var prices = filtered.prices;
+            var counts = filtered.counts;
+            
+            var totalAmount = 0, totalCount = 0, maxPrice = 0, minPrice = Infinity;
+            for (var i = 0; i < priceData.length; i++) {
+                totalAmount += priceData[i].price;
+                totalCount++;
+                if (priceData[i].price > maxPrice) maxPrice = priceData[i].price;
+                if (priceData[i].price < minPrice) minPrice = priceData[i].price;
+            }
+            var avgPrice = totalAmount / totalCount;
+            
+            var filterLabel = currentTrendFilter === 'full' ? '全天(24h)' : '工作时段(9-21)';
+            var h = '<div class="section-title">' + offerName + '<span class="section-title-price">均价 ' + formatMoney(avgPrice) + '</span></div>';
+            
+            h += '<div class="filter-bar" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; flex-wrap:wrap; gap:8px;">';
+            h += '<div style="font-size:12px; color:#999;">当前: <strong>' + filterLabel + '</strong></div>';
+            h += '<div style="display:flex; gap:8px;">';
+            h += '<button class="trend-time-btn' + (currentTrendFilter === 'working' ? ' active' : '') + '" onclick="switchTrendFilter(\'working\')" style="background:' + (currentTrendFilter === 'working' ? '#4CAF50' : '#f0f0f0') + ';color:' + (currentTrendFilter === 'working' ? '#fff' : '#333') + ';border:none;border-radius:6px;padding:6px 16px;cursor:pointer;font-size:12px;">🕘 工作时段 (9-21)</button>';
+            h += '<button class="trend-time-btn' + (currentTrendFilter === 'full' ? ' active' : '') + '" onclick="switchTrendFilter(\'full\')" style="background:' + (currentTrendFilter === 'full' ? '#4CAF50' : '#f0f0f0') + ';color:' + (currentTrendFilter === 'full' ? '#fff' : '#333') + ';border:none;border-radius:6px;padding:6px 16px;cursor:pointer;font-size:12px;">🌙 全天 (24h)</button>';
+            h += '</div></div>';
+            
+            h += '<div style="font-size:12px; color:#999; margin-bottom:16px;">';
+            h += '数据点数: ' + priceData.length + ' | 最高: ' + formatMoney(maxPrice) + ' | 最低: ' + formatMoney(minPrice);
+            h += '</div>';
+            h += '<div class="stats-cards" style="margin-bottom:20px;">';
+            h += '<div class="stat-card"><div class="stat-card-label">转化数</div><div class="stat-card-value" style="color:#2c3e66;">' + totalCount + '</div></div>';
+            h += '<div class="stat-card"><div class="stat-card-label">总金额</div><div class="stat-card-value" style="color:#00b894;">' + formatMoney(totalAmount) + '</div></div>';
+            h += '</div>';
+            h += '<div style="overflow-x: auto;"><canvas id="trendChartCanvas" style="min-width: 700px; height: 400px;"></canvas></div>';
+            
+            document.getElementById('trendContent').innerHTML = h;
+            
+            var ctx = document.getElementById('trendChartCanvas').getContext('2d');
+            if (trendChart) { trendChart.destroy(); trendChart = null; }
+            
+            var maxCount = 1;
+            for (var i = 0; i < counts.length; i++) if (counts[i] > maxCount) maxCount = counts[i];
+            var minPointSize = 4, maxPointSize = 10;
+            
+            trendChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: hourLabels,
+                    datasets: [{
+                        label: '均价 (每半小时)',
+                        data: prices,
+                        borderColor: '#3b82f6',
+                        backgroundColor: 'rgba(59, 130, 246, 0.15)',
+                        borderWidth: 2.5,
+                        pointRadius: function(context) {
+                            var idx = context.dataIndex;
+                            var count = counts[idx] || 0;
+                            if (count === 0 || prices[idx] === null) return 0;
+                            var size = minPointSize + (count / maxCount) * (maxPointSize - minPointSize);
+                            return Math.min(Math.max(size, minPointSize), maxPointSize);
+                        },
+                        pointBackgroundColor: function(context) {
+                            var idx = context.dataIndex;
+                            var count = counts[idx] || 0;
+                            if (count === 0 || prices[idx] === null) return 'rgba(0,0,0,0)';
+                            var intensity = 0.3 + (count / maxCount) * 0.7;
+                            return 'rgba(59, 130, 246, ' + Math.min(intensity, 1) + ')';
+                        },
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 1.5,
+                        fill: true,
+                        tension: 0.3,
+                        spanGaps: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    var idx = context.dataIndex;
+                                    var price = prices[idx];
+                                    var count = counts[idx] || 0;
+                                    if (price === null || count === 0) return '无数据';
+                                    return '均价: ' + formatMoney(price) + '  |  转化: ' + count + ' 条';
+                                }
+                            }
+                        },
+                        legend: { position: 'top', labels: { font: { size: 12 } } }
+                    },
+                    scales: {
+                        y: {
+                            ticks: { callback: function(value) { return '$' + value.toFixed(2); } },
+                            title: { display: true, text: '价格 (USD)', font: { size: 13 } }
+                        },
+                        x: {
+                            title: { display: true, text: '时间', font: { size: 13 } },
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 45,
+                                autoSkip: true,
+                                maxTicksLimit: 16,
+                                callback: function(value, index, ticks) {
+                                    var label = hourLabels[index] || '';
+                                    if (!label) return '';
+                                    var parts = label.split(':');
+                                    if (parts[1] === '00') return label;
+                                    return '';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function switchTrendFilter(mode) {
+            if (currentTrendFilter === mode) return;
+            currentTrendFilter = mode;
+            if (_currentTrendOffer) {
+                var items = document.querySelectorAll('#trendOfferList .sidebar-item');
+                var targetElement = null;
+                for (var i = 0; i < items.length; i++) {
+                    if (items[i].textContent.trim() === _currentTrendOffer) {
+                        targetElement = items[i];
+                        break;
+                    }
+                }
+                showTrendDetail(_currentTrendOffer, targetElement);
+            }
+        }
+        
+        // 同步 iframe 日期（计数页面）
         function syncIframeDate(date) {
             var iframeCount = document.getElementById('iframeCount');
-            var iframeAdvice = document.getElementById('iframeAdvice');
-            
             if (iframeCount && iframeCount.src) {
                 var url = new URL(iframeCount.src, window.location.href);
                 url.searchParams.set('date', date);
                 iframeCount.src = url.toString();
-            }
-            if (iframeAdvice && iframeAdvice.src) {
-                var url2 = new URL(iframeAdvice.src, window.location.href);
-                url2.searchParams.set('date', date);
-                iframeAdvice.src = url2.toString();
             }
         }
         
         // 从 GitHub API 获取可用的日期列表
         async function fetchAvailableDates() {
             var repo = 'devilGuoXu/high-price';
-            var url = `https://api.github.com/repos/${repo}/contents/history`;
-            
+            var url = 'https://api.github.com/repos/' + repo + '/contents/history';
             try {
                 var response = await fetch(url);
                 if (response.ok) {
                     var data = await response.json();
-                    var dates = data
-                        .filter(function(item) { return item.type === 'dir'; })
-                        .map(function(item) { return item.name; })
-                        .sort()
-                        .reverse();
+                    var dates = data.filter(function(item) { return item.type === 'dir'; }).map(function(item) { return item.name; }).sort().reverse();
                     return dates;
                 } else {
                     throw new Error('GitHub API 返回 ' + response.status);
@@ -491,14 +728,11 @@
         
         // 加载指定日期的数据
         async function loadDataByDate(date, preserveState) {
-            // preserveState: 是否保留当前选中的 Offer（用于自动刷新时）
             var dataPath = 'history/' + date + '/data.json?t=' + Date.now();
-            
             try {
                 var response = await fetch(dataPath);
                 if (!response.ok) throw new Error('数据不存在: ' + date);
                 var d = await response.json();
-                
                 console.log('加载数据:', date, d);
                 var rawData = d.data || [];
                 var personOpsData = (d.person_offer_ops && Object.keys(d.person_offer_ops).length) ? d.person_offer_ops : PERSON_OPS;
@@ -506,10 +740,9 @@
                     window.PERSON_OPS = personOpsData;
                     PERSON_OPS = personOpsData;
                 }
-                
-                // 保存当前选中的 Offer（用于刷新后恢复）
                 var savedPersonOffer = preserveState ? _currentPersonOffer : null;
                 var savedStateOffer = preserveState ? _currentStateOffer : null;
+                var savedTrendOffer = preserveState ? _currentTrendOffer : null;
                 
                 _allData = [];
                 for(var i=0;i<rawData.length;i++) {
@@ -517,7 +750,6 @@
                     if(MAPPED_OFFERS.length===0 || MAPPED_OFFERS.indexOf(offer)>=0) _allData.push(rawData[i]);
                 }
                 if(_allData.length===0) return;
-                
                 var offerStats = {};
                 for(var i=0;i<_allData.length;i++) {
                     var r = _allData[i];
@@ -530,93 +762,72 @@
                 _offerList = Object.keys(offerStats).sort();
                 for(var i=0;i<_offerList.length;i++) OFFER_AVG_PRICE[_offerList[i]] = offerStats[_offerList[i]].total / offerStats[_offerList[i]].count;
                 
-                document.getElementById('updateTime').innerHTML = `📅 ${date} | 更新: ${new Date().toLocaleTimeString('zh-CN')}`;
+                document.getElementById('updateTime').innerHTML = '📅 ' + date + ' | 更新: ' + new Date().toLocaleTimeString('zh-CN');
                 
-                // 恢复选中的 Offer（如果存在）
                 if (preserveState && savedPersonOffer && _offerList.includes(savedPersonOffer)) {
                     _currentPersonOffer = savedPersonOffer;
-                } else {
-                    _currentPersonOffer = null;
-                }
+                } else { _currentPersonOffer = null; }
                 if (preserveState && savedStateOffer && _offerList.includes(savedStateOffer)) {
                     _currentStateOffer = savedStateOffer;
-                } else {
-                    _currentStateOffer = null;
-                }
+                } else { _currentStateOffer = null; }
+                if (preserveState && savedTrendOffer && _offerList.includes(savedTrendOffer)) {
+                    _currentTrendOffer = savedTrendOffer;
+                } else { _currentTrendOffer = null; }
                 
                 renderPersonOfferList();
                 renderStateOfferList();
-                
-            } catch (err) { 
-                console.error('加载失败', err); 
+                renderTrendOfferList();
+            } catch (err) {
+                console.error('加载失败', err);
                 document.getElementById('pl').innerHTML='<div class="no-data">数据加载失败，日期: ' + date + '</div>';
             }
         }
         
-        // 刷新当前选中的日期（保留用户选择的 Offer）
         async function refreshCurrentDate() {
             if (currentSelectedDate) {
                 await loadDataByDate(currentSelectedDate, true);
             }
         }
         
-        // 初始化日期选择器
         async function initDateSelector() {
             var selector = document.getElementById('dateSelector');
             selector.innerHTML = '<option value="">加载中...</option>';
-            
-            // 获取可用日期
             availableDates = await fetchAvailableDates();
-            
             if (availableDates.length === 0) {
                 selector.innerHTML = '<option value="">暂无历史数据</option>';
                 document.getElementById('updateTime').innerHTML = '❌ 未找到历史数据';
                 return;
             }
-            
-            // 构建下拉选项
             selector.innerHTML = '';
             for (var i = 0; i < availableDates.length; i++) {
                 var date = availableDates[i];
                 var option = document.createElement('option');
                 option.value = date;
-                if (i === 0) {
-                    option.textContent = '🔥 ' + date + ' (最新)';
-                } else {
-                    option.textContent = '📁 ' + date;
-                }
+                if (i === 0) option.textContent = '🔥 ' + date + ' (最新)';
+                else option.textContent = '📁 ' + date;
                 selector.appendChild(option);
             }
-            
-            // 如果还没有选中日期，默认选择最新日期
             if (!currentSelectedDate) {
                 currentSelectedDate = availableDates[0];
                 selector.value = currentSelectedDate;
                 await loadDataByDate(currentSelectedDate, false);
                 syncIframeDate(currentSelectedDate);
+            } else if (availableDates.includes(currentSelectedDate)) {
+                selector.value = currentSelectedDate;
             } else {
-                // 如果已有选中的日期，保持选中状态
-                if (availableDates.includes(currentSelectedDate)) {
-                    selector.value = currentSelectedDate;
-                } else {
-                    // 如果当前选中的日期不存在了（比如被删除），回退到最新
-                    currentSelectedDate = availableDates[0];
-                    selector.value = currentSelectedDate;
-                    await loadDataByDate(currentSelectedDate, false);
-                    syncIframeDate(currentSelectedDate);
-                }
+                currentSelectedDate = availableDates[0];
+                selector.value = currentSelectedDate;
+                await loadDataByDate(currentSelectedDate, false);
+                syncIframeDate(currentSelectedDate);
             }
-            
-            // 监听日期切换（用户手动切换）
             selector.addEventListener('change', async function(e) {
                 var selectedDate = e.target.value;
                 currentSelectedDate = selectedDate;
-                await loadDataByDate(selectedDate, false);  // 切换日期时不保留 Offer 状态
+                await loadDataByDate(selectedDate, false);
                 syncIframeDate(selectedDate);
             });
         }
         
-        // Tab切换
         function switchTab(pageId, el) {
             document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
             document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
@@ -624,6 +835,7 @@
             if(el) el.classList.add('active');
             if(pageId === 'pagePerson') renderPersonOfferList();
             if(pageId === 'pageState') renderStateOfferList();
+            if(pageId === 'pageTrend') renderTrendOfferList();
         }
         
         document.querySelectorAll('.nav-tab').forEach(function(tab){
@@ -641,9 +853,7 @@
             });
         }
         
-        // 启动
         initDateSelector();
-        // 每30秒刷新当前日期的数据（保持用户选中的日期和 Offer）
         setInterval(refreshCurrentDate, 30000);
     </script>
 </body>
