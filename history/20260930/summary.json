@@ -1,0 +1,650 @@
+{
+ "day": "2026-09-30",
+ "generated_at": "2026-11-01 20:18:49",
+ "source_timestamp": "2026-10-01T08:43:40.151482",
+ "rows": 1719,
+ "unmatched_rows": 334,
+ "total_ops": 1622,
+ "total_amount": 5583.92,
+ "avg_price": 3.2484,
+ "ops_meta": {},
+ "match_stats": {},
+ "offers": {
+  "Ashnova-128 [3683] NerdWallet Auto Insurance": {
+   "conv": 24,
+   "amount": 127.3,
+   "avg": 5.3044,
+   "ops": 25,
+   "rate": 96.0,
+   "people": 0
+  },
+  "B452-4 2210 C - QW AUTO": {
+   "conv": 197,
+   "amount": 377.03,
+   "avg": 1.9138,
+   "ops": 314,
+   "rate": 62.7,
+   "people": 7
+  },
+  "B452-4 2384 D - Best Money Auto": {
+   "conv": 156,
+   "amount": 368.1,
+   "avg": 2.3596,
+   "ops": 0,
+   "rate": null,
+   "people": 0
+  },
+  "Adscent-52 (131316) 193-QuoteWizard-Home Insurance": {
+   "conv": 667,
+   "amount": 1428.13,
+   "avg": 2.1411,
+   "ops": 739,
+   "rate": 90.3,
+   "people": 15
+  },
+  "B452-4 2369 1UP - Quote Blizzard": {
+   "conv": 0,
+   "amount": 0,
+   "avg": 0,
+   "ops": 1,
+   "rate": 0.0,
+   "people": 0
+  },
+  "B452-4 2386 RP - Nerd Wallet Auto": {
+   "conv": 9,
+   "amount": 53.32,
+   "avg": 5.925,
+   "ops": 18,
+   "rate": 50.0,
+   "people": 1
+  },
+  "B452-4 2371 C - Provide Auto Revshare": {
+   "conv": 25,
+   "amount": 283.2,
+   "avg": 11.328,
+   "ops": 25,
+   "rate": 100.0,
+   "people": 1
+  },
+  "Adscent-52 (1659189)193-Bestmoney-Auto": {
+   "conv": 61,
+   "amount": 264.92,
+   "avg": 4.3429,
+   "ops": 0,
+   "rate": null,
+   "people": 0
+  },
+  "B452-4 2390 1UP - Nerd Wallet auto": {
+   "conv": 10,
+   "amount": 54.68,
+   "avg": 5.4678,
+   "ops": 10,
+   "rate": 100.0,
+   "people": 2
+  },
+  "B452-4 2391 D - Quote Wizard Auto": {
+   "conv": 77,
+   "amount": 1213.78,
+   "avg": 15.7633,
+   "ops": 84,
+   "rate": 91.7,
+   "people": 4
+  },
+  "B452-4 2182 QW Home - Meta": {
+   "conv": 47,
+   "amount": 240.99,
+   "avg": 5.1274,
+   "ops": 56,
+   "rate": 83.9,
+   "people": 3
+  },
+  "B452-4 2118 RP - Quote Wizard Home": {
+   "conv": 96,
+   "amount": 329.86,
+   "avg": 3.436,
+   "ops": 139,
+   "rate": 69.1,
+   "people": 6
+  },
+  "B452-4 2346 C - Smarter Auto": {
+   "conv": 152,
+   "amount": 368.76,
+   "avg": 2.4261,
+   "ops": 80,
+   "rate": 190.0,
+   "people": 3
+  },
+  "Adscent-52 (1534509)214-GetAffordable-auto": {
+   "conv": 50,
+   "amount": 101.23,
+   "avg": 2.0245,
+   "ops": 35,
+   "rate": 142.9,
+   "people": 2
+  },
+  "Adscent-52 (611178)239-Financebuzz-Home": {
+   "conv": 23,
+   "amount": 80.75,
+   "avg": 3.5111,
+   "ops": 16,
+   "rate": 143.8,
+   "people": 1
+  },
+  "B452-4 2363 U - Get Affordable Auto": {
+   "conv": 125,
+   "amount": 291.87,
+   "avg": 2.335,
+   "ops": 80,
+   "rate": 156.2,
+   "people": 3
+  }
+ },
+ "people": {
+  "成昭旭": {
+   "conv": 99,
+   "amount": 289.49,
+   "avg": 2.9242,
+   "ops": 120,
+   "rate": 82.5,
+   "offers": 5
+  },
+  "郑杰": {
+   "conv": 118,
+   "amount": 281.39,
+   "avg": 2.3847,
+   "ops": 120,
+   "rate": 98.3,
+   "offers": 4
+  },
+  "郑义程": {
+   "conv": 99,
+   "amount": 220.32,
+   "avg": 2.2254,
+   "ops": 91,
+   "rate": 108.8,
+   "offers": 3
+  },
+  "陈帅": {
+   "conv": 38,
+   "amount": 91.65,
+   "avg": 2.4118,
+   "ops": 49,
+   "rate": 77.6,
+   "offers": 2
+  },
+  "李铜": {
+   "conv": 93,
+   "amount": 664.56,
+   "avg": 7.1459,
+   "ops": 106,
+   "rate": 87.7,
+   "offers": 5
+  },
+  "温馨": {
+   "conv": 36,
+   "amount": 82.54,
+   "avg": 2.2929,
+   "ops": 48,
+   "rate": 75.0,
+   "offers": 1
+  },
+  "高峰": {
+   "conv": 132,
+   "amount": 322.32,
+   "avg": 2.4419,
+   "ops": 130,
+   "rate": 101.5,
+   "offers": 3
+  },
+  "周港": {
+   "conv": 101,
+   "amount": 298.46,
+   "avg": 2.9551,
+   "ops": 96,
+   "rate": 105.2,
+   "offers": 4
+  },
+  "周帅": {
+   "conv": 109,
+   "amount": 231.93,
+   "avg": 2.1278,
+   "ops": 153,
+   "rate": 71.2,
+   "offers": 2
+  },
+  "陈虹佑": {
+   "conv": 51,
+   "amount": 358.69,
+   "avg": 7.0332,
+   "ops": 101,
+   "rate": 50.5,
+   "offers": 5
+  },
+  "张波": {
+   "conv": 68,
+   "amount": 157.53,
+   "avg": 2.3167,
+   "ops": 106,
+   "rate": 64.2,
+   "offers": 3
+  },
+  "钟进": {
+   "conv": 46,
+   "amount": 605.11,
+   "avg": 13.1545,
+   "ops": 54,
+   "rate": 85.2,
+   "offers": 2
+  },
+  "陈朋": {
+   "conv": 111,
+   "amount": 237.32,
+   "avg": 2.138,
+   "ops": 104,
+   "rate": 106.7,
+   "offers": 2
+  },
+  "钟奕": {
+   "conv": 124,
+   "amount": 264.51,
+   "avg": 2.1331,
+   "ops": 143,
+   "rate": 86.7,
+   "offers": 3
+  },
+  "杨松柏": {
+   "conv": 101,
+   "amount": 224.31,
+   "avg": 2.2209,
+   "ops": 140,
+   "rate": 72.1,
+   "offers": 3
+  },
+  "陈仕荣": {
+   "conv": 59,
+   "amount": 110.04,
+   "avg": 1.865,
+   "ops": 61,
+   "rate": 96.7,
+   "offers": 1
+  }
+ },
+ "pairs": [
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "周帅",
+   "conv": 82,
+   "ops": 99,
+   "rate": 82.8
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "周港",
+   "conv": 23,
+   "ops": 32,
+   "rate": 71.9
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "张波",
+   "conv": 17,
+   "ops": 20,
+   "rate": 85.0
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "成昭旭",
+   "conv": 15,
+   "ops": 17,
+   "rate": 88.2
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "李铜",
+   "conv": 32,
+   "ops": 39,
+   "rate": 82.1
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "杨松柏",
+   "conv": 25,
+   "ops": 29,
+   "rate": 86.2
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "温馨",
+   "conv": 36,
+   "ops": 48,
+   "rate": 75.0
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "郑义程",
+   "conv": 33,
+   "ops": 45,
+   "rate": 73.3
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "郑杰",
+   "conv": 65,
+   "ops": 68,
+   "rate": 95.6
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "钟奕",
+   "conv": 53,
+   "ops": 57,
+   "rate": 93.0
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "陈仕荣",
+   "conv": 59,
+   "ops": 61,
+   "rate": 96.7
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "陈帅",
+   "conv": 36,
+   "ops": 46,
+   "rate": 78.3
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "陈朋",
+   "conv": 78,
+   "ops": 82,
+   "rate": 95.1
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "陈虹佑",
+   "conv": 5,
+   "ops": 5,
+   "rate": 100.0
+  },
+  {
+   "offer": "Adscent-52 (131316) 193-QuoteWizard-Home Insurance",
+   "person": "高峰",
+   "conv": 71,
+   "ops": 91,
+   "rate": 78.0
+  },
+  {
+   "offer": "Adscent-52 (1534509)214-GetAffordable-auto",
+   "person": "郑杰",
+   "conv": 17,
+   "ops": 13,
+   "rate": 130.8
+  },
+  {
+   "offer": "Adscent-52 (1534509)214-GetAffordable-auto",
+   "person": "陈朋",
+   "conv": 33,
+   "ops": 22,
+   "rate": 150.0
+  },
+  {
+   "offer": "Adscent-52 (611178)239-Financebuzz-Home",
+   "person": "李铜",
+   "conv": 23,
+   "ops": 16,
+   "rate": 143.8
+  },
+  {
+   "offer": "Ashnova-128 [3683] NerdWallet Auto Insurance",
+   "person": "陈虹佑",
+   "conv": 0,
+   "ops": 25,
+   "rate": 0.0
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "张波",
+   "conv": 32,
+   "ops": 53,
+   "rate": 60.4
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "成昭旭",
+   "conv": 6,
+   "ops": 11,
+   "rate": 54.5
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "杨松柏",
+   "conv": 21,
+   "ops": 31,
+   "rate": 67.7
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "郑义程",
+   "conv": 4,
+   "ops": 4,
+   "rate": 100.0
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "陈帅",
+   "conv": 2,
+   "ops": 3,
+   "rate": 66.7
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "陈虹佑",
+   "conv": 26,
+   "ops": 37,
+   "rate": 70.3
+  },
+  {
+   "offer": "B452-4 2182 QW Home - Meta",
+   "person": "周港",
+   "conv": 14,
+   "ops": 23,
+   "rate": 60.9
+  },
+  {
+   "offer": "B452-4 2182 QW Home - Meta",
+   "person": "成昭旭",
+   "conv": 25,
+   "ops": 26,
+   "rate": 96.2
+  },
+  {
+   "offer": "B452-4 2182 QW Home - Meta",
+   "person": "李铜",
+   "conv": 7,
+   "ops": 7,
+   "rate": 100.0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "周帅",
+   "conv": 27,
+   "ops": 54,
+   "rate": 50.0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "周港",
+   "conv": 0,
+   "ops": 3,
+   "rate": 0.0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "张波",
+   "conv": 19,
+   "ops": 33,
+   "rate": 57.6
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "成昭旭",
+   "conv": 29,
+   "ops": 51,
+   "rate": 56.9
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "杨松柏",
+   "conv": 55,
+   "ops": 80,
+   "rate": 68.8
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "郑杰",
+   "conv": 12,
+   "ops": 22,
+   "rate": 54.5
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "钟奕",
+   "conv": 40,
+   "ops": 65,
+   "rate": 61.5
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "高峰",
+   "conv": 3,
+   "ops": 6,
+   "rate": 50.0
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "周港",
+   "conv": 62,
+   "ops": 32,
+   "rate": 193.8
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "成昭旭",
+   "conv": 24,
+   "ops": 15,
+   "rate": 160.0
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "高峰",
+   "conv": 58,
+   "ops": 33,
+   "rate": 175.8
+  },
+  {
+   "offer": "B452-4 2363 U - Get Affordable Auto",
+   "person": "郑义程",
+   "conv": 62,
+   "ops": 42,
+   "rate": 147.6
+  },
+  {
+   "offer": "B452-4 2363 U - Get Affordable Auto",
+   "person": "郑杰",
+   "conv": 24,
+   "ops": 17,
+   "rate": 141.2
+  },
+  {
+   "offer": "B452-4 2363 U - Get Affordable Auto",
+   "person": "钟奕",
+   "conv": 31,
+   "ops": 21,
+   "rate": 147.6
+  },
+  {
+   "offer": "B452-4 2369 1UP - Quote Blizzard",
+   "person": "钟进",
+   "conv": 0,
+   "ops": 1,
+   "rate": 0.0
+  },
+  {
+   "offer": "B452-4 2371 C - Provide Auto Revshare",
+   "person": "李铜",
+   "conv": 17,
+   "ops": 25,
+   "rate": 68.0
+  },
+  {
+   "offer": "B452-4 2386 RP - Nerd Wallet Auto",
+   "person": "周港",
+   "conv": 0,
+   "ops": 2,
+   "rate": 0.0
+  },
+  {
+   "offer": "B452-4 2386 RP - Nerd Wallet Auto",
+   "person": "陈虹佑",
+   "conv": 8,
+   "ops": 16,
+   "rate": 50.0
+  },
+  {
+   "offer": "B452-4 2390 1UP - Nerd Wallet auto",
+   "person": "钟进",
+   "conv": 6,
+   "ops": 7,
+   "rate": 85.7
+  },
+  {
+   "offer": "B452-4 2390 1UP - Nerd Wallet auto",
+   "person": "陈虹佑",
+   "conv": 2,
+   "ops": 3,
+   "rate": 66.7
+  },
+  {
+   "offer": "B452-4 2391 D - Quote Wizard Auto",
+   "person": "周港",
+   "conv": 2,
+   "ops": 4,
+   "rate": 50.0
+  },
+  {
+   "offer": "B452-4 2391 D - Quote Wizard Auto",
+   "person": "李铜",
+   "conv": 14,
+   "ops": 19,
+   "rate": 73.7
+  },
+  {
+   "offer": "B452-4 2391 D - Quote Wizard Auto",
+   "person": "钟进",
+   "conv": 40,
+   "ops": 46,
+   "rate": 87.0
+  },
+  {
+   "offer": "B452-4 2391 D - Quote Wizard Auto",
+   "person": "陈虹佑",
+   "conv": 10,
+   "ops": 15,
+   "rate": 66.7
+  }
+ ],
+ "domains": {
+  "MN": 141,
+  "MO1": 89,
+  "NE": 79,
+  "CO": 75,
+  "TX": 74,
+  "RI": 74,
+  "MS": 72,
+  "UT": 68,
+  "GA": 54,
+  "IL": 53
+ }
+}
