@@ -1,6 +1,6 @@
 {
  "day": "2026-11-01",
- "generated_at": "2026-11-01 20:21:15",
+ "generated_at": "2026-11-01 20:21:19",
  "source_timestamp": "2026-11-02T06:26:19.377620",
  "rows": 485,
  "unmatched_rows": 32,
@@ -18,12 +18,28 @@
    "rate": 96.0,
    "people": 2
   },
-  "Adscent-52 (1663897)229-BudgetAutoQuotes": {
-   "conv": 53,
-   "amount": 115.0,
-   "avg": 2.1699,
-   "ops": 63,
-   "rate": 84.1,
+  "B452-4 2412 LN - QW Auto": {
+   "conv": 69,
+   "amount": 380.48,
+   "avg": 5.5142,
+   "ops": 67,
+   "rate": 103.0,
+   "people": 2
+  },
+  "B452-4 2391 D - Quote Wizard Auto": {
+   "conv": 83,
+   "amount": 389.96,
+   "avg": 4.6983,
+   "ops": 94,
+   "rate": 88.3,
+   "people": 5
+  },
+  "B452-4 2182 QW Home - Meta": {
+   "conv": 51,
+   "amount": 304.95,
+   "avg": 5.9795,
+   "ops": 65,
+   "rate": 78.5,
    "people": 2
   },
   "B452-4 2390 1UP - Nerd Wallet auto": {
@@ -34,13 +50,13 @@
    "rate": 111.1,
    "people": 1
   },
-  "Adscent-52 (611178)239-Financebuzz-Home": {
-   "conv": 80,
-   "amount": 291.29,
-   "avg": 3.6411,
-   "ops": 65,
-   "rate": 123.1,
-   "people": 2
+  "Ashnova-128 [3683] NerdWallet Auto Insurance": {
+   "conv": 0,
+   "amount": 0,
+   "avg": 0,
+   "ops": 25,
+   "rate": 0.0,
+   "people": 0
   },
   "B452-4 2118 RP - Quote Wizard Home": {
    "conv": 76,
@@ -50,21 +66,13 @@
    "rate": 61.3,
    "people": 5
   },
-  "B452-4 2413 LN - QW Home": {
-   "conv": 9,
-   "amount": 21.89,
-   "avg": 2.4317,
-   "ops": 9,
-   "rate": 100.0,
-   "people": 1
-  },
-  "B452-4 2391 D - Quote Wizard Auto": {
-   "conv": 83,
-   "amount": 389.96,
-   "avg": 4.6983,
-   "ops": 94,
-   "rate": 88.3,
-   "people": 5
+  "Adscent-52 (611178)239-Financebuzz-Home": {
+   "conv": 80,
+   "amount": 291.29,
+   "avg": 3.6411,
+   "ops": 65,
+   "rate": 123.1,
+   "people": 2
   },
   "B452-4 2369 1UP - Quote Blizzard": {
    "conv": 30,
@@ -74,32 +82,32 @@
    "rate": 71.4,
    "people": 1
   },
-  "B452-4 2182 QW Home - Meta": {
-   "conv": 51,
-   "amount": 304.95,
-   "avg": 5.9795,
-   "ops": 65,
-   "rate": 78.5,
-   "people": 2
+  "B452-4 2413 LN - QW Home": {
+   "conv": 9,
+   "amount": 21.89,
+   "avg": 2.4317,
+   "ops": 9,
+   "rate": 100.0,
+   "people": 1
   },
-  "Ashnova-128 [3683] NerdWallet Auto Insurance": {
-   "conv": 0,
-   "amount": 0,
-   "avg": 0,
-   "ops": 25,
-   "rate": 0.0,
-   "people": 0
-  },
-  "B452-4 2412 LN - QW Auto": {
-   "conv": 69,
-   "amount": 380.48,
-   "avg": 5.5142,
-   "ops": 67,
-   "rate": 103.0,
+  "Adscent-52 (1663897)229-BudgetAutoQuotes": {
+   "conv": 53,
+   "amount": 115.0,
+   "avg": 2.1699,
+   "ops": 63,
+   "rate": 84.1,
    "people": 2
   }
  },
  "people": {
+  "高峰": {
+   "conv": 84,
+   "amount": 379.72,
+   "avg": 4.5204,
+   "ops": 105,
+   "rate": 80.0,
+   "offers": 6
+  },
   "周港": {
    "conv": 54,
    "amount": 478.11,
@@ -107,6 +115,22 @@
    "ops": 81,
    "rate": 66.7,
    "offers": 3
+  },
+  "郑杰": {
+   "conv": 90,
+   "amount": 537.74,
+   "avg": 5.9749,
+   "ops": 99,
+   "rate": 90.9,
+   "offers": 4
+  },
+  "张波": {
+   "conv": 68,
+   "amount": 186.82,
+   "avg": 2.7473,
+   "ops": 94,
+   "rate": 72.3,
+   "offers": 4
   },
   "周帅": {
    "conv": 96,
@@ -123,30 +147,6 @@
    "ops": 94,
    "rate": 64.9,
    "offers": 2
-  },
-  "张波": {
-   "conv": 68,
-   "amount": 186.82,
-   "avg": 2.7473,
-   "ops": 94,
-   "rate": 72.3,
-   "offers": 4
-  },
-  "郑杰": {
-   "conv": 90,
-   "amount": 537.74,
-   "avg": 5.9749,
-   "ops": 99,
-   "rate": 90.9,
-   "offers": 4
-  },
-  "高峰": {
-   "conv": 84,
-   "amount": 379.72,
-   "avg": 4.5204,
-   "ops": 105,
-   "rate": 80.0,
-   "offers": 6
   }
  },
  "pairs": [
