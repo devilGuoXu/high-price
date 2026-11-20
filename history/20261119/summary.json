@@ -1,6 +1,6 @@
 {
  "day": "2026-11-19",
- "generated_at": "2026-11-20 10:30:52",
+ "generated_at": "2026-11-20 12:30:10",
  "source_timestamp": "2026-11-20T10:10:03.644859",
  "rows": 1446,
  "unmatched_rows": 278,
@@ -28,15 +28,25 @@
   "new_unmatched": 0
  },
  "offers": {
-  "Adscent-52 (1663897)229-BudgetAutoQuotes": {
-   "conv": 176,
-   "amount": 207.95,
-   "avg": 1.1815,
-   "ops": 241,
-   "rate": 73.0,
-   "people": 9,
-   "same_ip_ips": 40,
-   "same_ip_convs": 84
+  "B452-4 2440 RP - RP O&O": {
+   "conv": 50,
+   "amount": 437.45,
+   "avg": 8.7489,
+   "ops": 58,
+   "rate": 86.2,
+   "people": 2,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2436 LN - QS auto": {
+   "conv": 75,
+   "amount": 866.63,
+   "avg": 11.555,
+   "ops": 73,
+   "rate": 102.7,
+   "people": 1,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
   },
   "B452-4 2182 QW Home - Meta": {
    "conv": 53,
@@ -45,6 +55,16 @@
    "ops": 80,
    "rate": 66.2,
    "people": 3,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "Affiliati-15378 (42598) NerdWallet Auto": {
+   "conv": 78,
+   "amount": 589.85,
+   "avg": 7.5622,
+   "ops": 80,
+   "rate": 97.5,
+   "people": 4,
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
@@ -68,46 +88,6 @@
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
-  "B452-4 2346 C - Smarter Auto": {
-   "conv": 151,
-   "amount": 163.24,
-   "avg": 1.0811,
-   "ops": 11,
-   "rate": 1372.7,
-   "people": 1,
-   "same_ip_ips": 67,
-   "same_ip_convs": 135
-  },
-  "B452-4 2210 C - QW AUTO": {
-   "conv": 200,
-   "amount": 243.31,
-   "avg": 1.2166,
-   "ops": 251,
-   "rate": 79.7,
-   "people": 8,
-   "same_ip_ips": 0,
-   "same_ip_convs": 0
-  },
-  "B452-4 2441 LN - Fast Auto Quote": {
-   "conv": 51,
-   "amount": 544.25,
-   "avg": 10.6716,
-   "ops": 51,
-   "rate": 100.0,
-   "people": 1,
-   "same_ip_ips": 0,
-   "same_ip_convs": 0
-  },
-  "B452-4 2369 1UP - Quote Blizzard": {
-   "conv": 31,
-   "amount": 307.46,
-   "avg": 9.9181,
-   "ops": 37,
-   "rate": 83.8,
-   "people": 1,
-   "same_ip_ips": 0,
-   "same_ip_convs": 0
-  },
   "Ashnova-128 [3683] NerdWallet Auto Insurance": {
    "conv": 25,
    "amount": 132.0,
@@ -115,26 +95,6 @@
    "ops": 26,
    "rate": 96.2,
    "people": 1,
-   "same_ip_ips": 0,
-   "same_ip_convs": 0
-  },
-  "B452-4 2440 RP - RP O&O": {
-   "conv": 50,
-   "amount": 437.45,
-   "avg": 8.7489,
-   "ops": 58,
-   "rate": 86.2,
-   "people": 2,
-   "same_ip_ips": 0,
-   "same_ip_convs": 0
-  },
-  "B452-4 2413 LN - QW Home": {
-   "conv": 80,
-   "amount": 264.26,
-   "avg": 3.3033,
-   "ops": 81,
-   "rate": 98.8,
-   "people": 3,
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
@@ -148,25 +108,65 @@
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
-  "Affiliati-15378 (42598) NerdWallet Auto": {
-   "conv": 78,
-   "amount": 589.85,
-   "avg": 7.5622,
-   "ops": 80,
-   "rate": 97.5,
-   "people": 4,
+  "B452-4 2118 RP - Quote Wizard Home": {
+   "conv": 80,
+   "amount": 372.03,
+   "avg": 4.6504,
+   "ops": 124,
+   "rate": 64.5,
+   "people": 6,
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
-  "B452-4 2436 LN - QS auto": {
-   "conv": 75,
-   "amount": 866.63,
-   "avg": 11.555,
-   "ops": 73,
-   "rate": 102.7,
+  "B452-4 2210 C - QW AUTO": {
+   "conv": 200,
+   "amount": 243.31,
+   "avg": 1.2166,
+   "ops": 251,
+   "rate": 79.7,
+   "people": 8,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2369 1UP - Quote Blizzard": {
+   "conv": 31,
+   "amount": 307.46,
+   "avg": 9.9181,
+   "ops": 37,
+   "rate": 83.8,
    "people": 1,
    "same_ip_ips": 0,
    "same_ip_convs": 0
+  },
+  "B452-4 2441 LN - Fast Auto Quote": {
+   "conv": 51,
+   "amount": 544.25,
+   "avg": 10.6716,
+   "ops": 51,
+   "rate": 100.0,
+   "people": 1,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2346 C - Smarter Auto": {
+   "conv": 151,
+   "amount": 163.24,
+   "avg": 1.0811,
+   "ops": 11,
+   "rate": 1372.7,
+   "people": 1,
+   "same_ip_ips": 67,
+   "same_ip_convs": 135
+  },
+  "Adscent-52 (1663897)229-BudgetAutoQuotes": {
+   "conv": 176,
+   "amount": 207.95,
+   "avg": 1.1815,
+   "ops": 241,
+   "rate": 73.0,
+   "people": 9,
+   "same_ip_ips": 40,
+   "same_ip_convs": 84
   },
   "B452-4 2412 LN - QW Auto": {
    "conv": 100,
@@ -178,41 +178,33 @@
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
-  "B452-4 2118 RP - Quote Wizard Home": {
+  "B452-4 2413 LN - QW Home": {
    "conv": 80,
-   "amount": 372.03,
-   "avg": 4.6504,
-   "ops": 124,
-   "rate": 64.5,
-   "people": 6,
+   "amount": 264.26,
+   "avg": 3.3033,
+   "ops": 81,
+   "rate": 98.8,
+   "people": 3,
    "same_ip_ips": 0,
    "same_ip_convs": 0
   }
  },
  "people": {
-  "陈虹佑": {
-   "conv": 76,
-   "amount": 495.62,
-   "avg": 6.5213,
-   "ops": 112,
-   "rate": 67.9,
+  "陈朋": {
+   "conv": 89,
+   "amount": 518.13,
+   "avg": 5.8217,
+   "ops": 126,
+   "rate": 70.6,
    "offers": 3
   },
-  "钟奕": {
-   "conv": 99,
-   "amount": 502.01,
-   "avg": 5.0708,
-   "ops": 132,
-   "rate": 75.0,
-   "offers": 5
-  },
-  "陈仕荣": {
-   "conv": 119,
-   "amount": 361.75,
-   "avg": 3.0399,
-   "ops": 144,
-   "rate": 82.6,
-   "offers": 6
+  "张波": {
+   "conv": 121,
+   "amount": 701.88,
+   "avg": 5.8006,
+   "ops": 121,
+   "rate": 100.0,
+   "offers": 3
   },
   "陈帅": {
    "conv": 112,
@@ -222,36 +214,12 @@
    "rate": 79.4,
    "offers": 5
   },
-  "陈朋": {
-   "conv": 89,
-   "amount": 518.13,
-   "avg": 5.8217,
-   "ops": 126,
-   "rate": 70.6,
-   "offers": 3
-  },
   "李铜": {
    "conv": 82,
    "amount": 426.88,
    "avg": 5.2059,
    "ops": 103,
    "rate": 79.6,
-   "offers": 4
-  },
-  "郑义程": {
-   "conv": 111,
-   "amount": 523.53,
-   "avg": 4.7165,
-   "ops": 130,
-   "rate": 85.4,
-   "offers": 4
-  },
-  "高峰": {
-   "conv": 114,
-   "amount": 269.42,
-   "avg": 2.3633,
-   "ops": 160,
-   "rate": 71.2,
    "offers": 4
   },
   "周帅": {
@@ -262,14 +230,6 @@
    "rate": 75.6,
    "offers": 3
   },
-  "成昭旭1": {
-   "conv": 34,
-   "amount": 94.37,
-   "avg": 2.7757,
-   "ops": 43,
-   "rate": 79.1,
-   "offers": 4
-  },
   "周港": {
    "conv": 87,
    "amount": 445.54,
@@ -278,13 +238,53 @@
    "rate": 68.0,
    "offers": 6
   },
-  "张波": {
-   "conv": 121,
-   "amount": 701.88,
-   "avg": 5.8006,
-   "ops": 121,
-   "rate": 100.0,
+  "成昭旭1": {
+   "conv": 34,
+   "amount": 94.37,
+   "avg": 2.7757,
+   "ops": 43,
+   "rate": 79.1,
+   "offers": 4
+  },
+  "陈仕荣": {
+   "conv": 119,
+   "amount": 361.75,
+   "avg": 3.0399,
+   "ops": 144,
+   "rate": 82.6,
+   "offers": 6
+  },
+  "陈虹佑": {
+   "conv": 76,
+   "amount": 495.62,
+   "avg": 6.5213,
+   "ops": 112,
+   "rate": 67.9,
    "offers": 3
+  },
+  "郑义程": {
+   "conv": 111,
+   "amount": 523.53,
+   "avg": 4.7165,
+   "ops": 130,
+   "rate": 85.4,
+   "offers": 4
+  },
+  "钟奕": {
+   "conv": 99,
+   "amount": 502.01,
+   "avg": 5.0708,
+   "ops": 132,
+   "rate": 75.0,
+   "offers": 5
+  },
+  "高峰": {
+   "conv": 114,
+   "amount": 269.42,
+   "avg": 2.3633,
+   "ops": 160,
+   "rate": 71.2,
+   "offers": 4
   }
  },
  "pairs": [
