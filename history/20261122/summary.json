@@ -1,6 +1,6 @@
 {
  "day": "2026-11-22",
- "generated_at": "2026-11-23 09:04:12",
+ "generated_at": "2026-11-23 12:30:07",
  "source_timestamp": "2026-11-23T08:52:12.123152",
  "rows": 824,
  "unmatched_rows": 71,
@@ -28,16 +28,6 @@
   "new_unmatched": 0
  },
  "offers": {
-  "Ashnova-128 [3683] NerdWallet Auto Insurance": {
-   "conv": 140,
-   "amount": 755.22,
-   "avg": 5.3944,
-   "ops": 150,
-   "rate": 93.3,
-   "people": 2,
-   "same_ip_ips": 0,
-   "same_ip_convs": 0
-  },
   "B452-4 2182 QW Home - Meta": {
    "conv": 52,
    "amount": 210.42,
@@ -48,33 +38,13 @@
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
-  "B452-4 2118 RP - Quote Wizard Home": {
-   "conv": 89,
-   "amount": 326.54,
-   "avg": 3.669,
-   "ops": 123,
-   "rate": 72.4,
-   "people": 5,
-   "same_ip_ips": 0,
-   "same_ip_convs": 0
-  },
-  "B452-4 2412 LN - QW Auto": {
-   "conv": 101,
-   "amount": 730.5,
-   "avg": 7.2327,
-   "ops": 99,
-   "rate": 102.0,
-   "people": 1,
-   "same_ip_ips": 0,
-   "same_ip_convs": 0
-  },
-  "B452-4 2441 LN - Fast Auto Quote": {
-   "conv": 95,
-   "amount": 1122.24,
-   "avg": 11.8131,
-   "ops": 95,
-   "rate": 100.0,
-   "people": 3,
+  "Ashnova-128 [3683] NerdWallet Auto Insurance": {
+   "conv": 140,
+   "amount": 755.22,
+   "avg": 5.3944,
+   "ops": 150,
+   "rate": 93.3,
+   "people": 2,
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
@@ -98,13 +68,23 @@
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
-  "B452-4 2391 D - Quote Wizard Auto": {
-   "conv": 98,
-   "amount": 391.7,
-   "avg": 3.9969,
-   "ops": 106,
-   "rate": 92.5,
-   "people": 4,
+  "B452-4 2428 SA - Nerdwallet Auto": {
+   "conv": 100,
+   "amount": 536.12,
+   "avg": 5.3612,
+   "ops": 116,
+   "rate": 86.2,
+   "people": 5,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2412 LN - QW Auto": {
+   "conv": 101,
+   "amount": 730.5,
+   "avg": 7.2327,
+   "ops": 99,
+   "rate": 102.0,
+   "people": 1,
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
@@ -118,13 +98,33 @@
    "same_ip_ips": 0,
    "same_ip_convs": 0
   },
-  "B452-4 2428 SA - Nerdwallet Auto": {
-   "conv": 100,
-   "amount": 536.12,
-   "avg": 5.3612,
-   "ops": 116,
-   "rate": 86.2,
+  "B452-4 2118 RP - Quote Wizard Home": {
+   "conv": 89,
+   "amount": 326.54,
+   "avg": 3.669,
+   "ops": 123,
+   "rate": 72.4,
    "people": 5,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2441 LN - Fast Auto Quote": {
+   "conv": 95,
+   "amount": 1122.24,
+   "avg": 11.8131,
+   "ops": 95,
+   "rate": 100.0,
+   "people": 3,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2391 D - Quote Wizard Auto": {
+   "conv": 98,
+   "amount": 391.7,
+   "avg": 3.9969,
+   "ops": 106,
+   "rate": 92.5,
+   "people": 4,
    "same_ip_ips": 0,
    "same_ip_convs": 0
   }
@@ -146,13 +146,13 @@
    "rate": 96.1,
    "offers": 5
   },
-  "陈帅": {
-   "conv": 104,
-   "amount": 779.84,
-   "avg": 7.4984,
-   "ops": 120,
-   "rate": 86.7,
-   "offers": 3
+  "陈仕荣": {
+   "conv": 140,
+   "amount": 699.5,
+   "avg": 4.9964,
+   "ops": 155,
+   "rate": 90.3,
+   "offers": 4
   },
   "陈虹佑": {
    "conv": 99,
@@ -160,14 +160,6 @@
    "avg": 7.6084,
    "ops": 155,
    "rate": 63.9,
-   "offers": 4
-  },
-  "陈仕荣": {
-   "conv": 140,
-   "amount": 699.5,
-   "avg": 4.9964,
-   "ops": 155,
-   "rate": 90.3,
    "offers": 4
   },
   "成昭旭1": {
@@ -184,6 +176,14 @@
    "avg": 7.3522,
    "ops": 135,
    "rate": 71.1,
+   "offers": 3
+  },
+  "陈帅": {
+   "conv": 104,
+   "amount": 779.84,
+   "avg": 7.4984,
+   "ops": 120,
+   "rate": 86.7,
    "offers": 3
   }
  },
