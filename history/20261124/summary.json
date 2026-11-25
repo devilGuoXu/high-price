@@ -1,0 +1,820 @@
+{
+ "day": "2026-11-24",
+ "generated_at": "2026-11-24 19:02:22",
+ "source_timestamp": "2026-11-24T18:56:00.634970",
+ "rows": 1491,
+ "unmatched_rows": 212,
+ "total_ops": 1606,
+ "total_amount": 4585.94,
+ "avg_price": 3.0757,
+ "ops_meta": {
+  "fetched_at": "2026-11-24 18:55:59",
+  "api_total": 1606,
+  "fetched": 1606,
+  "pages": 1,
+  "ok": true,
+  "stale": false,
+  "error": "",
+  "ops_raw": 1606,
+  "ops_total": 1606,
+  "reset_detected": false,
+  "window": "today"
+ },
+ "match_stats": {
+  "rows": 1491,
+  "unmatched_rows": 212,
+  "unmatched_pct": 14.2,
+  "new_matched": 14,
+  "new_unmatched": 2
+ },
+ "offers": {
+  "B452-4 2391 D - Quote Wizard Auto": {
+   "conv": 99,
+   "amount": 319.05,
+   "avg": 3.2228,
+   "ops": 114,
+   "rate": 86.8,
+   "people": 5,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "Adscent-52 (1663897)229-BudgetAutoQuotes": {
+   "conv": 76,
+   "amount": 100.61,
+   "avg": 1.3238,
+   "ops": 173,
+   "rate": 43.9,
+   "people": 5,
+   "same_ip_ips": 12,
+   "same_ip_convs": 24
+  },
+  "B452-4 2413 LN - QW Home": {
+   "conv": 84,
+   "amount": 217.56,
+   "avg": 2.59,
+   "ops": 88,
+   "rate": 95.5,
+   "people": 1,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2436 LN - QS auto": {
+   "conv": 76,
+   "amount": 261.49,
+   "avg": 3.4407,
+   "ops": 69,
+   "rate": 110.1,
+   "people": 2,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2118 RP - Quote Wizard Home": {
+   "conv": 70,
+   "amount": 178.1,
+   "avg": 2.5443,
+   "ops": 110,
+   "rate": 63.6,
+   "people": 5,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2369 1UP - Quote Blizzard": {
+   "conv": 32,
+   "amount": 267.22,
+   "avg": 8.3507,
+   "ops": 39,
+   "rate": 82.1,
+   "people": 1,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2454 D - EZ Auto": {
+   "conv": 72,
+   "amount": 259.16,
+   "avg": 3.5994,
+   "ops": 41,
+   "rate": 175.6,
+   "people": 2,
+   "same_ip_ips": 29,
+   "same_ip_convs": 58
+  },
+  "Affiliati-15378 (42598) NerdWallet Auto": {
+   "conv": 62,
+   "amount": 159.9,
+   "avg": 2.579,
+   "ops": 67,
+   "rate": 92.5,
+   "people": 1,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2412 LN - QW Auto": {
+   "conv": 101,
+   "amount": 665.35,
+   "avg": 6.5876,
+   "ops": 100,
+   "rate": 101.0,
+   "people": 2,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2346 C - Smarter Auto": {
+   "conv": 183,
+   "amount": 154.59,
+   "avg": 0.8447,
+   "ops": 82,
+   "rate": 223.2,
+   "people": 7,
+   "same_ip_ips": 73,
+   "same_ip_convs": 172
+  },
+  "B452-4 2428 SA - Nerdwallet Auto": {
+   "conv": 55,
+   "amount": 131.44,
+   "avg": 2.3899,
+   "ops": 61,
+   "rate": 90.2,
+   "people": 3,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "Adscent-52 (611178)239-Financebuzz-Home": {
+   "conv": 97,
+   "amount": 150.24,
+   "avg": 1.5488,
+   "ops": 91,
+   "rate": 106.6,
+   "people": 2,
+   "same_ip_ips": 30,
+   "same_ip_convs": 60
+  },
+  "Ashnova-128 [3683] NerdWallet Auto Insurance": {
+   "conv": 148,
+   "amount": 742.0,
+   "avg": 5.0135,
+   "ops": 156,
+   "rate": 94.9,
+   "people": 5,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2210 C - QW AUTO": {
+   "conv": 194,
+   "amount": 184.7,
+   "avg": 0.9521,
+   "ops": 245,
+   "rate": 79.2,
+   "people": 7,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2441 LN - Fast Auto Quote": {
+   "conv": 99,
+   "amount": 713.35,
+   "avg": 7.2055,
+   "ops": 102,
+   "rate": 97.1,
+   "people": 2,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  },
+  "B452-4 2182 QW Home - Meta": {
+   "conv": 43,
+   "amount": 81.18,
+   "avg": 1.8879,
+   "ops": 68,
+   "rate": 63.2,
+   "people": 3,
+   "same_ip_ips": 0,
+   "same_ip_convs": 0
+  }
+ },
+ "people": {
+  "钟奕": {
+   "conv": 124,
+   "amount": 462.74,
+   "avg": 3.7318,
+   "ops": 135,
+   "rate": 91.9,
+   "offers": 5
+  },
+  "郑义程": {
+   "conv": 93,
+   "amount": 205.29,
+   "avg": 2.2074,
+   "ops": 156,
+   "rate": 59.6,
+   "offers": 3
+  },
+  "高峰": {
+   "conv": 115,
+   "amount": 356.54,
+   "avg": 3.1003,
+   "ops": 138,
+   "rate": 83.3,
+   "offers": 3
+  },
+  "陈朋": {
+   "conv": 129,
+   "amount": 634.77,
+   "avg": 4.9207,
+   "ops": 123,
+   "rate": 104.9,
+   "offers": 2
+  },
+  "陈虹佑": {
+   "conv": 134,
+   "amount": 261.76,
+   "avg": 1.9535,
+   "ops": 126,
+   "rate": 106.3,
+   "offers": 3
+  },
+  "周港": {
+   "conv": 72,
+   "amount": 348.73,
+   "avg": 4.8435,
+   "ops": 121,
+   "rate": 59.5,
+   "offers": 5
+  },
+  "周帅": {
+   "conv": 119,
+   "amount": 385.04,
+   "avg": 3.2357,
+   "ops": 157,
+   "rate": 75.8,
+   "offers": 6
+  },
+  "李铜": {
+   "conv": 87,
+   "amount": 227.74,
+   "avg": 2.6177,
+   "ops": 125,
+   "rate": 69.6,
+   "offers": 5
+  },
+  "张波": {
+   "conv": 93,
+   "amount": 449.46,
+   "avg": 4.8329,
+   "ops": 129,
+   "rate": 72.1,
+   "offers": 4
+  },
+  "成昭旭1": {
+   "conv": 71,
+   "amount": 155.52,
+   "avg": 2.1904,
+   "ops": 74,
+   "rate": 95.9,
+   "offers": 7
+  },
+  "陈仕荣": {
+   "conv": 153,
+   "amount": 410.08,
+   "avg": 2.6803,
+   "ops": 162,
+   "rate": 94.4,
+   "offers": 5
+  },
+  "陈帅": {
+   "conv": 89,
+   "amount": 239.5,
+   "avg": 2.6911,
+   "ops": 160,
+   "rate": 55.6,
+   "offers": 5
+  }
+ },
+ "pairs": [
+  {
+   "offer": "Adscent-52 (1663897)229-BudgetAutoQuotes",
+   "person": "周帅",
+   "conv": 33,
+   "ops": 52,
+   "rate": 63.5,
+   "same_ip_convs": 16
+  },
+  {
+   "offer": "Adscent-52 (1663897)229-BudgetAutoQuotes",
+   "person": "张波",
+   "conv": 2,
+   "ops": 3,
+   "rate": 66.7,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "Adscent-52 (1663897)229-BudgetAutoQuotes",
+   "person": "李铜",
+   "conv": 15,
+   "ops": 20,
+   "rate": 75.0,
+   "same_ip_convs": 8
+  },
+  {
+   "offer": "Adscent-52 (1663897)229-BudgetAutoQuotes",
+   "person": "郑义程",
+   "conv": 0,
+   "ops": 6,
+   "rate": 0.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "Adscent-52 (1663897)229-BudgetAutoQuotes",
+   "person": "钟奕",
+   "conv": 3,
+   "ops": 13,
+   "rate": 23.1,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "Adscent-52 (1663897)229-BudgetAutoQuotes",
+   "person": "陈帅",
+   "conv": 18,
+   "ops": 79,
+   "rate": 22.8,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "Adscent-52 (611178)239-Financebuzz-Home",
+   "person": "陈虹佑",
+   "conv": 53,
+   "ops": 45,
+   "rate": 117.8,
+   "same_ip_convs": 38
+  },
+  {
+   "offer": "Adscent-52 (611178)239-Financebuzz-Home",
+   "person": "高峰",
+   "conv": 44,
+   "ops": 46,
+   "rate": 95.7,
+   "same_ip_convs": 22
+  },
+  {
+   "offer": "Affiliati-15378 (42598) NerdWallet Auto",
+   "person": "陈虹佑",
+   "conv": 56,
+   "ops": 67,
+   "rate": 83.6,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "Ashnova-128 [3683] NerdWallet Auto Insurance",
+   "person": "周帅",
+   "conv": 51,
+   "ops": 53,
+   "rate": 96.2,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "Ashnova-128 [3683] NerdWallet Auto Insurance",
+   "person": "李铜",
+   "conv": 15,
+   "ops": 16,
+   "rate": 93.8,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "Ashnova-128 [3683] NerdWallet Auto Insurance",
+   "person": "陈仕荣",
+   "conv": 16,
+   "ops": 18,
+   "rate": 88.9,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "Ashnova-128 [3683] NerdWallet Auto Insurance",
+   "person": "陈帅",
+   "conv": 9,
+   "ops": 10,
+   "rate": 90.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "Ashnova-128 [3683] NerdWallet Auto Insurance",
+   "person": "高峰",
+   "conv": 54,
+   "ops": 59,
+   "rate": 91.5,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "周港",
+   "conv": 8,
+   "ops": 11,
+   "rate": 72.7,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "张波",
+   "conv": 18,
+   "ops": 27,
+   "rate": 66.7,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "成昭旭1",
+   "conv": 3,
+   "ops": 4,
+   "rate": 75.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "郑义程",
+   "conv": 23,
+   "ops": 40,
+   "rate": 57.5,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2118 RP - Quote Wizard Home",
+   "person": "高峰",
+   "conv": 17,
+   "ops": 28,
+   "rate": 60.7,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2182 QW Home - Meta",
+   "person": "成昭旭1",
+   "conv": 7,
+   "ops": 15,
+   "rate": 46.7,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2182 QW Home - Meta",
+   "person": "李铜",
+   "conv": 27,
+   "ops": 36,
+   "rate": 75.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2182 QW Home - Meta",
+   "person": "陈仕荣",
+   "conv": 9,
+   "ops": 17,
+   "rate": 52.9,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "周帅",
+   "conv": 9,
+   "ops": 23,
+   "rate": 39.1,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "周港",
+   "conv": 12,
+   "ops": 31,
+   "rate": 38.7,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "张波",
+   "conv": 14,
+   "ops": 39,
+   "rate": 35.9,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "成昭旭1",
+   "conv": 5,
+   "ops": 7,
+   "rate": 71.4,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "郑义程",
+   "conv": 34,
+   "ops": 70,
+   "rate": 48.6,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "钟奕",
+   "conv": 29,
+   "ops": 48,
+   "rate": 60.4,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "陈帅",
+   "conv": 5,
+   "ops": 14,
+   "rate": 35.7,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "陈朋",
+   "conv": 0,
+   "ops": 4,
+   "rate": 0.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "陈虹佑",
+   "conv": 0,
+   "ops": 4,
+   "rate": 0.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2210 C - QW AUTO",
+   "person": "高峰",
+   "conv": 0,
+   "ops": 5,
+   "rate": 0.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "周帅",
+   "conv": 7,
+   "ops": 6,
+   "rate": 116.7,
+   "same_ip_convs": 7
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "成昭旭1",
+   "conv": 19,
+   "ops": 10,
+   "rate": 190.0,
+   "same_ip_convs": 17
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "钟奕",
+   "conv": 13,
+   "ops": 7,
+   "rate": 185.7,
+   "same_ip_convs": 13
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "陈仕荣",
+   "conv": 25,
+   "ops": 15,
+   "rate": 166.7,
+   "same_ip_convs": 25
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "陈帅",
+   "conv": 10,
+   "ops": 7,
+   "rate": 142.9,
+   "same_ip_convs": 6
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "陈朋",
+   "conv": 49,
+   "ops": 27,
+   "rate": 181.5,
+   "same_ip_convs": 46
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "person": "陈虹佑",
+   "conv": 25,
+   "ops": 10,
+   "rate": 250.0,
+   "same_ip_convs": 25
+  },
+  {
+   "offer": "B452-4 2369 1UP - Quote Blizzard",
+   "person": "周港",
+   "conv": 25,
+   "ops": 39,
+   "rate": 64.1,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2391 D - Quote Wizard Auto",
+   "person": "周港",
+   "conv": 19,
+   "ops": 30,
+   "rate": 63.3,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2391 D - Quote Wizard Auto",
+   "person": "成昭旭1",
+   "conv": 7,
+   "ops": 9,
+   "rate": 77.8,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2391 D - Quote Wizard Auto",
+   "person": "李铜",
+   "conv": 8,
+   "ops": 11,
+   "rate": 72.7,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2391 D - Quote Wizard Auto",
+   "person": "郑义程",
+   "conv": 36,
+   "ops": 40,
+   "rate": 90.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2391 D - Quote Wizard Auto",
+   "person": "陈仕荣",
+   "conv": 21,
+   "ops": 24,
+   "rate": 87.5,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2412 LN - QW Auto",
+   "person": "张波",
+   "conv": 59,
+   "ops": 60,
+   "rate": 98.3,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2412 LN - QW Auto",
+   "person": "钟奕",
+   "conv": 39,
+   "ops": 40,
+   "rate": 97.5,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2413 LN - QW Home",
+   "person": "陈仕荣",
+   "conv": 82,
+   "ops": 88,
+   "rate": 93.2,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2428 SA - Nerdwallet Auto",
+   "person": "周帅",
+   "conv": 4,
+   "ops": 7,
+   "rate": 57.1,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2428 SA - Nerdwallet Auto",
+   "person": "成昭旭1",
+   "conv": 8,
+   "ops": 12,
+   "rate": 66.7,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2428 SA - Nerdwallet Auto",
+   "person": "李铜",
+   "conv": 22,
+   "ops": 42,
+   "rate": 52.4,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2436 LN - QS auto",
+   "person": "周帅",
+   "conv": 15,
+   "ops": 16,
+   "rate": 93.8,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2436 LN - QS auto",
+   "person": "成昭旭1",
+   "conv": 0,
+   "ops": 3,
+   "rate": 0.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2436 LN - QS auto",
+   "person": "陈帅",
+   "conv": 47,
+   "ops": 50,
+   "rate": 94.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2441 LN - Fast Auto Quote",
+   "person": "周港",
+   "conv": 8,
+   "ops": 10,
+   "rate": 80.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2441 LN - Fast Auto Quote",
+   "person": "陈朋",
+   "conv": 80,
+   "ops": 92,
+   "rate": 87.0,
+   "same_ip_convs": 0
+  },
+  {
+   "offer": "B452-4 2454 D - EZ Auto",
+   "person": "成昭旭1",
+   "conv": 22,
+   "ops": 14,
+   "rate": 157.1,
+   "same_ip_convs": 18
+  },
+  {
+   "offer": "B452-4 2454 D - EZ Auto",
+   "person": "钟奕",
+   "conv": 40,
+   "ops": 27,
+   "rate": 148.1,
+   "same_ip_convs": 34
+  }
+ ],
+ "domains": {
+  "MN": 131,
+  "FL": 101,
+  "TX": 99,
+  "IL": 66,
+  "MO": 64,
+  "CO": 60,
+  "PA": 59,
+  "SC": 47,
+  "TN": 47,
+  "WA": 43
+ },
+ "same_ip_top": [
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "97.200.99.182",
+   "conv": 3
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "75.220.196.183",
+   "conv": 3
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "75.202.11.231",
+   "conv": 3
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "97.249.183.54",
+   "conv": 3
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "104.5.161.251",
+   "conv": 3
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "99.11.176.44",
+   "conv": 3
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "97.243.62.55",
+   "conv": 3
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "75.207.172.59",
+   "conv": 3
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "97.243.141.200",
+   "conv": 3
+  },
+  {
+   "offer": "B452-4 2346 C - Smarter Auto",
+   "ip": "73.36.221.196",
+   "conv": 3
+  }
+ ]
+}
